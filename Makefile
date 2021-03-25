@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/03/25 10:58:19 by tmatis           ###   ########.fr        #
+#    Updated: 2021/03/25 11:08:36 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRCS	= main.c
 OBJS	= $(addprefix objs/, ${SRCS:.c=.o})
 CC 		= clang
 CFLAGS	= -Wall -Wextra -Werror
+LIBFT	= libft/libft.a
 
 COM_COLOR   = \033[0;34m
 OBJ_COLOR   = \033[0;36m
@@ -58,15 +59,15 @@ header:
 	@echo
 	@echo
 
-$(NAME): 	header libft ${OBJS}
+$(NAME): 	header $(LIBFT) ${OBJS}
 			@$(call run_and_test,$(CC) $(CFLAGS) -o $@ ${OBJS} -L./libft -lft)
 
 objs/%.o: srcs/%.c
 			@mkdir -p $(dir $@)
 			@$(call run_and_test,$(CC) $(CFLAGS) -c $< -o $@)
 
-libft:		header
-			@make -sC ./libft libft.a
+$(LIBFT):	header
+			@$(call run_and_test,make -sC ./libft libft.a)
 
 clean:		header
 			@rm -rf objs
