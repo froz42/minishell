@@ -5,13 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/24 21:07:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/03/24 21:12:15 by tmatis           ###   ########.fr       */
+/*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
+/*   Updated: 2021/03/25 10:59:18 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdio.h>
 
 int main(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
+	printf("hello world\n");
+	return 0;
 }

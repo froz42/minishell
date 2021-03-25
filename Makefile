@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/03/25 10:30:32 by tmatis           ###   ########.fr        #
+#    Updated: 2021/03/25 10:58:19 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ header:
 $(NAME): 	header libft ${OBJS}
 			@$(call run_and_test,$(CC) $(CFLAGS) -o $@ ${OBJS} -L./libft -lft)
 
-objs/%.o: %.c
+objs/%.o: srcs/%.c
 			@mkdir -p $(dir $@)
 			@$(call run_and_test,$(CC) $(CFLAGS) -c $< -o $@)
 
