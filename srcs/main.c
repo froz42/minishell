@@ -6,16 +6,65 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/03/25 10:59:18 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/03/28 18:12:58 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "minishell.h"
+#include <termios.h>
 
-int main(int argc, char **argv)
+static	void	write_header(void)
 {
+	ft_putnl("        _       _     _          _ _");
+	ft_putnl("  /\\/\\ (_)_ __ (_)___| |__   ___| | |");
+	ft_putnl(" /    \\| | '_ \\| / __| '_ \\ / _ \\ | |");
+	ft_putnl("/ /\\/\\ \\ | | | | \\__ \\ | | |  __/ | |");
+	ft_putnl("\\/    \\/_|_| |_|_|___/_| |_|\\___|_|_|");
+	ft_putnl("");
+}
+
+/*
+static	int		get_escape_code(char *buff, int size)
+{
+	return (0)
+}
+*/
+static	void	raw_mode(void)
+{
+	struct	termios	termios;
+
+	tcgetattr(STDIN_FILENO, &termios);
+	termios.c_lflag &= ~(ECHO | ICANON);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termios);
+}
+
+int				main(int argc, char **argv)
+{
+	int		ret;
+	char	buff[10];
+
 	(void)argc;
 	(void)argv;
-	printf("hello world\n");
-	return 0;
+	if (isatty(STDOUT_FILENO))
+	{
+		write_header();
+		raw_mode();
+	}
+	while (1)
+	{
+		buff[0] = 0;
+		ft_putstr("Minishell $>");
+		while (buff[0] != 10)
+		{
+			ret = read(STDIN_FILENO, buff, sizeof(buff));
+			if (buff[0] != 10 && ft_iscntrl(buff[0]))
+			{
+				if (buff[0] == 127)
+					ft_putstr("\b \b");
+			}
+			else
+				write(1, buff, ret);
+		}
+		//ft_putchar_fd('\n', 1);
+	}
 }
