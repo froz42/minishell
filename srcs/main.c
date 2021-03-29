@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/03/28 18:12:58 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/03/29 22:09:00 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ static	void	raw_mode(void)
 
 int				main(int argc, char **argv)
 {
-	int		ret;
-	char	buff[10];
+	int			ret;
+	char		buff[10];
+	t_buffer	buffer;
 
 	(void)argc;
 	(void)argv;
@@ -53,6 +54,7 @@ int				main(int argc, char **argv)
 	while (1)
 	{
 		buff[0] = 0;
+		buffer = init_buffer();
 		ft_putstr("Minishell $>");
 		while (buff[0] != 10)
 		{
@@ -63,8 +65,13 @@ int				main(int argc, char **argv)
 					ft_putstr("\b \b");
 			}
 			else
+			{
+				buffer_add(buff[0], &buffer);
 				write(1, buff, ret);
+			}
 		}
-		//ft_putchar_fd('\n', 1);
+		printf("command: |%s|\n", buffer.buff);
+		if (buffer.buff)
+			free(buffer.buff);
 	}
 }
