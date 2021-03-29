@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/03/24 21:09:32 by tmatis           ###   ########.fr        #
+#    Updated: 2021/03/29 12:27:38 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,12 +38,6 @@ SRCS_STRING		= ft_christr.c ft_split.c ft_str_is_alpha.c \
 				  ft_substr.c
 
 SRCS_GNL		= ft_gnl.c ft_gnl_utils.c
-
-SRCS_PRINTF		= ft_printf.c ft_buffutils.c ft_parsesyntax.c ft_parseutils.c\
-				  ft_char_conversion.c ft_lengths.c ft_str_conversion.c\
-				  ft_int_conversion.c ft_nbrutils.c ft_conversion.c\
-				  ft_uint_conversion.c ft_uhex_conversion.c ft_ptr_conversion.c\
-				  ft_n_conversion.c
 
 SRCS_WSTRING	= ft_wstr_strlen.c ft_wstrlen.c ft_wstrnlen.c ft_wstrtostr.c
 

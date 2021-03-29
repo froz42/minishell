@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 16:43:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/01/26 22:37:34 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/03/29 12:28:06 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include "wstring/wstring.h"
 # include "put/put.h"
 # include "gnl/ft_gnl.h"
-# include "printf/printf.h"
 # include "log/log.h"
 # include "maths/maths.h"
 
