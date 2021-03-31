@@ -6,12 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/03/29 22:10:34 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/03/31 14:01:58 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <errno.h>
+
+/*
+** Init my structure
+*/
 
 t_buffer	init_buffer(void)
 {
@@ -21,6 +24,11 @@ t_buffer	init_buffer(void)
 	buffer.buff = NULL;
 	return (buffer);
 }
+
+/*
+** Add a char to a static buff, if buff is full or \n is typed
+** flushed to a HEAP allocated buffer
+*/
 
 void	buffer_add(char c, t_buffer *buffer)
 {

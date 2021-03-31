@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 18:56:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/03/31 12:19:28 by tmatis           ###   ########.fr       */
+/*   Created: 2021/03/31 12:02:21 by tmatis            #+#    #+#             */
+/*   Updated: 2021/03/31 13:59:42 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
+#include "minishell.h"
 
-# define MINISHELL_H
+/*
+** Add a element in a chained list 
+*/
 
-# include "../libft/libft.h"
-# include <errno.h>
-
-typedef struct	s_buffer
+void	push_history(char *command, t_list **history)
 {
-	int		size;
-	char	*buff;
-}				t_buffer;
+	t_list	*new;
 
-void		buffer_add(char c, t_buffer *buffer);
-t_buffer	init_buffer(void);
-void	push_history(char *command, t_list **history);
-
-#endif
+	new = ft_lstnew((void *)command);
+	if (!new)
+	{
+		ft_log_error(strerror(errno));
+		return ;
+	}
+	ft_lstadd_front(history, new);
+}
