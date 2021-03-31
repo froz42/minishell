@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/03/31 14:27:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/03/31 21:05:50 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int				main(void)
 				if (get_escape_id(buff, ret) == 0 && char_typed)
 				{
 					ft_putstr("\b \b");
+					buffer_add(10, &buffer);
+					buffer_delete(char_typed, &buffer);
 					char_typed--;
 				}
 			}
@@ -123,7 +125,7 @@ int				main(void)
 			}
 		}
 		printf("command: |%s|\n", buffer.buff);
-		if (buffer.buff)
+		if (buffer.buff && buffer.size > 0)
 			push_history(buffer.buff, &history);
 		if (!ft_strcmp(buffer.buff, "exit"))
 			break ;

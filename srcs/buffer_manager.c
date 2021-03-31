@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/03/31 14:01:58 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/03/31 21:04:45 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,15 @@ void	buffer_add(char c, t_buffer *buffer)
 	}
 	if (c != 10)
 		buff[buff_size++] = c;
+}
+
+/*
+** Move all byte to left after the pos one to erase a char.
+** Add a \0 at the end
+*/
+
+void	buffer_delete(int pos, t_buffer *buffer)
+{
+	ft_memmove(buffer + pos, buffer + (pos - 1), buffer->size - pos);
+	buffer->buff[--buffer->size] = '\0';
 }
