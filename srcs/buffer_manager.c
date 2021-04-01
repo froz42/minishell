@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/03/31 21:04:45 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/01 12:59:59 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	buffer_add(char c, t_buffer *buffer)
 	static int		buff_size = 0;
 	char			*dst;
 
-	if (c == 10 || (&buff[buff_size] == &buff[sizeof(buff)]))
+	if ((c == 10 && (buff_size > 0 || !buffer->buff))
+			|| (&buff[buff_size] == &buff[sizeof(buff)]))
 	{
 		dst = ft_calloc(buff_size + buffer->size + 1, sizeof(char));
 		if (!dst)
