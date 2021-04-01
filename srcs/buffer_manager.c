@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/01 12:59:59 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/01 13:59:03 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,16 @@ void	buffer_add(char c, t_buffer *buffer)
 	}
 	if (c != 10)
 		buff[buff_size++] = c;
+}
+
+
+void	buffer_add_chain(char *src, int size, t_buffer *buffer)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+		buffer_add(src[i++], buffer);
 }
 
 /*
