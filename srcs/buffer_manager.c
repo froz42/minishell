@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/01 13:59:03 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/01 21:09:29 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_buffer	init_buffer(void)
 	t_buffer buffer;
 
 	buffer.size = 0;
-	buffer.buff = NULL;
+	buffer.buff = malloc(sizeof(char));
+	buffer.buff[0] = '\0';
 	return (buffer);
 }
 
@@ -57,6 +58,9 @@ void	buffer_add(char c, t_buffer *buffer)
 		buff[buff_size++] = c;
 }
 
+/*
+** Add a chain of char of size size 
+*/
 
 void	buffer_add_chain(char *src, int size, t_buffer *buffer)
 {

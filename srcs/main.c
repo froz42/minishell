@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/01 13:59:51 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/01 21:39:38 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ static	void	raw_mode(void)
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termios);
 }
 
+static	void	erase_x_chars(int x)
+{
+	while (x--)
+		ft_putstr("\b \b");
+}
+
 int				main(void)
 {
 	int			ret;
@@ -91,7 +97,7 @@ int				main(void)
 	t_buffer	buffer;
 	t_list		*history;
 	int			char_typed;
-
+	
 	history = NULL;
 	if (isatty(STDOUT_FILENO))
 	{
@@ -109,12 +115,22 @@ int				main(void)
 			ret = read(STDIN_FILENO, buff, sizeof(buff));
 			if (buff[0] != 10 && ft_iscntrl(buff[0]))
 			{
+				buffer_add(10, &buffer);
 				if (get_escape_id(buff, ret) == 0 && char_typed)
 				{
-					ft_putstr("\b \b");
-					buffer_add(10, &buffer);
+					erase_x_chars(1);
 					buffer_delete(char_typed, &buffer);
 					char_typed--;
+				}
+				else if (get_escape_id(buff, ret) == 1 && ft_lstsize(history))
+				{
+					erase_x_chars(char_typed);
+					char_typed = 0;
+					free(buffer.buff);
+					buffer.buff = ft_strdup(history->content);
+					buffer.size = ft_strlen(buffer.buff);
+					ft_putstr(buffer.buff);
+					char_typed = buffer.size;
 				}
 			}
 			else
