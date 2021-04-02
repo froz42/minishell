@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/02 14:27:11 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/02 21:27:09 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int				main(void)
 	t_list		*history;
 	int			char_typed;
 	int			history_fetch;
+	char		*temp;
 
 	history = NULL;
 	if (isatty(STDOUT_FILENO))
@@ -112,6 +113,7 @@ int				main(void)
 		char_typed = 0;
 		ft_putstr("Minishell $>");
 		history_fetch = -1;
+		temp = NULL;
 		while (buff[0] != 10)
 		{
 			ret = read(STDIN_FILENO, buff, sizeof(buff));
@@ -126,24 +128,33 @@ int				main(void)
 				}
 				else if (get_escape_id(buff, ret) == 1 && ft_lstsize(history))
 				{
+					if (history_fetch == -1)
+						temp = buffer.buff;
+					else
+						free(buffer.buff);
 					if (history_fetch < ft_lstsize(history) - 1)
 						history_fetch++;
 					erase_x_chars(char_typed);
 					char_typed = 0;
-					free(buffer.buff);
 					buffer.buff = ft_strdup(fetch_history(history_fetch, history));
 					buffer.size = ft_strlen(buffer.buff);
 					ft_putstr(buffer.buff);
 					char_typed = buffer.size;
 				}
-				else if (get_escape_id(buff, ret) == 2 && ft_lstsize(history))
+				else if (get_escape_id(buff, ret) == 2 && ft_lstsize(history) && temp)
 				{
-					if (history_fetch > 0)
+					if (history_fetch > -1)
 						history_fetch--;
 					erase_x_chars(char_typed);
 					char_typed = 0;
 					free(buffer.buff);
-					buffer.buff = ft_strdup(fetch_history(history_fetch, history));
+					if (history_fetch == -1 && temp)
+					{
+						buffer.buff = temp;
+						temp = NULL;
+					}
+					else if (history_fetch != -1)
+						buffer.buff = ft_strdup(fetch_history(history_fetch, history));
 					buffer.size = ft_strlen(buffer.buff);
 					ft_putstr(buffer.buff);
 					char_typed = buffer.size;
@@ -156,6 +167,8 @@ int				main(void)
 				char_typed += ret;
 			}
 		}
+		if (temp)
+			free(temp);
 		printf("command: |%s|\n", buffer.buff);
 		if (buffer.size > 0)
 			push_history(buffer.buff, &history);
