@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/02 12:11:01 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/02 14:27:11 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int				main(void)
 		buffer = init_buffer();
 		char_typed = 0;
 		ft_putstr("Minishell $>");
-		history_fetch = 0;
+		history_fetch = -1;
 		while (buff[0] != 10)
 		{
 			ret = read(STDIN_FILENO, buff, sizeof(buff));
@@ -126,6 +126,8 @@ int				main(void)
 				}
 				else if (get_escape_id(buff, ret) == 1 && ft_lstsize(history))
 				{
+					if (history_fetch < ft_lstsize(history) - 1)
+						history_fetch++;
 					erase_x_chars(char_typed);
 					char_typed = 0;
 					free(buffer.buff);
@@ -133,7 +135,18 @@ int				main(void)
 					buffer.size = ft_strlen(buffer.buff);
 					ft_putstr(buffer.buff);
 					char_typed = buffer.size;
-					history_fetch++;
+				}
+				else if (get_escape_id(buff, ret) == 2 && ft_lstsize(history))
+				{
+					if (history_fetch > 0)
+						history_fetch--;
+					erase_x_chars(char_typed);
+					char_typed = 0;
+					free(buffer.buff);
+					buffer.buff = ft_strdup(fetch_history(history_fetch, history));
+					buffer.size = ft_strlen(buffer.buff);
+					ft_putstr(buffer.buff);
+					char_typed = buffer.size;
 				}
 			}
 			else
