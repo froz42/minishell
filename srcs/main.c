@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/01 21:39:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/02 12:11:01 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ int				main(void)
 	t_buffer	buffer;
 	t_list		*history;
 	int			char_typed;
-	
+	int			history_fetch;
+
 	history = NULL;
 	if (isatty(STDOUT_FILENO))
 	{
@@ -110,6 +111,7 @@ int				main(void)
 		buffer = init_buffer();
 		char_typed = 0;
 		ft_putstr("Minishell $>");
+		history_fetch = 0;
 		while (buff[0] != 10)
 		{
 			ret = read(STDIN_FILENO, buff, sizeof(buff));
@@ -127,10 +129,11 @@ int				main(void)
 					erase_x_chars(char_typed);
 					char_typed = 0;
 					free(buffer.buff);
-					buffer.buff = ft_strdup(history->content);
+					buffer.buff = ft_strdup(fetch_history(history_fetch, history));
 					buffer.size = ft_strlen(buffer.buff);
 					ft_putstr(buffer.buff);
 					char_typed = buffer.size;
+					history_fetch++;
 				}
 			}
 			else
