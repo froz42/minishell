@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/04/01 13:32:51 by tmatis           ###   ########.fr        #
+#    Updated: 2021/04/05 21:29:00 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,9 @@ DATE	= 25/03/2021
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
 
-SRCS		= buffer_manager.c history.c
+SRCS		= 	input_manager/buffer_manager.c input_manager/history.c \
+				input_manager/input_manager.c input_manager/input_utils.c
+
 MAIN		= main.c
 
 ################################################################################
