@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/05 21:19:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/05 21:26:39 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/06 13:24:33 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,25 @@
 ** Set terminal in raw mode (char by char)
 */
 
-void		raw_mode(void)
+struct termios	raw_mode(void)
 {
-	struct	termios	termios;
+	struct termios	termios;
+	struct termios	old;
 
 	tcgetattr(STDIN_FILENO, &termios);
-	termios.c_lflag &= ~(ECHO | ICANON);
+	old = termios;
+	termios.c_lflag &= ~(ECHO | ICANON | ISIG);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termios);
+	return (old);
 }
 
 /*
 ** Set terminal in buff mode (line by line)
 */
 
-void		buff_mode(void)
+void			buff_mode(struct termios old)
 {
-	struct	termios	termios;
-
-	tcgetattr(STDIN_FILENO, &termios);
-	termios.c_lflag &= (ECHO | ICANON);
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termios);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
 }
 
 /*
@@ -57,6 +56,7 @@ void		erase_x_chars(int x)
 ** ARROW_RIGHT -> 3
 ** ARROW_LEFT -> 4
 ** RETURN -> 5
+** CTRL-C -> 6
 */
 
 int			get_escape_id(char *buff, int size)
@@ -73,5 +73,26 @@ int			get_escape_id(char *buff, int size)
 		return (4);
 	if (buff[0] == 10)
 		return (5);
+	if (size == 1 && buff[0] == 3)
+		return (6);
 	return (-1);
+}
+
+/*
+** Write the string to detect escape sequence
+** DEV ONLY
+*/
+
+void			display_escape_code(char *buff, int size)
+{
+	int		i;
+
+	printf("\n Escape code: \"");
+	i = 0;
+	while (i < size)
+	{
+		printf("\\%o", buff[i]);
+		i++;
+	}
+	printf("\"\n");
 }

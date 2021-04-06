@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 18:56:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/03 13:21:58 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/06 12:46:34 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ typedef struct	s_buffer
 {
 	int		size;
 	char	*buff;
+	int		escape_id;
 }				t_buffer;
 
 # include "../libft/libft.h"
