@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/07 11:17:56 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/07 21:24:01 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,7 @@ static void		wait_line(char buff[10], t_buffer *buffer, char **temp, t_list **hi
 				;//display_escape_code(buff, ret);
 		}
 		else
-		{
 			buffer_add_chain(buff, ret, buffer);
-			write(1, buff, ret);
-		}
 	}
 }
 

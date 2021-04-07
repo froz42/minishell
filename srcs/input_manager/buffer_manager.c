@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/07 18:01:40 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/07 22:01:15 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,26 @@ void	buffer_add(char c, t_buffer *buffer)
 		buff[buff_size++] = c;
 }
 
+void	buffer_add_pos(char c, int pos, t_buffer *buffer)
+{
+	char	*dst;
+
+	buffer_add(10, buffer);
+	dst = ft_calloc(buffer->size + 2, sizeof(char));
+	if (!dst)
+	{
+		ft_log_error(strerror(errno));
+		return ;
+	}
+	ft_memcpy(dst, buffer->buff, pos);
+	dst[pos] = c;
+	ft_memcpy(dst + pos + 1, buffer->buff + pos, buffer->size - pos);
+	buffer->size++;
+	if (buffer->buff)
+		free(buffer->buff);
+	buffer->buff = dst;
+}
+
 /*
 ** Add a chain of char of size size 
 */
@@ -68,9 +88,24 @@ void	buffer_add_chain(char *src, int size, t_buffer *buffer)
 {
 	int	i;
 
-	i = 0;
-	while (i < size)
-		buffer_add(src[i++], buffer);
+	write(1, src, size);
+	if (src[0] != 10 && buffer->position)
+	{
+		buffer_add(10, buffer);
+		ft_putstr(buffer->buff + (buffer->size - buffer->position));
+		i = 0;
+		while (i++ < buffer->position)
+			ft_putstr("\033[1D");
+		i = 0;
+		while (i < size)
+			buffer_add_pos(src[i++], buffer->size - buffer->position, buffer);
+	}
+	else
+	{
+		i = 0;
+		while (i < size)
+			buffer_add(src[i++], buffer);
+	}
 }
 
 /*
@@ -80,6 +115,6 @@ void	buffer_add_chain(char *src, int size, t_buffer *buffer)
 
 void	buffer_delete(int pos, t_buffer *buffer)
 {
-	ft_memmove(buffer->buff + (pos - 1), buffer->buff + pos, buffer->size - 1);
+	ft_memmove(buffer->buff + (pos - 1), buffer->buff + pos, buffer->size - pos);
 	buffer->buff[--buffer->size] = '\0';
 }
