@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/06 12:47:06 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/07 11:19:32 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_buffer	init_buffer(void)
 	t_buffer buffer;
 
 	buffer.size = 0;
+	buffer.position = 0;
 	buffer.buff = malloc(sizeof(char));
 	buffer.buff[0] = '\0';
 	buffer.escape_id= -1;

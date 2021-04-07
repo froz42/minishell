@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/06 13:21:20 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/07 17:38:35 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,43 @@ void		handle_down_key(t_buffer *buffer, int *history_fetch, char **temp, t_list 
 		buffer->buff = ft_strdup(fetch_history(*history_fetch, history));
 	buffer->size = ft_strlen(buffer->buff);
 	ft_putstr(buffer->buff);
+}
+
+void		handle_left_key(t_buffer *buffer)
+{
+	if (buffer->position < buffer->size)
+	{
+		ft_putstr("\033[1D");
+		buffer->position++;
+	}
+}
+
+void		handle_right_key(t_buffer *buffer)
+{
+	(void)buffer;
+	if (buffer->position)
+	{
+		ft_putstr("\033[1C");
+		buffer->position--;
+	}
+}
+
+void		handle_ctrlc(t_buffer *buffer)
+{
+	char	*dst;
+
+	dst = calloc(1, sizeof(char));
+	if (!dst)
+	{
+		ft_log_error(strerror(errno));
+		return ;
+	}
+	free(buffer->buff);
+	buffer->buff = dst;
+	buffer->size = 0;
+	buffer->position = 0;
+	ft_putstr("^C\n");
+	ft_putstr("Minishell $>");
 }
 
 void		erase_char(t_buffer *buffer)

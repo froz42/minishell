@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/06 13:23:48 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/07 11:17:56 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@ static int		handle_ctrl(t_buffer *buffer, int *history_fetch, char **temp, t_lis
 		handle_up_key(buffer, history_fetch, temp, *history);
 	else if (buffer->escape_id == 2 && ft_lstsize(*history) && *temp)
 		handle_down_key(buffer, history_fetch, temp, *history);
+	else if (buffer->escape_id == 3)
+		handle_right_key(buffer);
+	else if (buffer->escape_id == 4)
+		handle_left_key(buffer);
 	else if (buffer->escape_id == 6)
-	{
-		ft_putstr("^C\n");
-	}
+		handle_ctrlc(buffer);
 	else
 		return (1);
 	return (0);
@@ -66,6 +68,7 @@ char	*get_input_line(t_list **history)
 	t_buffer		buffer;
 	char			buff[10];
 	struct termios	old;
+
 	buff[0] = 0;
 	buffer = init_buffer();
 	temp = NULL;

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/06 12:22:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/06 15:25:44 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@ static	void	write_header(void)
 	ft_putnl("\\/    \\/_|_| |_|_|___/_| |_|\\___|_|_|");
 	ft_putnl("");
 }
-
-/*
-** Write the string to detect escape sequence
-** DEV ONLY
-*/
 
 int				main(void)
 {

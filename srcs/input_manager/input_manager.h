@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:17:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/06 12:53:25 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/07 11:19:20 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,16 @@
 
 # define INPUT_MANAGER_H
 
+typedef struct	s_buffer
+{
+	int		size;
+	int		position;
+	char	*buff;
+	int		escape_id;
+}				t_buffer;
+
 #include "../minishell.h"
+
 
 void			buffer_add(char c, t_buffer *buffer);
 void			buffer_add_chain(char *src, int size, t_buffer *buffer);
@@ -33,4 +42,7 @@ void			handle_down_key(t_buffer *buffer, int *history_fetch,
 		char **temp, t_list *history);
 void		 handle_up_key(t_buffer *buffer, int *history_fetch,
 		char **temp, t_list *history);
+void		handle_ctrlc(t_buffer *buffer);
+void		handle_left_key(t_buffer *buffer);
+void		handle_right_key(t_buffer *buffer);
 #endif
