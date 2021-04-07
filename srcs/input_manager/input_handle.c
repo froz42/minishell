@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/07 17:38:35 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/07 18:18:06 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void		handle_left_key(t_buffer *buffer)
 
 void		handle_right_key(t_buffer *buffer)
 {
-	(void)buffer;
 	if (buffer->position)
 	{
 		ft_putstr("\033[1C");
@@ -83,6 +82,15 @@ void		handle_ctrlc(t_buffer *buffer)
 
 void		erase_char(t_buffer *buffer)
 {
-	erase_x_chars(1);
-	buffer_delete(buffer->size, buffer);
+	int		i;
+
+	i = 0;
+	while (i++ < buffer->position)
+		ft_putstr("\033[1C");
+	erase_x_chars(buffer->position + 1);
+	ft_putstr(buffer->buff + (buffer->size - buffer->position));
+	i = 0;
+	while (i++ < buffer->position)
+		ft_putstr("\033[1D");
+	buffer_delete(buffer->size - buffer->position, buffer);
 }

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/07 11:19:32 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/07 18:01:40 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ void	buffer_add_chain(char *src, int size, t_buffer *buffer)
 
 void	buffer_delete(int pos, t_buffer *buffer)
 {
-	ft_memmove(buffer + pos, buffer + (pos - 1), buffer->size - pos);
+	ft_memmove(buffer->buff + (pos - 1), buffer->buff + pos, buffer->size - 1);
 	buffer->buff[--buffer->size] = '\0';
 }
