@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:37:59 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:48:58 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int				main(void)
 	while (1)
 	{
 		ft_putstr("Minishell $>");
-		if (!get_input_line(&line, &history))
+		if (!get_input_line(&line, true, &history))
 			break ;
 		printf("Command: |%s|\n", line);
 		if (!ft_strcmp(line, "exit"))

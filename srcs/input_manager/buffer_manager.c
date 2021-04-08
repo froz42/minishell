@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:41:20 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:47:33 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Init my structure
 */
 
-t_buffer	init_buffer(void)
+t_buffer	init_buffer(t_bool manage_history)
 {
 	t_buffer buffer;
 
@@ -25,6 +25,7 @@ t_buffer	init_buffer(void)
 	buffer.buff = malloc(sizeof(char));
 	buffer.buff[0] = '\0';
 	buffer.escape_id = -1;
+	buffer.manage_history = manage_history;
 	return (buffer);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:39:47 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:51:08 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ static int		handle_ctrl(t_buffer *buffer, int *history_fetch,
 {
 	if (buffer->escape_id == 0 && buffer->size)
 		erase_char(buffer);
-	else if (buffer->escape_id == 1 && ft_lstsize(*history))
+	else if (buffer->escape_id == 1 && buffer->manage_history
+			&& ft_lstsize(*history))
 		handle_up_key(buffer, history_fetch, temp, *history);
-	else if (buffer->escape_id == 2 && ft_lstsize(*history) && *temp)
+	else if (buffer->escape_id == 2 && buffer->manage_history
+			&& ft_lstsize(*history) && *temp)
 		handle_down_key(buffer, history_fetch, temp, *history);
 	else if (buffer->escape_id == 3)
 		handle_right_key(buffer);
@@ -71,7 +73,7 @@ static int		wait_line(char buff[10], t_buffer *buffer,
 ** similar working as get_next_line, read from STDIN_FILENO, handle ctrl char
 */
 
-int				get_input_line(char **line, t_list **history)
+int				get_input_line(char **line, t_bool manage_history, t_list **history)
 {
 	char			*temp;
 	t_buffer		buffer;
@@ -80,7 +82,7 @@ int				get_input_line(char **line, t_list **history)
 	int				ret;
 
 	buff[0] = 0;
-	buffer = init_buffer();
+	buffer = init_buffer(manage_history);
 	temp = NULL;
 	old = raw_mode();
 	ret = wait_line(buff, &buffer, &temp, history);
