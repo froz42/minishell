@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:17:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/07 20:31:25 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:03:27 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ void			buff_mode(struct termios old);
 void			erase_x_chars(int x);
 int				get_escape_id(char *buff, int size);
 void			display_escape_code(char *buff, int size);
-char			*get_input_line(t_list **history);
+int				get_input_line(char **line, t_list **history);
 void			erase_char(t_buffer *buffer);
 void			handle_down_key(t_buffer *buffer, int *history_fetch,
 		char **temp, t_list *history);
 void		 handle_up_key(t_buffer *buffer, int *history_fetch,
 		char **temp, t_list *history);
 void		handle_ctrlc(t_buffer *buffer);
+void		handle_ctrld(t_buffer *buffer);
 void		handle_left_key(t_buffer *buffer);
 void		handle_right_key(t_buffer *buffer);
 #endif

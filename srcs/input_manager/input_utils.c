@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/05 21:19:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/06 13:24:33 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/07 22:56:10 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void		erase_x_chars(int x)
 ** ARROW_LEFT -> 4
 ** RETURN -> 5
 ** CTRL-C -> 6
+** CTRL-D -> 7
 */
 
 int			get_escape_id(char *buff, int size)
@@ -75,6 +76,8 @@ int			get_escape_id(char *buff, int size)
 		return (5);
 	if (size == 1 && buff[0] == 3)
 		return (6);
+	if (size == 1 && buff[0] == 4)
+		return (7);
 	return (-1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/07 21:24:01 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:02:25 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,15 @@ static int		handle_ctrl(t_buffer *buffer, int *history_fetch, char **temp, t_lis
 		handle_left_key(buffer);
 	else if (buffer->escape_id == 6)
 		handle_ctrlc(buffer);
-	else
+	else if (buffer->escape_id == 7 && !buffer->size)
+	{
+		handle_ctrld(buffer);
 		return (1);
+	}
 	return (0);
 }
 
-static void		wait_line(char buff[10], t_buffer *buffer, char **temp, t_list **history)
+static int	wait_line(char buff[10], t_buffer *buffer, char **temp, t_list **history)
 {
 	int		ret;
 	int		history_fetch;
@@ -52,30 +55,32 @@ static void		wait_line(char buff[10], t_buffer *buffer, char **temp, t_list **hi
 			buffer_add(10, buffer);
 			buffer->escape_id = get_escape_id(buff, ret); 
 			if (handle_ctrl(buffer, &history_fetch, temp, history))
-				;//display_escape_code(buff, ret);
+				return (0);
 		}
 		else
 			buffer_add_chain(buff, ret, buffer);
 	}
+	return (1);
 }
 
-char	*get_input_line(t_list **history)
+int		get_input_line(char **line, t_list **history)
 {
 	char			*temp;
 	t_buffer		buffer;
 	char			buff[10];
 	struct termios	old;
+	int				ret;
 
 	buff[0] = 0;
 	buffer = init_buffer();
 	temp = NULL;
 	old = raw_mode();
-	wait_line(buff, &buffer, &temp, history);
+	ret = wait_line(buff, &buffer, &temp, history);
 	buff_mode(old);
 	if (temp)
 		free(temp);
 	if (buffer.size > 0)
 		push_history(ft_strdup(buffer.buff), history);
-
-	return (buffer.buff);
+	*line = buffer.buff;
+	return (ret);
 }

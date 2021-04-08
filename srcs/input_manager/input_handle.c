@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/07 18:18:06 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:07:08 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,15 @@ void		handle_ctrlc(t_buffer *buffer)
 	buffer->position = 0;
 	ft_putstr("^C\n");
 	ft_putstr("Minishell $>");
+}
+
+void		handle_ctrld(t_buffer *buffer)
+{
+	ft_putstr("\nexit\n");
+	free(buffer->buff);
+	buffer->buff = ft_strdup("");
+	buffer->size = ft_strlen(buffer->buff);
+	buffer->position = 0;
 }
 
 void		erase_char(t_buffer *buffer)
