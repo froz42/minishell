@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:08:52 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:41:20 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_buffer	init_buffer(void)
 	buffer.position = 0;
 	buffer.buff = malloc(sizeof(char));
 	buffer.buff[0] = '\0';
-	buffer.escape_id= -1;
+	buffer.escape_id = -1;
 	return (buffer);
 }
 
@@ -33,7 +33,7 @@ t_buffer	init_buffer(void)
 ** flushed to a HEAP allocated buffer
 */
 
-void	buffer_add(char c, t_buffer *buffer)
+void		buffer_add(char c, t_buffer *buffer)
 {
 	static char		buff[10];
 	static int		buff_size = 0;
@@ -64,7 +64,7 @@ void	buffer_add(char c, t_buffer *buffer)
 ** Add a char at a specific position
 */
 
-void	buffer_add_pos(char c, int pos, t_buffer *buffer)
+void		buffer_add_pos(char c, int pos, t_buffer *buffer)
 {
 	char	*dst;
 
@@ -85,10 +85,10 @@ void	buffer_add_pos(char c, int pos, t_buffer *buffer)
 }
 
 /*
-** Add a chain of char of size size 
+** Add a chain of char of size size
 */
 
-void	buffer_add_chain(char *src, int size, t_buffer *buffer)
+void		buffer_add_chain(char *src, int size, t_buffer *buffer)
 {
 	int	i;
 
@@ -117,8 +117,9 @@ void	buffer_add_chain(char *src, int size, t_buffer *buffer)
 ** Add a \0 at the end
 */
 
-void	buffer_delete(int pos, t_buffer *buffer)
+void		buffer_delete(int pos, t_buffer *buffer)
 {
-	ft_memmove(buffer->buff + (pos - 1), buffer->buff + pos, buffer->size - pos);
+	ft_memmove(buffer->buff + (pos - 1),
+			buffer->buff + pos, buffer->size - pos);
 	buffer->buff[--buffer->size] = '\0';
 }

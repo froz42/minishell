@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:12:36 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:39:47 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 ** Handle ctrl chars and call the right function
 */
 
-static int		handle_ctrl(t_buffer *buffer, int *history_fetch, char **temp, t_list **history)
+static int		handle_ctrl(t_buffer *buffer, int *history_fetch,
+		char **temp, t_list **history)
 {
 	if (buffer->escape_id == 0 && buffer->size)
 		erase_char(buffer);
@@ -42,7 +43,9 @@ static int		handle_ctrl(t_buffer *buffer, int *history_fetch, char **temp, t_lis
 /*
 ** Manage line waiting, buffering
 */
-static int	wait_line(char buff[10], t_buffer *buffer, char **temp, t_list **history)
+
+static int		wait_line(char buff[10], t_buffer *buffer,
+		char **temp, t_list **history)
 {
 	int		ret;
 	int		history_fetch;
@@ -54,7 +57,7 @@ static int	wait_line(char buff[10], t_buffer *buffer, char **temp, t_list **hist
 		if (buff[0] != 10 && ft_iscntrl(buff[0]))
 		{
 			buffer_add(10, buffer);
-			buffer->escape_id = get_escape_id(buff, ret); 
+			buffer->escape_id = get_escape_id(buff, ret);
 			if (handle_ctrl(buffer, &history_fetch, temp, history))
 				return (0);
 		}
@@ -68,7 +71,7 @@ static int	wait_line(char buff[10], t_buffer *buffer, char **temp, t_list **hist
 ** similar working as get_next_line, read from STDIN_FILENO, handle ctrl char
 */
 
-int		get_input_line(char **line, t_list **history)
+int				get_input_line(char **line, t_list **history)
 {
 	char			*temp;
 	t_buffer		buffer;

@@ -6,14 +6,14 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:02:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:09:26 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:38:16 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
 
 /*
-** Add a element in a chained list 
+** Add a element in a chained list
 */
 
 void	push_history(char *command, t_list **history)
@@ -30,7 +30,7 @@ void	push_history(char *command, t_list **history)
 }
 
 /*
-** search an element of index i in a chained list 
+** search an element of index i in a chained list
 */
 
 char	*fetch_history(int i, t_list *history)

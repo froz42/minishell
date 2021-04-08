@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:19:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:43:25 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 ** This is called when user type up key
 */
 
-void		 handle_up_key(t_buffer *buffer, int *history_fetch, char **temp, t_list *history)
+void		handle_up_key(t_buffer *buffer, int *history_fetch,
+		char **temp, t_list *history)
 {
 	erase_x_chars(buffer->size);
 	if (*history_fetch == -1)
@@ -35,7 +36,8 @@ void		 handle_up_key(t_buffer *buffer, int *history_fetch, char **temp, t_list *
 ** This is called when user type down key
 */
 
-void		handle_down_key(t_buffer *buffer, int *history_fetch, char **temp, t_list *history)
+void		handle_down_key(t_buffer *buffer, int *history_fetch,
+		char **temp, t_list *history)
 {
 	if (*history_fetch > -1)
 		(*history_fetch)--;

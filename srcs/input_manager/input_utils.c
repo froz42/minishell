@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/05 21:19:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/07 22:56:10 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:42:06 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void			buff_mode(struct termios old)
 ** Replace x chars with space.
 */
 
-void		erase_x_chars(int x)
+void			erase_x_chars(int x)
 {
 	while (x--)
 		ft_putstr("\b \b");
@@ -60,7 +60,7 @@ void		erase_x_chars(int x)
 ** CTRL-D -> 7
 */
 
-int			get_escape_id(char *buff, int size)
+int				get_escape_id(char *buff, int size)
 {
 	if (buff[0] == 0177)
 		return (0);
