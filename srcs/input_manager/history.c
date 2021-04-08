@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:02:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/05 21:29:59 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:09:26 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ void	push_history(char *command, t_list **history)
 	}
 	ft_lstadd_front(history, new);
 }
+
+/*
+** search an element of index i in a chained list 
+*/
 
 char	*fetch_history(int i, t_list *history)
 {

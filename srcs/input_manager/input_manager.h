@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:17:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:03:27 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:30:31 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 
 # define INPUT_MANAGER_H
 
-typedef struct	s_buffer
-{
-	int		size;
-	int		position;
-	char	*buff;
-	int		escape_id;
-}				t_buffer;
 
 #include "../minishell.h"
 

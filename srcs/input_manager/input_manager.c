@@ -6,17 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:02:25 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:12:36 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
 #include <termios.h>
 
-
 /*
-** Erase one char on screen and buffer.
-** TODO: do for a specific location for arrow left and right
+** Handle ctrl chars and call the right function
 */
 
 static int		handle_ctrl(t_buffer *buffer, int *history_fetch, char **temp, t_list **history)
@@ -41,6 +39,9 @@ static int		handle_ctrl(t_buffer *buffer, int *history_fetch, char **temp, t_lis
 	return (0);
 }
 
+/*
+** Manage line waiting, buffering
+*/
 static int	wait_line(char buff[10], t_buffer *buffer, char **temp, t_list **history)
 {
 	int		ret;
@@ -62,6 +63,10 @@ static int	wait_line(char buff[10], t_buffer *buffer, char **temp, t_list **hist
 	}
 	return (1);
 }
+
+/*
+** similar working as get_next_line, read from STDIN_FILENO, handle ctrl char
+*/
 
 int		get_input_line(char **line, t_list **history)
 {

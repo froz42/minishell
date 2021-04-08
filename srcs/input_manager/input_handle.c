@@ -6,12 +6,16 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:07:08 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/08 11:19:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
 #include <termios.h>
+
+/*
+** This is called when user type up key
+*/
 
 void		 handle_up_key(t_buffer *buffer, int *history_fetch, char **temp, t_list *history)
 {
@@ -26,6 +30,10 @@ void		 handle_up_key(t_buffer *buffer, int *history_fetch, char **temp, t_list *
 	buffer->size = ft_strlen(buffer->buff);
 	ft_putstr(buffer->buff);
 }
+
+/*
+** This is called when user type down key
+*/
 
 void		handle_down_key(t_buffer *buffer, int *history_fetch, char **temp, t_list *history)
 {
@@ -44,6 +52,10 @@ void		handle_down_key(t_buffer *buffer, int *history_fetch, char **temp, t_list 
 	ft_putstr(buffer->buff);
 }
 
+/*
+** This is called when user type left key
+*/
+
 void		handle_left_key(t_buffer *buffer)
 {
 	if (buffer->position < buffer->size)
@@ -53,6 +65,10 @@ void		handle_left_key(t_buffer *buffer)
 	}
 }
 
+/*
+** This is called when user type right key
+*/
+
 void		handle_right_key(t_buffer *buffer)
 {
 	if (buffer->position)
@@ -60,46 +76,4 @@ void		handle_right_key(t_buffer *buffer)
 		ft_putstr("\033[1C");
 		buffer->position--;
 	}
-}
-
-void		handle_ctrlc(t_buffer *buffer)
-{
-	char	*dst;
-
-	dst = calloc(1, sizeof(char));
-	if (!dst)
-	{
-		ft_log_error(strerror(errno));
-		return ;
-	}
-	free(buffer->buff);
-	buffer->buff = dst;
-	buffer->size = 0;
-	buffer->position = 0;
-	ft_putstr("^C\n");
-	ft_putstr("Minishell $>");
-}
-
-void		handle_ctrld(t_buffer *buffer)
-{
-	ft_putstr("\nexit\n");
-	free(buffer->buff);
-	buffer->buff = ft_strdup("");
-	buffer->size = ft_strlen(buffer->buff);
-	buffer->position = 0;
-}
-
-void		erase_char(t_buffer *buffer)
-{
-	int		i;
-
-	i = 0;
-	while (i++ < buffer->position)
-		ft_putstr("\033[1C");
-	erase_x_chars(buffer->position + 1);
-	ft_putstr(buffer->buff + (buffer->size - buffer->position));
-	i = 0;
-	while (i++ < buffer->position)
-		ft_putstr("\033[1D");
-	buffer_delete(buffer->size - buffer->position, buffer);
 }
