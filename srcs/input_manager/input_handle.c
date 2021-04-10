@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/09 02:16:17 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/10 23:58:17 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@
 void		handle_up_key(t_buffer *buffer, int *history_fetch,
 		char **temp, t_list *history)
 {
-	while (buffer->position--)
+	while (buffer->position)
+	{
 		ft_putstr("\033[1C");
+		buffer->position--;
+	}
 	erase_x_chars(buffer->size);
 	if (*history_fetch == -1)
 		*temp = buffer->buff;
@@ -41,8 +44,11 @@ void		handle_up_key(t_buffer *buffer, int *history_fetch,
 void		handle_down_key(t_buffer *buffer, int *history_fetch,
 		char **temp, t_list *history)
 {
-	while (buffer->position--)
+	while (buffer->position)
+	{
 		ft_putstr("\033[1C");
+		buffer->position--;
+	}
 	if (*history_fetch > -1)
 		(*history_fetch)--;
 	erase_x_chars(buffer->size);
