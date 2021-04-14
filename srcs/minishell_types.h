@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:44:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/14 12:09:37 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,11 @@ typedef struct	s_buffer
 	int		escape_id;
 	t_bool	manage_history;
 }				t_buffer;
+
+typedef struct s_token
+{
+	int		type;
+	char	*text;
+}			t_token;
 
 #endif

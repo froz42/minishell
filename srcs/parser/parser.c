@@ -6,56 +6,145 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/10 23:37:12 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/14 20:23:50 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int		id_redir(char **str)
+t_token *create_token(char *str, int type)
 {
-	int	len;
+	t_token	*token_address;
 
-	len = ft_strlen(*str);
+	token_address = (t_token *)ft_calloc(1, sizeof(t_token));
+	if (!token_address)
+		return (NULL);
+	token_address->type = type;
+	token_address->text = str;
+	return (token_address);
+}
 
-	if (len >= 2 && !ft_memcmp(str, ">>", 2))
+char *double_quote(char **str)
+{
+	int		i;
+	char	*word;
+
+	(*str)++;
+	i = 0;
+	word = NULL;
+	while ((*str)[i] && (*str)[i] != '"')
+		i++;
+	if ((*str)[i] == '"')
 	{
-		(*str) += 2;
-		return (2);
+		word = ft_substr(*str, 0, i);
+		(*str) += i + 1;
 	}
-	if (**str == '<')
+	else
 	{
-		(*str) += 1;
-		return (0);
+		(*str) += i;
+		ft_log_error("Double quote is not closed");
 	}
-	if (**str == '>')
+	return (word);
+}
+
+char *single_quote(char **str)
+{
+	int		i;
+	char	*word;
+
+	(*str)++;
+	i = 0;
+	word = NULL;
+	while ((*str)[i] && (*str)[i] != '\'')
+		i++;
+	if ((*str)[i] == '\'')
 	{
-		(*str) += 1;
+		word = ft_substr(*str, 0, i);
+		(*str) += i + 1;
+	}
+	else
+	{
+		(*str) += i;
+		ft_log_error("single quote is not closed");
+	}
+	return (word);
+}
+
+int		is_redirection(char *str)
+{
+	int		strlen;
+
+	strlen = ft_strlen(str);
+	if (strlen >= 2 && !ft_memcmp(str, ">>", 2))
+		return (4);
+	if (*str == '>')
 		return (1);
+	if (*str == '<')
+		return (2);
+	if (*str == '|')
+		return (3);
+	return (0);
+}
+
+char	*redirection(char **str)
+{
+	char	*word;
+
+	if (is_redirection(*str) == 4)
+	{
+		word = ft_substr(*str, 0, 2);
+		(*str) += 2;
 	}
-	return (-1);
+	else
+	{
+		word = ft_substr(*str, 0, 1);
+		(*str) += 1;
+	}
+	return (word);
+}
+
+char	*word(char **str)
+{
+	int		i;
+	char	*word;
+
+	i = 0;
+	while ((*str)[i] && !ft_isspace((*str)[i]) && !is_redirection((*str) + i))
+		i++;
+	word = ft_substr(*str, 0, i);
+	(*str) += i;
+	return (word);
+}
+
+t_list	*tokenisator(char *str)
+{
+	t_list	*word_list;
+
+	word_list = NULL;
+	while (*str)
+	{
+		while (ft_isspace(*str))
+			str++;
+		if (*str == '"')
+			ft_lstadd_back(&word_list, ft_lstnew(double_quote(&str)));
+		else if (*str == '\'')
+			ft_lstadd_back(&word_list, ft_lstnew(single_quote(&str)));
+		else if (is_redirection(str))
+			ft_lstadd_back(&word_list, ft_lstnew(redirection(&str)));
+		else if (*str)
+			ft_lstadd_back(&word_list, ft_lstnew(word(&str)));
+	}/*
+	while  (word_list)
+	{
+		printf("-> \"%s\" ", (char *)word_list->content);
+		word_list = word_list->next;
+	}
+	printf("\n");*/
+	ft_lstclear(&word_list, free);
+	return (NULL);
 }
 
 void	parse_line(char *str)
 {
-	printf("%s\n", str);
-	return ;
-	int		id;
-
-	if (ft_strlen(str) > 0)
-	{
-		while (*str)
-		{
-			id= id_redir(&str);
-			if (id != -1)
-			{
-				ft_log_info("Redirection found");
-				printf("redir: %i\n", id);
-			}
-			else
-				str++;
-		}
-	}
-	else
-		ft_log_info("Empty command");
+	tokenisator(str);
 }

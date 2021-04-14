@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/10 23:02:26 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/10 23:04:46 by tmatis           ###   ########.fr       */
+/*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
+/*   Updated: 2021/04/14 11:39:09 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 # define PARSER_H
 
-#include "../minishell.h"
+# include "../minishell.h"
 
 void	parse_line(char *str);
 
