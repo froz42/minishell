@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/14 20:23:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/14 20:26:23 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char *single_quote(char **str)
 	return (word);
 }
 
-int		is_redirection(char *str)
+int		is_special(char *str)
 {
 	int		strlen;
 
@@ -83,14 +83,16 @@ int		is_redirection(char *str)
 		return (2);
 	if (*str == '|')
 		return (3);
+	if (*str == ';')
+		return (5);
 	return (0);
 }
 
-char	*redirection(char **str)
+char	*special(char **str)
 {
 	char	*word;
 
-	if (is_redirection(*str) == 4)
+	if (is_special(*str) == 4)
 	{
 		word = ft_substr(*str, 0, 2);
 		(*str) += 2;
@@ -109,7 +111,7 @@ char	*word(char **str)
 	char	*word;
 
 	i = 0;
-	while ((*str)[i] && !ft_isspace((*str)[i]) && !is_redirection((*str) + i))
+	while ((*str)[i] && !ft_isspace((*str)[i]) && !is_special((*str) + i))
 		i++;
 	word = ft_substr(*str, 0, i);
 	(*str) += i;
@@ -129,8 +131,8 @@ t_list	*tokenisator(char *str)
 			ft_lstadd_back(&word_list, ft_lstnew(double_quote(&str)));
 		else if (*str == '\'')
 			ft_lstadd_back(&word_list, ft_lstnew(single_quote(&str)));
-		else if (is_redirection(str))
-			ft_lstadd_back(&word_list, ft_lstnew(redirection(&str)));
+		else if (is_special(str))
+			ft_lstadd_back(&word_list, ft_lstnew(special(&str)));
 		else if (*str)
 			ft_lstadd_back(&word_list, ft_lstnew(word(&str)));
 	}/*
