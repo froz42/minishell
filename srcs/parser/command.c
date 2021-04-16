@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/16 12:18:51 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/16 15:43:55 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,28 @@ static t_command	*init_command(void)
 	command = calloc(1, sizeof(t_command));
 	if (!command)
 		return (NULL);
-	command->cmd = NULL;
-	command->args = NULL;
-	command->redirs = NULL;
 	return (command);
+}
+
+void				free_redir(void *mem)
+{
+	t_redir	*redir;
+
+	if (mem)
+	{
+		redir = (t_redir *)mem;
+		if (redir->file)
+			free(redir->file);
+		free(mem);
+	}
+}
+
+void				free_command(t_command *command)
+{
+	free(command->cmd);
+	ft_lstclear(&command->args, ft_safe_free);
+	ft_lstclear(&command->redirs, free_redir);
+	free(command);
 }
 
 static t_redir		*get_redir(t_list **word_list)
@@ -36,8 +54,8 @@ static t_redir		*get_redir(t_list **word_list)
 	*word_list = (*word_list)->next;
 	if (*word_list)
 	{
-		*word_list = (*word_list)->next;
 		redir->file = ft_strdup((*word_list)->content);
+		*word_list = (*word_list)->next;
 	}
 	else
 		redir->file = NULL;
@@ -82,7 +100,7 @@ t_command	*get_command(t_list **word_list)
 			set_command(word_list, command);
 		}
 		else
-			ft_lstadd_back(&command->redirs, ft_lstnew(get_arg(word_list)));
+			ft_lstadd_back(&command->args, ft_lstnew(get_arg(word_list)));
 	}
 	return (command);
 }

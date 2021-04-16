@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/15 15:36:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/16 15:38:38 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,20 @@ t_list	*to_word(char *str)
 	return (word_list);
 }
 
+void	parse_command(t_list *word_list)
+{
+	t_command	*command;
+
+	command = get_command(&word_list);
+	printf("cmd: %s\nargs_size: %i\nredir_size: %i\n", command->cmd, ft_lstsize(command->args), ft_lstsize(command->redirs));
+	free_command(command);
+}
+
 void	parse_line(char *str)
 {
-	t_list	*word_list;
-	t_list	*tokens;
+	t_list		*word_list;
 
 	word_list = to_word(str);
-	tokens = tokenisator(word_list);
+	parse_command(word_list);
+	ft_lstclear(&word_list, free);
 }
