@@ -6,23 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/14 20:26:23 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/15 15:36:50 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-t_token *create_token(char *str, int type)
-{
-	t_token	*token_address;
-
-	token_address = (t_token *)ft_calloc(1, sizeof(t_token));
-	if (!token_address)
-		return (NULL);
-	token_address->type = type;
-	token_address->text = str;
-	return (token_address);
-}
 
 char *double_quote(char **str)
 {
@@ -118,7 +106,7 @@ char	*word(char **str)
 	return (word);
 }
 
-t_list	*tokenisator(char *str)
+t_list	*to_word(char *str)
 {
 	t_list	*word_list;
 
@@ -135,18 +123,15 @@ t_list	*tokenisator(char *str)
 			ft_lstadd_back(&word_list, ft_lstnew(special(&str)));
 		else if (*str)
 			ft_lstadd_back(&word_list, ft_lstnew(word(&str)));
-	}/*
-	while  (word_list)
-	{
-		printf("-> \"%s\" ", (char *)word_list->content);
-		word_list = word_list->next;
 	}
-	printf("\n");*/
-	ft_lstclear(&word_list, free);
-	return (NULL);
+	return (word_list);
 }
 
 void	parse_line(char *str)
 {
-	tokenisator(str);
+	t_list	*word_list;
+	t_list	*tokens;
+
+	word_list = to_word(str);
+	tokens = tokenisator(word_list);
 }

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/14 12:09:37 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/16 11:34:43 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,17 @@ typedef struct	s_buffer
 	t_bool	manage_history;
 }				t_buffer;
 
-typedef struct s_token
+typedef struct s_redir
 {
 	int		type;
-	char	*text;
-}			t_token;
+	char	*file;
+}				t_redir;
+
+typedef struct s_command
+{
+	char	*cmd;
+	t_list	*args;
+	t_list	*redirs;
+}				t_command;
 
 #endif
