@@ -12,6 +12,8 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [ ] Symbole: $, =
  - [x] Séparation en mots (tokenization)
  - [x] Parsing de la commande
+ - [ ] Analyse des erreurs de syntax
+ - [ ] Proteger toutes les fonctions
  - [ ] Construction de la structure
  - [ ] Execution
  - [ ] Redirection
@@ -23,3 +25,5 @@ Pour compiler le projet:
 
 ## Auteurs
 * **Théo Matis** _alias_ [@tmatis](https://profile.intra.42.fr/users/tmatis)
+[![tmatis's 42 stats](https://badge42.herokuapp.com/api/stats/tmatis)](https://github.com/JaeSeoKim/badge42)
+
