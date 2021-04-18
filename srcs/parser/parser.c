@@ -6,13 +6,13 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/18 13:25:59 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/18 23:44:18 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-char *double_quote(char **str)
+char *double_quote(char **str, int *error)
 {
 	int		i;
 	char	*word;
@@ -30,12 +30,12 @@ char *double_quote(char **str)
 	else
 	{
 		(*str) += i;
-		ft_log_error("Double quote is not closed");
+		*error = 0;
 	}
 	return (word);
 }
 
-char *single_quote(char **str)
+char *single_quote(char **str, int *error)
 {
 	int		i;
 	char	*word;
@@ -53,7 +53,7 @@ char *single_quote(char **str)
 	else
 	{
 		(*str) += i;
-		ft_log_error("single quote is not closed");
+		*error = 0;
 	}
 	return (word);
 }
@@ -99,14 +99,59 @@ char	*word(char **str)
 	char	*word;
 
 	i = 0;
-	while ((*str)[i] && !ft_isspace((*str)[i]) && !is_special((*str) + i))
+	while ((*str)[i] && !ft_isspace((*str)[i]) && !is_special((*str) + i)
+			&& (*str)[i] != '\'' && (*str)[i] != '"')
 		i++;
 	word = ft_substr(*str, 0, i);
 	(*str) += i;
 	return (word);
 }
 
-t_list	*to_word(char *str)
+char	*cat_list(t_list *to_cat)
+{
+	char	*dest;
+	t_list	*temp;
+	int		to_malloc;
+
+	to_malloc = 0;
+	temp = to_cat;
+	while (temp && temp->content)
+	{
+		to_malloc += ft_strlen((char *)temp->content);
+		temp = temp->next;
+	}
+	dest = calloc(to_malloc + 1, sizeof(char));
+	if (!dest)
+		return (NULL);
+	while (to_cat && to_cat->content)
+	{
+		ft_strcat(dest, (char *)to_cat->content);
+		to_cat = to_cat->next;
+	}
+	return (dest);
+}
+
+char	*make_word(char **str, int *error)
+{
+	t_list	*to_cat;
+	char	*dest;
+
+	to_cat = NULL;
+	while (**str && !ft_isspace(**str) && !is_special(*str))
+	{
+		if (**str == '"')
+			ft_lstadd_back(&to_cat, ft_lstnew(double_quote(str, error)));
+		else if (**str == '\'')
+			ft_lstadd_back(&to_cat, ft_lstnew(single_quote(str, error)));
+		else
+			ft_lstadd_back(&to_cat, ft_lstnew(word(str)));
+	}
+	dest = cat_list(to_cat);
+	ft_lstclear(&to_cat, ft_safe_free);
+	return (dest);
+}
+
+t_list	*to_word(char *str, int *error)
 {
 	t_list	*word_list;
 
@@ -115,14 +160,10 @@ t_list	*to_word(char *str)
 	{
 		while (ft_isspace(*str))
 			str++;
-		if (*str == '"')
-			ft_lstadd_back(&word_list, ft_lstnew(double_quote(&str)));
-		else if (*str == '\'')
-			ft_lstadd_back(&word_list, ft_lstnew(single_quote(&str)));
-		else if (is_special(str))
+		if (is_special(str))
 			ft_lstadd_back(&word_list, ft_lstnew(special(&str)));
 		else if (*str)
-			ft_lstadd_back(&word_list, ft_lstnew(word(&str)));
+			ft_lstadd_back(&word_list, ft_lstnew(make_word(&str, error)));
 	}
 	return (word_list);
 }
@@ -228,10 +269,17 @@ void	parse_line(char *str)
 {
 	t_list		*word_list;
 	t_list		*commands_list;
-	
-	word_list = to_word(str);
-	commands_list = parse_commands(word_list);
-	display_commands(commands_list);
-	ft_lstclear(&commands_list, free_command_list);
+	int			error;
+
+	error = -1;
+	word_list = to_word(str, &error);
+	if (error != -1)
+		write_error(error);
+	else
+	{
+		commands_list = parse_commands(word_list);
+		display_commands(commands_list);
+		ft_lstclear(&commands_list, free_command_list);
+	}
 	ft_lstclear(&word_list, free);
 }
