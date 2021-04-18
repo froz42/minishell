@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/16 20:31:09 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/18 13:18:09 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,11 @@ void				free_redir(void *mem)
 	}
 }
 
-void				free_command(t_command *command)
+void				free_command(void *mem)
 {
+	t_command	*command;
+
+	command = (t_command *)mem;
 	free(command->cmd);
 	ft_lstclear(&command->args, ft_safe_free);
 	ft_lstclear(&command->redirs, free_redir);
