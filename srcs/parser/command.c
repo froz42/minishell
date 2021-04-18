@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/16 15:43:55 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/16 20:31:09 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void				free_command(t_command *command)
 static t_redir		*get_redir(t_list **word_list)
 {
 	t_redir		*redir;
+	int			special;
 
 	redir = ft_calloc(1, sizeof(t_redir));
 	if (!redir)
@@ -54,8 +55,12 @@ static t_redir		*get_redir(t_list **word_list)
 	*word_list = (*word_list)->next;
 	if (*word_list)
 	{
-		redir->file = ft_strdup((*word_list)->content);
-		*word_list = (*word_list)->next;
+		special = is_special((*word_list)->content);
+		if (special != 5 && special != 3)
+		{
+			redir->file = ft_strdup((*word_list)->content);
+			*word_list = (*word_list)->next;
+		}
 	}
 	else
 		redir->file = NULL;
