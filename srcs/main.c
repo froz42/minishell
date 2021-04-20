@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/14 11:36:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/20 20:26:23 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,35 @@ static	void	write_header(void)
 	ft_putnl("");
 }
 
-int				main(void)
+void			mute_unused(int argc, char **argv)
+{
+	(void)argc;
+	(void)argv;
+}
+
+t_list			*build_env(char **envp)
+{
+	t_env	*env;
+
+	env = ft_calloc(1, sizeof(t_env));
+	if (!env)
+		return (NULL);
+	while (*envp)
+	{
+		printf("%s\n", *envp);
+		envp++;
+	}
+	return (NULL);
+}
+
+int				main(int argc, char **argv, char **envp)
 {
 	t_list	*history;
 	char	*line;
 	int		ret;
 
+	(void)envp;
+	mute_unused(argc, argv);
 	history = NULL;
 	write_header();
 	ret = 1;
