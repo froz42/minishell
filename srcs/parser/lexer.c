@@ -6,11 +6,45 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/22 13:05:28 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/22 20:56:33 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+char *get_var(char *key, t_list *env_var, t_list *local_var)
+{
+	char *search;
+
+	search = search_var(env_var, key);
+	if (search)
+		return (search);
+	search = search_var(local_var, key);
+	if (search)
+		return (search);
+	return ("");
+}
+
+char *dolar(char **str, t_list *env_var, t_list *local_var)
+{
+	int		i;
+	char	*key;
+
+	(*str) += 1;
+	if (ft_isnum(**str))
+	{
+		(*str) += 1;
+		return (ft_strdup(""));
+	}
+	i = 0;
+	while ((*str)[i] && ((*str)[i] == '_' || ft_isalnum((*str)[i])))
+		i++;
+	key = ft_substr(*str, 0, i);
+	(*str) += i;
+	if (!key)
+		return (NULL);
+	return (get_var(key, env_var, local_var));
+}
 
 char *double_quote(char **str, int *error)
 {
@@ -81,9 +115,9 @@ char	*special(char **str)
 	char	*word;
 
 	word = ft_calloc(4, sizeof (char));
-	word[0] = '\33';
 	if (!word)
 		return (NULL);
+	word[0] = '\33';
 	if (is_special(*str) == 4)
 	{
 		ft_memcpy(word + 1, *str, 2);

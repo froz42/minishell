@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/20 20:26:23 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/22 19:38:41 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,42 +34,38 @@ void			mute_unused(int argc, char **argv)
 	(void)argv;
 }
 
-t_list			*build_env(char **envp)
+void			parse_exec(t_list *commands_list)
 {
-	t_env	*env;
-
-	env = ft_calloc(1, sizeof(t_env));
-	if (!env)
-		return (NULL);
-	while (*envp)
-	{
-		printf("%s\n", *envp);
-		envp++;
-	}
-	return (NULL);
+	ft_lstclear(&commands_list, free_command_list);
 }
 
-int				main(int argc, char **argv, char **envp)
+void			minishell(t_list *env, t_list *history)
 {
-	t_list	*history;
 	char	*line;
-	int		ret;
+	t_list	*local_vars;
 
-	(void)envp;
-	mute_unused(argc, argv);
-	history = NULL;
-	write_header();
-	ret = 1;
+	local_vars = NULL;
+	(void)env;
 	while (1)
 	{
 		ft_putstr("Minishell $>");
 		if (!get_input_line(&line, true, &history))
 			break ;
-		parse_line(line);
+		parse_exec(parse_line(line));
 		if (!ft_strcmp(line, "exit"))
 			break ;
 		free(line);
 	}
 	ft_lstclear(&history, free);
 	free(line);
+}
+
+int				main(int argc, char **argv, char **envp)
+{
+	t_list	*env_var;
+
+	mute_unused(argc, argv);
+	env_var = build_var(envp);
+	write_header();
+	minishell(env_var, NULL);
 }

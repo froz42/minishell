@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/22 13:28:13 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/22 15:30:34 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,12 +123,13 @@ void	free_command_list(void *mem)
 	ft_lstclear(&list, free_command);
 }
 
-void	parse_line(char *str)
+t_list		*parse_line(char *str)
 {
 	t_list		*word_list;
 	t_list		*commands_list;
 	int			error;
 
+	commands_list = NULL;
 	error = -1;
 	word_list = to_word(str, &error);
 	if (error != -1)
@@ -138,7 +139,7 @@ void	parse_line(char *str)
 		display_word(word_list);
 		commands_list = parse_commands(word_list);
 		display_commands(commands_list);
-		ft_lstclear(&commands_list, free_command_list);
 	}
 	ft_lstclear(&word_list, free);
+	return (commands_list);
 }
