@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/18 13:18:09 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/22 12:51:06 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,14 @@ void				free_command(void *mem)
 	free(command);
 }
 
+int	escape_control(char *str)
+{
+	if (*str == '\33')
+		return (is_special(str + 1));
+	else
+		return (0);
+}
+
 static t_redir		*get_redir(t_list **word_list)
 {
 	t_redir		*redir;
@@ -54,11 +62,11 @@ static t_redir		*get_redir(t_list **word_list)
 	redir = ft_calloc(1, sizeof(t_redir));
 	if (!redir)
 		return (NULL);
-	redir->type = is_special((*word_list)->content);
+	redir->type = escape_control((*word_list)->content);
 	*word_list = (*word_list)->next;
 	if (*word_list)
 	{
-		special = is_special((*word_list)->content);
+		special = escape_control((*word_list)->content);
 		if (special != 5 && special != 3)
 		{
 			redir->file = ft_strdup((*word_list)->content);
@@ -69,6 +77,7 @@ static t_redir		*get_redir(t_list **word_list)
 		redir->file = NULL;
 	return (redir);
 }
+
 
 static void		set_command(t_list	**word_list, t_command *command)
 {
@@ -97,7 +106,7 @@ t_command	*get_command(t_list **word_list)
 		return (NULL);
 	while (*word_list)
 	{
-		special = is_special((*word_list)->content);
+		special = escape_control((*word_list)->content);
 		if (special == 5 || special == 3)
 			break ;
 		if (special == 1 || special == 2 || special == 4)
