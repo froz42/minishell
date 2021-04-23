@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/23 12:43:09 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/23 15:35:18 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,8 @@ char	*word(char **str)
 
 	i = 0;
 	while ((*str)[i] && !ft_isspace((*str)[i]) && !is_special((*str) + i)
-			&& (*str)[i] != '\'' && (*str)[i] != '"' && (*str)[i] != '$')
+			&& (*str)[i] != '\'' && (*str)[i] != '"' && (*str)[i] != '$'
+			&& (*str)[i] != '\\')
 		i++;
 	word = ft_substr(*str, 0, i);
 	(*str) += i;
@@ -160,11 +161,37 @@ char *double_quote(char **str)
 
 	i = 0;
 	word = NULL;
-	while ((*str)[i] && (*str)[i] != '"' && (*str)[i] != '$')
+	while ((*str)[i] && (*str)[i] != '"' && (*str)[i] != '$'
+			&& (*str)[i] != '\\')
 		i++;
 	word = ft_substr(*str, 0, i);
 	(*str) += i;
 	return (word);
+}
+
+char	*backslash_double_quote(char **str)
+{
+	char *dest;
+
+	(*str) += 1;
+	if (**str == '$' || **str == '\\' || **str == '"')
+	{
+		dest = calloc(2, sizeof(char));
+		if (!dest)
+			return (NULL);
+		dest[0] = **str;
+	}
+	else
+	{
+		dest = calloc(3, sizeof(char));
+		if (!dest)
+			return (NULL);
+		dest[0] = '\\';
+		dest[1] = **str;
+	}
+	if (**str)
+		(*str) += 1;
+	return (dest);
 }
 
 char	*make_double_quote(char **str, int *error, t_list *env_var, t_list *local_var)
@@ -178,6 +205,8 @@ char	*make_double_quote(char **str, int *error, t_list *env_var, t_list *local_v
 	{
 		if (**str == '$')
 			ft_lstadd_back(&to_cat, ft_lstnew(dolar(str, env_var, local_var)));
+		else if (**str == '\\')
+			ft_lstadd_back(&to_cat, ft_lstnew(backslash_double_quote(str)));
 		else
 			ft_lstadd_back(&to_cat, ft_lstnew(double_quote(str)));
 	}
@@ -196,6 +225,20 @@ char	*make_double_quote(char **str, int *error, t_list *env_var, t_list *local_v
 	}
 }
 
+char	*backslash(char **str)
+{
+	char *dest;
+
+	(*str) += 1;
+	dest = ft_calloc(2, sizeof(char));
+	if (!dest)
+		return (NULL);
+	dest[0] = **str;
+	if (**str)
+		(*str) += 1;
+	return (dest);
+}
+
 char	*make_word(char **str, int *error, t_list *env_var, t_list *local_var)
 {
 	t_list	*to_cat;
@@ -210,6 +253,8 @@ char	*make_word(char **str, int *error, t_list *env_var, t_list *local_var)
 			ft_lstadd_back(&to_cat, ft_lstnew(single_quote(str, error)));
 		else if (**str == '$')
 			ft_lstadd_back(&to_cat, ft_lstnew(dolar(str, env_var, local_var)));
+		else if (**str == '\\')
+			ft_lstadd_back(&to_cat, ft_lstnew(backslash(str)));
 		else
 			ft_lstadd_back(&to_cat, ft_lstnew(word(str)));
 	}
