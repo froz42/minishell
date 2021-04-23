@@ -10,7 +10,7 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] Historique (flèche du haut, flèche du bas)
  - [x] Edition de ligne (flèche de droite, flèche de gauche)
  - [x] $ variable
- - [ ] backslash \
+ - [x] backslash \
  - [x] Séparation en mots (tokenization)
  - [x] Parsing des tokens
  - [ ] assignation de variable locale (var="hello")
