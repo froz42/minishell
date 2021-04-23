@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/23 11:32:51 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/23 12:43:09 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,29 +51,6 @@ char *dolar(char **str, t_list *env_var, t_list *local_var)
 	if (!value)
 		return (ft_strdup(""));
 	return (value);
-}
-
-char *double_quote(char **str, int *error)
-{
-	int		i;
-	char	*word;
-
-	(*str)++;
-	i = 0;
-	word = NULL;
-	while ((*str)[i] && (*str)[i] != '"')
-		i++;
-	if ((*str)[i] == '"')
-	{
-		word = ft_substr(*str, 0, i);
-		(*str) += i + 1;
-	}
-	else
-	{
-		(*str) += i;
-		*error = 0;
-	}
-	return (word);
 }
 
 char *single_quote(char **str, int *error)
@@ -176,6 +153,49 @@ char	*cat_list(t_list *to_cat)
 	return (dest);
 }
 
+char *double_quote(char **str)
+{
+	int		i;
+	char	*word;
+
+	i = 0;
+	word = NULL;
+	while ((*str)[i] && (*str)[i] != '"' && (*str)[i] != '$')
+		i++;
+	word = ft_substr(*str, 0, i);
+	(*str) += i;
+	return (word);
+}
+
+char	*make_double_quote(char **str, int *error, t_list *env_var, t_list *local_var)
+{
+	t_list	*to_cat;
+	char	*dest;
+
+	(*str) += 1;
+	to_cat = NULL;
+	while (**str && **str != '"')
+	{
+		if (**str == '$')
+			ft_lstadd_back(&to_cat, ft_lstnew(dolar(str, env_var, local_var)));
+		else
+			ft_lstadd_back(&to_cat, ft_lstnew(double_quote(str)));
+	}
+	dest = cat_list(to_cat);
+	ft_lstclear(&to_cat, ft_safe_free);
+	if (**str == '"')
+	{
+		(*str) += 1;
+		return (dest);
+	}
+	else
+	{
+		*error = 0;
+		ft_safe_free(dest);
+		return (NULL);
+	}
+}
+
 char	*make_word(char **str, int *error, t_list *env_var, t_list *local_var)
 {
 	t_list	*to_cat;
@@ -185,7 +205,7 @@ char	*make_word(char **str, int *error, t_list *env_var, t_list *local_var)
 	while (**str && !ft_isspace(**str) && !is_special(*str))
 	{
 		if (**str == '"')
-			ft_lstadd_back(&to_cat, ft_lstnew(double_quote(str, error)));
+			ft_lstadd_back(&to_cat, ft_lstnew(make_double_quote(str, error, env_var, local_var)));
 		else if (**str == '\'')
 			ft_lstadd_back(&to_cat, ft_lstnew(single_quote(str, error)));
 		else if (**str == '$')
