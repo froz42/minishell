@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/23 15:35:18 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/23 15:37:38 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,16 +213,10 @@ char	*make_double_quote(char **str, int *error, t_list *env_var, t_list *local_v
 	dest = cat_list(to_cat);
 	ft_lstclear(&to_cat, ft_safe_free);
 	if (**str == '"')
-	{
 		(*str) += 1;
-		return (dest);
-	}
 	else
-	{
 		*error = 0;
-		ft_safe_free(dest);
-		return (NULL);
-	}
+	return (dest);
 }
 
 char	*backslash(char **str)
