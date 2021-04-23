@@ -9,13 +9,13 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
 
  - [x] Historique (flèche du haut, flèche du bas)
  - [x] Edition de ligne (flèche de droite, flèche de gauche)
- - [ ] $ variable
+ - [x] $ variable
  - [ ] backslash \
  - [x] Séparation en mots (tokenization)
- - [x] Parsing de la commande
+ - [x] Parsing des tokens
+ - [ ] assignation de variable locale (var="hello")
  - [ ] Analyse des erreurs de syntax
  - [ ] Proteger toutes les fonctions
- - [ ] Construction de la structure
  - [ ] Execution
  - [ ] Redirection
  
