@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/22 20:56:33 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/23 11:32:51 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ char *dolar(char **str, t_list *env_var, t_list *local_var)
 {
 	int		i;
 	char	*key;
+	char	*value;
 
 	(*str) += 1;
 	if (ft_isnum(**str))
@@ -39,11 +40,17 @@ char *dolar(char **str, t_list *env_var, t_list *local_var)
 	i = 0;
 	while ((*str)[i] && ((*str)[i] == '_' || ft_isalnum((*str)[i])))
 		i++;
+	if (i == 0)
+		return (ft_strdup("$"));
 	key = ft_substr(*str, 0, i);
 	(*str) += i;
 	if (!key)
 		return (NULL);
-	return (get_var(key, env_var, local_var));
+	value = ft_strdup(get_var(key, env_var, local_var));
+	free(key);
+	if (!value)
+		return (ft_strdup(""));
+	return (value);
 }
 
 char *double_quote(char **str, int *error)
@@ -138,7 +145,7 @@ char	*word(char **str)
 
 	i = 0;
 	while ((*str)[i] && !ft_isspace((*str)[i]) && !is_special((*str) + i)
-			&& (*str)[i] != '\'' && (*str)[i] != '"')
+			&& (*str)[i] != '\'' && (*str)[i] != '"' && (*str)[i] != '$')
 		i++;
 	word = ft_substr(*str, 0, i);
 	(*str) += i;
@@ -169,7 +176,7 @@ char	*cat_list(t_list *to_cat)
 	return (dest);
 }
 
-char	*make_word(char **str, int *error)
+char	*make_word(char **str, int *error, t_list *env_var, t_list *local_var)
 {
 	t_list	*to_cat;
 	char	*dest;
@@ -181,6 +188,8 @@ char	*make_word(char **str, int *error)
 			ft_lstadd_back(&to_cat, ft_lstnew(double_quote(str, error)));
 		else if (**str == '\'')
 			ft_lstadd_back(&to_cat, ft_lstnew(single_quote(str, error)));
+		else if (**str == '$')
+			ft_lstadd_back(&to_cat, ft_lstnew(dolar(str, env_var, local_var)));
 		else
 			ft_lstadd_back(&to_cat, ft_lstnew(word(str)));
 	}
@@ -189,7 +198,7 @@ char	*make_word(char **str, int *error)
 	return (dest);
 }
 
-t_list	*to_word(char *str, int *error)
+t_list	*to_word(char *str, int *error, t_list *env_var, t_list *local_var)
 {
 	t_list	*word_list;
 
@@ -201,7 +210,7 @@ t_list	*to_word(char *str, int *error)
 		if (is_special(str))
 			ft_lstadd_back(&word_list, ft_lstnew(special(&str)));
 		else if (*str)
-			ft_lstadd_back(&word_list, ft_lstnew(make_word(&str, error)));
+			ft_lstadd_back(&word_list, ft_lstnew(make_word(&str, error, env_var, local_var)));
 	}
 	return (word_list);
 }

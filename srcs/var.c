@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 15:45:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/22 19:31:42 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/23 11:36:07 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,16 @@ t_var			*create_var(char *str)
 	str += i + 1;
 	var->data = ft_strdup(str);
 	return (var);
+}
+
+void			free_var(void *mem)
+{
+	t_var *var;
+
+	var = (t_var *)mem;;
+	ft_safe_free(var->key);
+	ft_safe_free(var->data);
+	ft_safe_free(var);
 }
 
 char			*search_var(t_list *var_list, char *key)

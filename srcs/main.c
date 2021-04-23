@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/22 19:38:41 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/23 11:37:33 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,23 @@ void			parse_exec(t_list *commands_list)
 	ft_lstclear(&commands_list, free_command_list);
 }
 
-void			minishell(t_list *env, t_list *history)
+void			minishell(t_list *env_var, t_list *history)
 {
 	char	*line;
-	t_list	*local_vars;
+	t_list	*local_var;
 
-	local_vars = NULL;
-	(void)env;
+	local_var = NULL;
 	while (1)
 	{
 		ft_putstr("Minishell $>");
 		if (!get_input_line(&line, true, &history))
 			break ;
-		parse_exec(parse_line(line));
+		parse_exec(parse_line(line, env_var, local_var));
 		if (!ft_strcmp(line, "exit"))
 			break ;
 		free(line);
 	}
+	ft_lstclear(&local_var, free_var);
 	ft_lstclear(&history, free);
 	free(line);
 }
@@ -68,4 +68,5 @@ int				main(int argc, char **argv, char **envp)
 	env_var = build_var(envp);
 	write_header();
 	minishell(env_var, NULL);
+	ft_lstclear(&env_var, free_var);
 }
