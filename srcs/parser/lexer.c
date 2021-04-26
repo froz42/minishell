@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/26 23:11:04 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/26 23:54:04 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,17 +259,18 @@ t_list	*split_to_list(char *str)
 	return (token_list);
 }
 
-t_list	*dolar_tokenize(char **str, int *concat_next, t_list *env_var, t_list *local_var)
+
+t_list	*dolar_tokenize(char **str, int *concat, t_list *env_var, t_list *local_var)
 {
 	char	*to_tokenize;
 	t_list	*tokens;
 	
 	to_tokenize = dolar(str, env_var, local_var);
 	printf("to token |%s|\n", to_tokenize);
-	if (to_tokenize[0] == ' ' && *concat_next < 1)
-		(*concat_next) += 1;
-	if (to_tokenize[ft_strlen(to_tokenize) - 1] == ' ' && *concat_next < 2)
-		(*concat_next) += 2;
+	if (to_tokenize[0] == ' ' && *concat < 1)
+		(*concat) += 1;
+	if (to_tokenize[ft_strlen(to_tokenize) - 1] == ' ' && *concat < 2)
+		(*concat) += 2;
 	tokens = split_to_list(to_tokenize);
 	ft_safe_free(to_tokenize);
 	if (ft_lstsize(tokens) == 0)
@@ -277,14 +278,22 @@ t_list	*dolar_tokenize(char **str, int *concat_next, t_list *env_var, t_list *lo
 	return (tokens);
 }
 
+/*
+** concat :
+**			0: first: YES | next: YES
+**			1: first: NO | next: YES
+**			2: first: YES | next: NO
+**			3: first: NO | next: NO
+*/
+
 t_list	*make_word(char **str, int *error, t_list *env_var, t_list *local_var)
 {
 	t_list	*tokens;
 	t_list	*to_cat;
 	t_list	*dolar_tokens;
-	int		concat_next;
+	int		concat;
 
-	concat_next = 0;
+	concat = 0;
 	tokens = NULL;
 	to_cat = NULL;
 	while (**str && !ft_isspace(**str) && !is_special(*str))
@@ -297,23 +306,21 @@ t_list	*make_word(char **str, int *error, t_list *env_var, t_list *local_var)
 			ft_lstadd_back(&to_cat, ft_lstnew(backslash(str)));
 		else if (**str == '$')
 		{
-			dolar_tokens = dolar_tokenize(str, &concat_next, env_var, local_var);
-			printf("concat value: %i\n", concat_next);
-			if (to_cat && (!concat_next || concat_next == 2))
+			dolar_tokens = dolar_tokenize(str, &concat, env_var, local_var);
+			printf("concat value: %i\n", concat);
+			if (to_cat && (concat == 0 || concat == 2))
 			{
-				concat_next--;
 				ft_lstadd_back(&to_cat, ft_lstnew(ft_strdup(dolar_tokens->content)));
 				ft_lstremove_first(&dolar_tokens, ft_safe_free);
-			}
-			if (concat_next == 2)
-				concat_next = 1;
+			} //OK
 			if (to_cat)
 				ft_lstadd_back(&tokens, ft_lstnew(cat_list(to_cat)));
 			ft_lstclear(&to_cat, ft_safe_free);
-			if (dolar_tokens && !concat_next)
+			if (dolar_tokens && (concat == 0 || concat == 1))
 			{
 				ft_lstadd_back(&to_cat, ft_lstnew(ft_strdup((ft_lstlast(dolar_tokens))->content)));
 				ft_lstremove_last(&dolar_tokens, ft_safe_free);
+				concat = 0;
 			}
 			ft_lstcat(&tokens, dolar_tokens);
 			ft_lstclear(&dolar_tokens, ft_nofree);
