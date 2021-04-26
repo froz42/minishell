@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 15:16:26 by tmatis            #+#    #+#             */
-/*   Updated: 2021/02/03 21:58:39 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/26 20:25:41 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,8 @@ t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 		void (*del)(void *));
 t_list			*ft_lstnew(void *content);
 int				ft_lstsize(t_list *lst);
+void			ft_lstremove_first(t_list **alst, void (*del)(void*));
+void			ft_lstcat(t_list **dst, t_list *src);
+void			ft_lstremove_last(t_list **alst, void (*del)(void*));
+void			ft_nofree(void *mem);
 #endif

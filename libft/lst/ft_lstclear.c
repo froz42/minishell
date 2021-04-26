@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 20:35:56 by tmatis            #+#    #+#             */
-/*   Updated: 2021/01/04 15:23:17 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/24 15:23:47 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,5 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 		free(*lst);
 		*lst = temp;
 	}
+	*lst = NULL;
 }
