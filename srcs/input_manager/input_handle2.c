@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:32:04 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/26 22:29:15 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void		erase_char(t_buffer *buffer)
 {
 	int		i;
 
+	if (buffer->size <= buffer->position)
+		return ;
 	i = 0;
 	while (i++ < buffer->position)
 		ft_putstr("\033[1C");
