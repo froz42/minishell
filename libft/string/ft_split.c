@@ -6,14 +6,14 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 12:47:33 by tmatis            #+#    #+#             */
-/*   Updated: 2021/02/03 22:12:54 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 15:54:17 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "string.h"
 #include <stdlib.h>
 
-static	size_t	ft_wordcount(char const *s, char c)
+static size_t	ft_wordcount(char const *s, char c)
 {
 	size_t	wc;
 
@@ -30,7 +30,7 @@ static	size_t	ft_wordcount(char const *s, char c)
 	return (wc);
 }
 
-static	size_t	ft_wordlen(char const *s, char c)
+static size_t	ft_wordlen(char const *s, char c)
 {
 	size_t	i;
 
@@ -43,7 +43,7 @@ static	size_t	ft_wordlen(char const *s, char c)
 	return (i);
 }
 
-char			**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**dest;
 	size_t	i;

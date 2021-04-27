@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 22:34:33 by tmatis            #+#    #+#             */
-/*   Updated: 2021/02/03 21:58:58 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 15:46:16 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ double	ft_fabs(double n)
 		return (n);
 }
 
-int		ft_abs(int n)
+int	ft_abs(int n)
 {
 	if (n < 0)
 		return (-n);

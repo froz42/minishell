@@ -6,14 +6,14 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 14:41:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/02/03 22:00:10 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 15:53:44 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "misc.h"
 #include <stdlib.h>
 
-static	int		ft_len(int n)
+static int	ft_len(int n)
 {
 	int			i;
 
@@ -30,7 +30,7 @@ static	int		ft_len(int n)
 	return (i);
 }
 
-static	void	ft_compute(unsigned int n, char *dest, int len)
+static void	ft_compute(unsigned int n, char *dest, int len)
 {
 	while (len >= 0)
 	{
@@ -39,7 +39,7 @@ static	void	ft_compute(unsigned int n, char *dest, int len)
 	}
 }
 
-char			*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	char	*dest;
 	int		len;
@@ -52,7 +52,7 @@ char			*ft_itoa(int n)
 	if (n < 0)
 	{
 		dest[0] = '-';
-		ft_compute((unsigned int)-n, dest + 1, len - 2);
+		ft_compute((unsigned int) -n, dest + 1, len - 2);
 	}
 	else
 		ft_compute((unsigned int)n, dest, len - 1);

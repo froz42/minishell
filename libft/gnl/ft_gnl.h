@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:42:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/02/03 21:56:52 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 15:50:25 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <unistd.h>
 # define BUFFER_SIZE 2048
 
-typedef	struct	s_chunk
+typedef struct s_chunk
 {
 	char	*data;
 	int		len;

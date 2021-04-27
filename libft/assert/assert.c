@@ -6,13 +6,13 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 18:18:17 by tmatis            #+#    #+#             */
-/*   Updated: 2021/02/13 18:31:07 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 15:47:30 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assert.h"
 
-void			ft_assert(int actual, char *behavior, t_tests *tests)
+void	ft_assert(int actual, char *behavior, t_tests *tests)
 {
 	if (actual && ++tests->tests_success && tests->log_level >= 3)
 		printf("\033[1;32m [OK] ");
@@ -27,16 +27,16 @@ void			ft_assert(int actual, char *behavior, t_tests *tests)
 	}
 }
 
-void			ft_assert_cmp(
+void	ft_assert_cmp(
 		int actual, int expected, char *behavior, t_tests *tests)
 {
 	if (actual == expected && ++tests->tests_success && tests->log_level >= 3)
 		printf("\033[1;32m [OK] ");
 	else if (actual != expected && ++tests->tests_failed
-			&& tests->log_level >= 1)
+		&& tests->log_level >= 1)
 		printf("\033[1;31m [KO] ");
 	if ((tests->log_level >= 4) || (tests->log_level >= 2
-				&& actual != expected))
+			&& actual != expected))
 	{
 		printf("\033[0;33m\033[3mactual: \033[4m");
 		printf("%i", actual);
@@ -53,7 +53,7 @@ void			ft_assert_cmp(
 	}
 }
 
-static	void	ft_putstrun(char *str, int pos)
+static void	ft_putstrun(char *str, int pos)
 {
 	while (*str)
 	{
@@ -68,7 +68,7 @@ static	void	ft_putstrun(char *str, int pos)
 	}
 }
 
-static	void	ft_putdiff(char *actual, char *expected, int indexdiff)
+static void	ft_putdiff(char *actual, char *expected, int indexdiff)
 {
 	printf("\033[0;33m\033[3m\"");
 	ft_putstrun(actual, indexdiff);
@@ -77,7 +77,7 @@ static	void	ft_putdiff(char *actual, char *expected, int indexdiff)
 	printf("\"\033[0m\n       ");
 }
 
-void			ft_assert_strcmp(
+void	ft_assert_strcmp(
 		char *act, char *exp, char *behavior, t_tests *tests)
 {
 	size_t	i;

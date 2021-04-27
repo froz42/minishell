@@ -6,13 +6,13 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 15:02:17 by tmatis            #+#    #+#             */
-/*   Updated: 2021/02/03 21:56:15 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 15:50:35 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_gnl.h"
 
-int		ft_getendl(t_chunk *chunk)
+int	ft_getendl(t_chunk *chunk)
 {
 	int		i;
 
