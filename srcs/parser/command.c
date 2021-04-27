@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 16:21:03 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 20:14:39 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_command	*init_command(void)
 static t_redir	*get_redir(t_list **word_list)
 {
 	t_redir		*redir;
-	int			special;
+	int			special_id;
 
 	redir = ft_calloc(1, sizeof(t_redir));
 	if (!redir)
@@ -34,8 +34,8 @@ static t_redir	*get_redir(t_list **word_list)
 	*word_list = (*word_list)->next;
 	if (*word_list)
 	{
-		special = escape_control((*word_list)->content);
-		if (special != 5 && special != 3)
+		special_id = escape_control((*word_list)->content);
+		if (special_id != 5 && special_id != 3)
 		{
 			redir->file = ft_strdup((*word_list)->content);
 			*word_list = (*word_list)->next;
@@ -65,7 +65,7 @@ t_command	*get_command(t_list **word_list)
 {
 	t_command	*command;
 	t_bool		command_set;
-	int			special;
+	int			special_id;
 
 	command = init_command();
 	command_set = false;
@@ -73,10 +73,10 @@ t_command	*get_command(t_list **word_list)
 		return (NULL);
 	while (*word_list)
 	{
-		special = escape_control((*word_list)->content);
-		if (special == 5 || special == 3)
+		special_id = escape_control((*word_list)->content);
+		if (special_id == 5 || special_id == 3)
 			break ;
-		if (special == 1 || special == 2 || special == 4)
+		if (special_id == 1 || special_id == 2 || special_id == 4)
 			ft_lstadd_back(&command->redirs, ft_lstnew(get_redir(word_list)));
 		else if (!command_set)
 		{

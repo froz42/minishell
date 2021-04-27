@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 17:14:56 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 20:32:10 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 char	*special(char **str)
 {
-	char	*word;
+	char	*token;
 
-	word = ft_calloc(4, sizeof (char));
-	if (!word)
+	token = ft_calloc(4, sizeof (char));
+	if (!token)
 		return (NULL);
-	word[0] = '\33';
+	token[0] = '\33';
 	if (is_special(*str) == 4)
 	{
-		ft_memcpy(word + 1, *str, 2);
+		ft_memcpy(token + 1, *str, 2);
 		(*str) += 2;
 	}
 	else
 	{
-		ft_memcpy(word + 1, *str, 1);
+		ft_memcpy(token + 1, *str, 1);
 		(*str) += 1;
 	}
-	return (word);
+	return (token);
 }
 
 char	*word(char **str)

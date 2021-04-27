@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 16:43:08 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 20:32:53 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 char	*single_quote(char **str, int *error)
 {
 	int		i;
-	char	*word;
+	char	*token;
 
 	(*str)++;
 	i = 0;
-	word = NULL;
+	token = NULL;
 	while ((*str)[i] && (*str)[i] != '\'')
 		i++;
 	if ((*str)[i] == '\'')
 	{
-		word = ft_substr(*str, 0, i);
+		token = ft_substr(*str, 0, i);
 		(*str) += i + 1;
 	}
 	else
@@ -32,7 +32,7 @@ char	*single_quote(char **str, int *error)
 		(*str) += i;
 		*error = 0;
 	}
-	return (word);
+	return (token);
 }
 
 char	*backslash_double_quote(char **str)
@@ -77,16 +77,16 @@ char	*backslash(char **str)
 char	*double_quote(char **str)
 {
 	int		i;
-	char	*word;
+	char	*token;
 
 	i = 0;
-	word = NULL;
+	token = NULL;
 	while ((*str)[i] && (*str)[i] != '"' && (*str)[i] != '$'
 			&& (*str)[i] != '\\')
 		i++;
-	word = ft_substr(*str, 0, i);
+	token = ft_substr(*str, 0, i);
 	(*str) += i;
-	return (word);
+	return (token);
 }
 
 char	*make_double_quote(char **str, int *error,

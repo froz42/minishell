@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 16:22:56 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 20:33:49 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ int	escape_control(char *str)
 t_list	*pipes_commands(t_list **word_list)
 {
 	t_list		*pipes_list;
-	int			special;
+	int			special_id;
 
 	pipes_list = NULL;
 	while (*word_list)
 	{
-		special = escape_control((*word_list)->content);
-		if (special == 3)
+		special_id = escape_control((*word_list)->content);
+		if (special_id == 3)
 			(*word_list) = (*word_list)->next;
-		if (special == 5 || !*word_list)
+		if (special_id == 5 || !*word_list)
 			break ;
 		ft_lstadd_back(&pipes_list, ft_lstnew(get_command(word_list)));
 	}
