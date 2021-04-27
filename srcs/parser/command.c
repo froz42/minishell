@@ -6,11 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 20:14:39 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 20:48:25 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+/*
+** Init the command structure
+*/
 
 static t_command	*init_command(void)
 {
@@ -21,6 +25,10 @@ static t_command	*init_command(void)
 		return (NULL);
 	return (command);
 }
+
+/*
+** Parse a potential redirection, iter on word_list
+*/
 
 static t_redir	*get_redir(t_list **word_list)
 {
@@ -46,11 +54,19 @@ static t_redir	*get_redir(t_list **word_list)
 	return (redir);
 }
 
+/*
+** Set the command in the struct
+*/
+
 static void	set_command(t_list	**word_list, t_command *command)
 {
 	command->cmd = ft_strdup((*word_list)->content);
 	*word_list = (*word_list)->next;
 }
+
+/*
+** Retourne l'argument et passe au suivant
+*/
 
 static char	*get_arg(t_list **word_list)
 {
@@ -60,6 +76,12 @@ static char	*get_arg(t_list **word_list)
 	*word_list = (*word_list)->next;
 	return (dst);
 }
+
+/*
+** retourne l'objet t_command en utilisant les tokens
+** jusqu'a rencontrer un token | ou ;
+** le premier token a ne pas etre une redirection est considerer comme la commande
+*/
 
 t_command	*get_command(t_list **word_list)
 {

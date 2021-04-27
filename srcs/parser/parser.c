@@ -6,11 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 20:33:49 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 21:18:37 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+/*
+** Retourne la valeur associer a chaque caractere special et 0 si pas bon
+*/
 
 int	is_special(char *str)
 {
@@ -30,6 +34,10 @@ int	is_special(char *str)
 	return (0);
 }
 
+/*
+** Permet de lire une escape seq apres tokenisation
+*/
+
 int	escape_control(char *str)
 {
 	if (*str == '\33')
@@ -37,6 +45,10 @@ int	escape_control(char *str)
 	else
 		return (0);
 }
+
+/*
+** Cree une liste de commande execute simultanement relier par des pipes
+*/
 
 t_list	*pipes_commands(t_list **word_list)
 {
@@ -56,6 +68,28 @@ t_list	*pipes_commands(t_list **word_list)
 	return (pipes_list);
 }
 
+/*
+** Parse les commande a partire des tokens et genere une structure de donnee
+** EX: 'cat Makefile | cat -e > test_out; < test_out wc -l'
+**┌ t_list
+**│ • ┌ t_list
+**│   │ • ┌ t_command
+**│   │   │ • cmd = "cat"
+**│   │   │ • args = {"Makefile"}
+**│   │   │ • redirs = {}
+**│   │ • ┌ t_command
+**│   │   │ • cmd = "cat"
+**│   │   │ • args = {"-e"}
+**│   │   │ • redirs = {{type = 1, file = test_out}}
+**│ • ┌ t_list
+**│   │ • ┌ t_command
+**│   │   │ • cmd = "wc"
+**│   │   │ • args = {"-l"}
+**│   │   │ • redirs = {{type = 2, file = test_out}}
+**
+** Vous pouvez generer un graph dans display.c (display_commands)
+*/
+
 t_list	*parse_commands(t_list *word_list)
 {
 	t_list		*commands_list;
@@ -71,6 +105,12 @@ t_list	*parse_commands(t_list *word_list)
 	}
 	return (commands_list);
 }
+
+/*
+** Fonction qui va call le tokensisateur et parse_commands et afficher une erreur
+** TODO: Assignation
+** TODO: Verification
+*/
 
 t_list	*parse_line(char *str, t_list *env_var, t_list *local_var)
 {

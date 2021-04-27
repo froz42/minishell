@@ -6,11 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:24:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 17:13:35 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 20:56:40 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+/*
+** Fais un split et le met dans une liste chainee
+*/
 
 t_list	*split_to_list(char *str)
 {
@@ -29,6 +33,10 @@ t_list	*split_to_list(char *str)
 	return (token_list);
 }
 
+/*
+** Cherche la var dans l'env puis dans les locals
+*/
+
 char	*get_var(char *key, t_list *env_var, t_list *local_var)
 {
 	char	*search;
@@ -42,6 +50,10 @@ char	*get_var(char *key, t_list *env_var, t_list *local_var)
 	return ("");
 }
 
+/*
+** Retourne la cle selon les char et itere sur **str
+*/
+
 char	*get_key(char **str, int *i)
 {
 	char	*key;
@@ -53,6 +65,10 @@ char	*get_key(char **str, int *i)
 	(*str) += *i;
 	return (key);
 }
+
+/*
+** Retourne la valeur du $ au bon format
+*/
 
 char	*dolar(char **str, t_list *env_var, t_list *local_var)
 {
@@ -79,6 +95,7 @@ char	*dolar(char **str, t_list *env_var, t_list *local_var)
 }
 
 /*
+** Transforme la valeur en tokens et set selon les espace *concat
 ** concat :
 **			0: first: YES | next: YES
 **			1: first: NO | next: YES

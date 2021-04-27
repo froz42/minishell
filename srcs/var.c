@@ -6,11 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 15:45:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 16:08:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 21:03:34 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** Parse key=value
+*/
 
 t_var	*create_var(char *str)
 {
@@ -39,6 +43,10 @@ void	free_var(void *mem)
 	ft_safe_free(var);
 }
 
+/*
+** cherche une value selon la cle
+*/
+
 char	*search_var(t_list *var_list, char *key)
 {
 	t_var	*var;
@@ -52,6 +60,10 @@ char	*search_var(t_list *var_list, char *key)
 	}
 	return (NULL);
 }
+
+/*
+** envp -> list de var
+*/
 
 t_list	*build_var(char **envp)
 {

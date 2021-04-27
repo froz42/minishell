@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:17:15 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 17:02:04 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 20:51:45 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ static void	display_args(t_list *args_list)
 	printf("}\n");
 }
 
+/*
+** Permet d'afficher les tokens en remplacant les char non printable par '.'
+*/
+
 void	display_word(t_list *word)
 {
 	ft_putstr("{");
@@ -53,6 +57,10 @@ void	display_word(t_list *word)
 	}
 	ft_putstr("}\n");
 }
+
+/*
+** Affiche un graph des commandes (nice) pour le dev
+*/
 
 void	display_commands(t_list *commands_list)
 {

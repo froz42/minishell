@@ -6,11 +6,16 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 20:32:10 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 21:00:46 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+/*
+** Geres les char `; | >> > <` met un \33 (escape) devant
+** pour les diff des user input
+*/
 
 char	*special(char **str)
 {
@@ -33,6 +38,10 @@ char	*special(char **str)
 	return (token);
 }
 
+/*
+** Delimite un simple mot jusqu'a un char special
+*/
+
 char	*word(char **str)
 {
 	int		i;
@@ -47,6 +56,10 @@ char	*word(char **str)
 	(*str) += i;
 	return (word);
 }
+
+/*
+** Prend une liste chainee avec content = str et cat en une seule string
+*/
 
 char	*cat_list(t_list *to_cat)
 {
@@ -73,11 +86,7 @@ char	*cat_list(t_list *to_cat)
 }
 
 /*
-** concat :
-**			0: first: YES | next: YES
-**			1: first: NO | next: YES
-**			2: first: YES | next: NO
-**			3: first: NO | next: NO
+** Tokenize tout ca
 */
 
 t_list	*to_word(char *str, int *error, t_list *env_var, t_list *local_var)

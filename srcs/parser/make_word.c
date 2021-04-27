@@ -6,11 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 17:14:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 21:11:30 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+/*
+** Comportement du dolar savoir si on cat ou pas selon la valeur de concat
+*/
 
 static void	handle_dolar(t_list *dolar_tokens, t_list **tokens,
 				t_list **to_cat, int *concat)
@@ -34,12 +38,20 @@ static void	handle_dolar(t_list *dolar_tokens, t_list **tokens,
 	ft_lstclear(&dolar_tokens, ft_nofree);
 }
 
+/*
+** Init les value pour gagner quelques ligne \O_O/
+*/
+
 static void	init_value(int *concat, t_list **tokens, t_list **to_cat)
 {
 	*concat = 0;
 	*tokens = NULL;
 	*to_cat = NULL;
 }
+
+/*
+** Permet de tokeniser une suite de mot en correspondant a bash
+*/
 
 t_list	*make_word(char **str, int *error, t_list *env_var, t_list *local_var)
 {

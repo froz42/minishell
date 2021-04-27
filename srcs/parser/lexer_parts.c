@@ -6,11 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 20:32:53 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 21:07:33 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+/*
+** Gere le contenu des single quote
+*/
 
 char	*single_quote(char **str, int *error)
 {
@@ -34,6 +38,10 @@ char	*single_quote(char **str, int *error)
 	}
 	return (token);
 }
+
+/*
+** comportement du \ dans les ""
+*/
 
 char	*backslash_double_quote(char **str)
 {
@@ -60,6 +68,10 @@ char	*backslash_double_quote(char **str)
 	return (dest);
 }
 
+/*
+** comportement du \
+*/
+
 char	*backslash(char **str)
 {
 	char	*dest;
@@ -73,6 +85,11 @@ char	*backslash(char **str)
 		(*str) += 1;
 	return (dest);
 }
+
+/*
+** Gere le comportement des double quote s'arrete
+** en cas de char special
+*/
 
 char	*double_quote(char **str)
 {
@@ -88,6 +105,11 @@ char	*double_quote(char **str)
 	(*str) += i;
 	return (token);
 }
+
+/*
+** Retourne le str de l'interieur des double quote
+** EX "Hello $USER you have 10\$" -> "Hello tmatis you have 10$"
+*/
 
 char	*make_double_quote(char **str, int *error,
 			t_list *env_var, t_list *local_var)
