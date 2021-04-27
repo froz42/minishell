@@ -6,17 +6,17 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 15:45:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/23 11:36:07 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 16:08:50 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_var			*create_var(char *str)
+t_var	*create_var(char *str)
 {
 	int		i;
 	t_var	*var;
-	
+
 	var = ft_calloc(1, sizeof(t_var));
 	if (!var)
 		return (NULL);
@@ -29,17 +29,17 @@ t_var			*create_var(char *str)
 	return (var);
 }
 
-void			free_var(void *mem)
+void	free_var(void *mem)
 {
-	t_var *var;
+	t_var	*var;
 
-	var = (t_var *)mem;;
+	var = (t_var *)mem;
 	ft_safe_free(var->key);
 	ft_safe_free(var->data);
 	ft_safe_free(var);
 }
 
-char			*search_var(t_list *var_list, char *key)
+char	*search_var(t_list *var_list, char *key)
 {
 	t_var	*var;
 
@@ -53,7 +53,7 @@ char			*search_var(t_list *var_list, char *key)
 	return (NULL);
 }
 
-t_list			*build_var(char **envp)
+t_list	*build_var(char **envp)
 {
 	t_list	*var_list;
 

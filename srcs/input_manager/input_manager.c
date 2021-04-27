@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/09 02:17:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 16:10:57 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@
 ** Handle ctrl chars and call the right function
 */
 
-static int		handle_ctrl(t_buffer *buffer, int *history_fetch,
-		char **temp, t_list **history)
+static int	handle_ctrl(t_buffer *buffer, int *history_fetch,
+				char **temp, t_list **history)
 {
 	if (buffer->escape_id == 0 && buffer->size)
 		erase_char(buffer);
 	else if (buffer->escape_id == 1 && buffer->manage_history
-			&& ft_lstsize(*history))
+		&& ft_lstsize(*history))
 		handle_up_key(buffer, history_fetch, temp, *history);
 	else if (buffer->escape_id == 2 && buffer->manage_history
-			&& ft_lstsize(*history) && *temp)
+		&& ft_lstsize(*history) && *temp)
 		handle_down_key(buffer, history_fetch, temp, *history);
 	else if (buffer->escape_id == 3)
 		handle_right_key(buffer);
@@ -46,8 +46,8 @@ static int		handle_ctrl(t_buffer *buffer, int *history_fetch,
 ** Manage line waiting, buffering
 */
 
-static int		wait_line(char buff[10], t_buffer *buffer,
-		char **temp, t_list **history)
+static int	wait_line(char buff[10], t_buffer *buffer,
+				char **temp, t_list **history)
 {
 	int		ret;
 	int		history_fetch;
@@ -73,7 +73,7 @@ static int		wait_line(char buff[10], t_buffer *buffer,
 ** similar working as get_next_line, read from STDIN_FILENO, handle ctrl char
 */
 
-int				get_input_line(char **line, t_bool manage_history,
+int	get_input_line(char **line, t_bool manage_history,
 		t_list **history)
 {
 	char			*temp;

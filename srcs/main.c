@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/23 11:37:33 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 16:07:40 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** TODO: COLOR
 */
 
-static	void	write_header(void)
+static void	write_header(void)
 {
 	ft_putnl("        _       _     _          _ _");
 	ft_putnl("  /\\/\\ (_)_ __ (_)___| |__   ___| | |");
@@ -28,18 +28,18 @@ static	void	write_header(void)
 	ft_putnl("");
 }
 
-void			mute_unused(int argc, char **argv)
+void	mute_unused(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
 }
 
-void			parse_exec(t_list *commands_list)
+void	parse_exec(t_list *commands_list)
 {
 	ft_lstclear(&commands_list, free_command_list);
 }
 
-void			minishell(t_list *env_var, t_list *history)
+void	minishell(t_list *env_var, t_list *history)
 {
 	char	*line;
 	t_list	*local_var;
@@ -60,7 +60,7 @@ void			minishell(t_list *env_var, t_list *history)
 	free(line);
 }
 
-int				main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_list	*env_var;
 

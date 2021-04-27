@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/23 11:27:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 16:51:18 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,28 @@
 # include "../minishell.h"
 
 t_list		*parse_line(char *str, t_list *env_var, t_list *local_var);
-int		is_special(char *str);
+int			is_special(char *str);
 t_command	*get_command(t_list **word_list);
 void		free_command(void *mem);
-char	*special(char **str);
-t_list	*to_word(char *str, int *error, t_list *env_var, t_list *local_var);
-int		escape_control(char *str);
-void	free_command_list(void *mem);
+char		*special(char **str);
+t_list		*to_word(char *str, int *error, t_list *env_var,
+				t_list *local_var);
+int			escape_control(char *str);
+void		free_command_list(void *mem);
+void		display_commands(t_list *commands_list);
+char		*make_double_quote(char **str, int *error,
+				t_list *env_var, t_list *local_var);
+char		*dolar(char **str, t_list *env_var, t_list *local_var);
+t_list		*dolar_tokenize(char **str, int *concat, t_list *env_var,
+				t_list *local_var);
+char		*cat_list(t_list *to_cat);
+char		*single_quote(char **str, int *error);
+char		*backslash_double_quote(char **str);
+char		*backslash(char **str);
+char		*double_quote(char **str);
+char		*make_double_quote(char **str, int *error,
+				t_list *env_var, t_list *local_var);
+char		*word(char **str);
+t_list		*make_word(char **str, int *error, t_list *env_var,
+				t_list *local_var);
 #endif

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/26 22:38:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 16:09:46 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 ** manage_history: true of false, tell if the history should be managed
 */
 
-typedef struct	s_buffer
+typedef struct s_buffer
 {
 	int		size;
 	int		position;
@@ -48,7 +48,7 @@ typedef struct s_command
 
 typedef struct s_var
 {
-	char *key;
-	char *data;
+	char	*key;
+	char	*data;
 }			t_var;
 #endif

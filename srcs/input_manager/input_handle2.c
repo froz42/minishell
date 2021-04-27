@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/26 22:29:15 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 16:13:42 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** This is called when user type ctrl-c
 */
 
-void		handle_ctrlc(t_buffer *buffer)
+void	handle_ctrlc(t_buffer *buffer)
 {
 	char	*dst;
 
@@ -38,7 +38,7 @@ void		handle_ctrlc(t_buffer *buffer)
 ** This is called when user type ctrl-d
 */
 
-void		handle_ctrld(t_buffer *buffer)
+void	handle_ctrld(t_buffer *buffer)
 {
 	ft_putstr("\nexit\n");
 	free(buffer->buff);
@@ -51,7 +51,7 @@ void		handle_ctrld(t_buffer *buffer)
 ** This is called when user type delete
 */
 
-void		erase_char(t_buffer *buffer)
+void	erase_char(t_buffer *buffer)
 {
 	int		i;
 

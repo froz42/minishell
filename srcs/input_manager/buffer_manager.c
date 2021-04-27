@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:47:33 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 16:12:06 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 t_buffer	init_buffer(t_bool manage_history)
 {
-	t_buffer buffer;
+	t_buffer	buffer;
 
 	buffer.size = 0;
 	buffer.position = 0;
@@ -34,14 +34,14 @@ t_buffer	init_buffer(t_bool manage_history)
 ** flushed to a HEAP allocated buffer
 */
 
-void		buffer_add(char c, t_buffer *buffer)
+void	buffer_add(char c, t_buffer *buffer)
 {
 	static char		buff[10];
 	static int		buff_size = 0;
 	char			*dst;
 
 	if ((c == 10 && (buff_size > 0 || !buffer->buff))
-			|| (&buff[buff_size] == &buff[sizeof(buff)]))
+		|| (&buff[buff_size] == &buff[sizeof(buff)]))
 	{
 		dst = ft_calloc(buff_size + buffer->size + 1, sizeof(char));
 		if (!dst)
@@ -65,7 +65,7 @@ void		buffer_add(char c, t_buffer *buffer)
 ** Add a char at a specific position
 */
 
-void		buffer_add_pos(char c, int pos, t_buffer *buffer)
+void	buffer_add_pos(char c, int pos, t_buffer *buffer)
 {
 	char	*dst;
 
@@ -89,7 +89,7 @@ void		buffer_add_pos(char c, int pos, t_buffer *buffer)
 ** Add a chain of char of size size
 */
 
-void		buffer_add_chain(char *src, int size, t_buffer *buffer)
+void	buffer_add_chain(char *src, int size, t_buffer *buffer)
 {
 	int	i;
 
@@ -118,9 +118,9 @@ void		buffer_add_chain(char *src, int size, t_buffer *buffer)
 ** Add a \0 at the end
 */
 
-void		buffer_delete(int pos, t_buffer *buffer)
+void	buffer_delete(int pos, t_buffer *buffer)
 {
 	ft_memmove(buffer->buff + (pos - 1),
-			buffer->buff + pos, buffer->size - pos);
+		buffer->buff + pos, buffer->size - pos);
 	buffer->buff[--buffer->size] = '\0';
 }

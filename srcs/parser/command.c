@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/22 12:51:06 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 16:21:03 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,39 +22,7 @@ static t_command	*init_command(void)
 	return (command);
 }
 
-void				free_redir(void *mem)
-{
-	t_redir	*redir;
-
-	if (mem)
-	{
-		redir = (t_redir *)mem;
-		if (redir->file)
-			free(redir->file);
-		free(mem);
-	}
-}
-
-void				free_command(void *mem)
-{
-	t_command	*command;
-
-	command = (t_command *)mem;
-	free(command->cmd);
-	ft_lstclear(&command->args, ft_safe_free);
-	ft_lstclear(&command->redirs, free_redir);
-	free(command);
-}
-
-int	escape_control(char *str)
-{
-	if (*str == '\33')
-		return (is_special(str + 1));
-	else
-		return (0);
-}
-
-static t_redir		*get_redir(t_list **word_list)
+static t_redir	*get_redir(t_list **word_list)
 {
 	t_redir		*redir;
 	int			special;
@@ -78,8 +46,7 @@ static t_redir		*get_redir(t_list **word_list)
 	return (redir);
 }
 
-
-static void		set_command(t_list	**word_list, t_command *command)
+static void	set_command(t_list	**word_list, t_command *command)
 {
 	command->cmd = ft_strdup((*word_list)->content);
 	*word_list = (*word_list)->next;

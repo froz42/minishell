@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/05 21:19:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:42:06 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 16:12:33 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ struct termios	raw_mode(void)
 ** Set terminal in buff mode (line by line)
 */
 
-void			buff_mode(struct termios old)
+void	buff_mode(struct termios old)
 {
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
 }
@@ -42,7 +42,7 @@ void			buff_mode(struct termios old)
 ** Replace x chars with space.
 */
 
-void			erase_x_chars(int x)
+void	erase_x_chars(int x)
 {
 	while (x--)
 		ft_putstr("\b \b");
@@ -60,7 +60,7 @@ void			erase_x_chars(int x)
 ** CTRL-D -> 7
 */
 
-int				get_escape_id(char *buff, int size)
+int	get_escape_id(char *buff, int size)
 {
 	if (buff[0] == 0177)
 		return (0);
@@ -86,7 +86,7 @@ int				get_escape_id(char *buff, int size)
 ** DEV ONLY
 */
 
-void			display_escape_code(char *buff, int size)
+void	display_escape_code(char *buff, int size)
 {
 	int		i;
 

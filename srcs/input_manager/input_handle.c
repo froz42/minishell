@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/10 23:58:17 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 16:12:51 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** This is called when user type up key
 */
 
-void		handle_up_key(t_buffer *buffer, int *history_fetch,
+void	handle_up_key(t_buffer *buffer, int *history_fetch,
 		char **temp, t_list *history)
 {
 	while (buffer->position)
@@ -41,7 +41,7 @@ void		handle_up_key(t_buffer *buffer, int *history_fetch,
 ** This is called when user type down key
 */
 
-void		handle_down_key(t_buffer *buffer, int *history_fetch,
+void	handle_down_key(t_buffer *buffer, int *history_fetch,
 		char **temp, t_list *history)
 {
 	while (buffer->position)
@@ -68,7 +68,7 @@ void		handle_down_key(t_buffer *buffer, int *history_fetch,
 ** This is called when user type left key
 */
 
-void		handle_left_key(t_buffer *buffer)
+void	handle_left_key(t_buffer *buffer)
 {
 	if (buffer->position < buffer->size)
 	{
@@ -81,7 +81,7 @@ void		handle_left_key(t_buffer *buffer)
 ** This is called when user type right key
 */
 
-void		handle_right_key(t_buffer *buffer)
+void	handle_right_key(t_buffer *buffer)
 {
 	if (buffer->position)
 	{
