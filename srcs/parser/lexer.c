@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/26 23:54:04 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/27 15:36:41 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ t_list	*make_word(char **str, int *error, t_list *env_var, t_list *local_var)
 			{
 				ft_lstadd_back(&to_cat, ft_lstnew(ft_strdup(dolar_tokens->content)));
 				ft_lstremove_first(&dolar_tokens, ft_safe_free);
-			} //OK
+			}
 			if (to_cat)
 				ft_lstadd_back(&tokens, ft_lstnew(cat_list(to_cat)));
 			ft_lstclear(&to_cat, ft_safe_free);
@@ -337,10 +337,7 @@ t_list	*make_word(char **str, int *error, t_list *env_var, t_list *local_var)
 t_list	*to_word(char *str, int *error, t_list *env_var, t_list *local_var)
 {
 	t_list	*word_list;
-
-	word_list = make_word(&str, error, env_var, local_var);
-	return (word_list);
-	/*
+	t_list	*word_tokens;
 	word_list = NULL;
 	while (*str)
 	{
@@ -349,9 +346,12 @@ t_list	*to_word(char *str, int *error, t_list *env_var, t_list *local_var)
 		if (is_special(str))
 			ft_lstadd_back(&word_list, ft_lstnew(special(&str)));
 		else if (*str)
-			ft_lstadd_back(&word_list, ft_lstnew(make_word(&str, error, env_var, local_var)));
+		{
+			word_tokens = make_word(&str, error, env_var, local_var);
+			ft_lstcat(&word_list, word_tokens);
+			ft_lstclear(&word_tokens, ft_nofree);
+		}
 	}
 	return (word_list);
-	*/
 }
 
