@@ -13,8 +13,8 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] backslash \
  - [x] Séparation en mots (tokenization)
  - [x] Parsing des tokens
- - [ ] Analyse des erreurs de syntax
- - [ ] Proteger toutes les fonctions
+ - [x] Analyse des erreurs de syntax
+ - [x] Proteger toutes les fonctions
  - [ ] Execution
  - [ ] Redirection
  
