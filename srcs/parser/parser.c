@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/28 16:45:29 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/28 17:58:27 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,14 @@ t_list	*parse_line(char *str, t_list *env_var)
 		write_error(error);
 	else
 	{
-		commands_list = parse_commands(word_list);
-		display_commands(commands_list);
+		error_detector(word_list, &error);
+		if (error != -1)
+			write_error(error);
+		else
+		{
+			commands_list = parse_commands(word_list);
+			display_commands(commands_list);
+		}
 	}
 	ft_lstclear(&word_list, free);
 	return (commands_list);

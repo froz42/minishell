@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 21:00:46 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/28 18:34:57 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*cat_list(t_list *to_cat)
 ** Tokenize tout ca
 */
 
-t_list	*to_word(char *str, int *error, t_list *env_var, t_list *local_var)
+t_list	*to_word(char *str, int *error, t_list *env_var)
 {
 	t_list	*word_list;
 	t_list	*word_tokens;
@@ -103,7 +103,7 @@ t_list	*to_word(char *str, int *error, t_list *env_var, t_list *local_var)
 			ft_lstadd_back(&word_list, ft_lstnew(special(&str)));
 		else if (*str)
 		{
-			word_tokens = make_word(&str, error, env_var, local_var);
+			word_tokens = make_word(&str, error, env_var);
 			ft_lstcat(&word_list, word_tokens);
 			ft_lstclear(&word_tokens, ft_nofree);
 		}

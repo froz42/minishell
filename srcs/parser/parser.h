@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/28 16:50:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/28 17:58:58 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,5 @@ char		*double_quote(char **str);
 char		*make_double_quote(char **str, int *error, t_list *env_var);
 char		*word(char **str);
 t_list		*make_word(char **str, int *error, t_list *env_var);
+void		error_detector(t_list *tokens, int *error);
 #endif

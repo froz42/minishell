@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/28 16:46:53 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/28 18:00:10 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*single_quote(char **str, int *error)
 	else
 	{
 		(*str) += i;
-		*error = 0;
+		*error = 1;
 	}
 	return (token);
 }
