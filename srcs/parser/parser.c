@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 21:18:37 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/28 16:45:29 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_list	*parse_commands(t_list *word_list)
 ** TODO: Verification
 */
 
-t_list	*parse_line(char *str, t_list *env_var, t_list *local_var)
+t_list	*parse_line(char *str, t_list *env_var)
 {
 	t_list		*word_list;
 	t_list		*commands_list;
@@ -120,7 +120,7 @@ t_list	*parse_line(char *str, t_list *env_var, t_list *local_var)
 
 	commands_list = NULL;
 	error = -1;
-	word_list = to_word(str, &error, env_var, local_var);
+	word_list = to_word(str, &error, env_var);
 	if (error != -1)
 		write_error(error);
 	else

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 20:48:25 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/28 16:54:51 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ static char	*get_arg(t_list **word_list)
 /*
 ** retourne l'objet t_command en utilisant les tokens
 ** jusqu'a rencontrer un token | ou ;
-** le premier token a ne pas etre une redirection est considerer comme la commande
+** le premier token a ne pas etre une redirection est considerer
+** comme la commande
 */
 
 t_command	*get_command(t_list **word_list)

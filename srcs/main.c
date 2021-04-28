@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 16:07:40 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/28 16:45:13 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,17 @@ void	parse_exec(t_list *commands_list)
 void	minishell(t_list *env_var, t_list *history)
 {
 	char	*line;
-	t_list	*local_var;
 
-	local_var = NULL;
 	while (1)
 	{
 		ft_putstr("Minishell $>");
 		if (!get_input_line(&line, true, &history))
 			break ;
-		parse_exec(parse_line(line, env_var, local_var));
+		parse_exec(parse_line(line, env_var));
 		if (!ft_strcmp(line, "exit"))
 			break ;
 		free(line);
 	}
-	ft_lstclear(&local_var, free_var);
 	ft_lstclear(&history, free);
 	free(line);
 }

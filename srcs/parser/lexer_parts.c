@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 21:07:33 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/28 16:46:53 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ char	*double_quote(char **str)
 */
 
 char	*make_double_quote(char **str, int *error,
-			t_list *env_var, t_list *local_var)
+			t_list *env_var)
 {
 	t_list	*to_cat;
 	char	*dest;
@@ -122,7 +122,7 @@ char	*make_double_quote(char **str, int *error,
 	while (**str && **str != '"')
 	{
 		if (**str == '$')
-			ft_lstadd_back(&to_cat, ft_lstnew(dolar(str, env_var, local_var)));
+			ft_lstadd_back(&to_cat, ft_lstnew(dolar(str, env_var)));
 		else if (**str == '\\')
 			ft_lstadd_back(&to_cat, ft_lstnew(backslash_double_quote(str)));
 		else

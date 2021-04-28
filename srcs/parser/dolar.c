@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:24:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 20:56:40 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/04/28 16:51:04 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,11 @@ t_list	*split_to_list(char *str)
 ** Cherche la var dans l'env puis dans les locals
 */
 
-char	*get_var(char *key, t_list *env_var, t_list *local_var)
+char	*get_var(char *key, t_list *env_var)
 {
 	char	*search;
 
 	search = search_var(env_var, key);
-	if (search)
-		return (search);
-	search = search_var(local_var, key);
 	if (search)
 		return (search);
 	return ("");
@@ -70,7 +67,7 @@ char	*get_key(char **str, int *i)
 ** Retourne la valeur du $ au bon format
 */
 
-char	*dolar(char **str, t_list *env_var, t_list *local_var)
+char	*dolar(char **str, t_list *env_var)
 {
 	int		i;
 	char	*key;
@@ -87,7 +84,7 @@ char	*dolar(char **str, t_list *env_var, t_list *local_var)
 		return (ft_strdup("$"));
 	if (!key)
 		return (NULL);
-	value = ft_strdup(get_var(key, env_var, local_var));
+	value = ft_strdup(get_var(key, env_var));
 	free(key);
 	if (!value)
 		return (ft_strdup(""));
@@ -104,12 +101,12 @@ char	*dolar(char **str, t_list *env_var, t_list *local_var)
 */
 
 t_list	*dolar_tokenize(char **str, int *concat,
-			t_list *env_var, t_list *local_var)
+			t_list *env_var)
 {
 	char	*to_tokenize;
 	t_list	*tokens;
 
-	to_tokenize = dolar(str, env_var, local_var);
+	to_tokenize = dolar(str, env_var);
 	if (to_tokenize[0] == ' ' && *concat < 1)
 		(*concat) += 1;
 	if (ft_strlen(to_tokenize)
