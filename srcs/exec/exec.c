@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 22:25:59 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/04 22:46:13 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 	while (fork_n)
 	{
 		pid = wait(&status);
-		if (pid == last_pid)
+		//if (pid == last_pid)
 			//printf("lastFork quited with status: %i\n", WEXITSTATUS(status));
 		fork_n--;
 	}
