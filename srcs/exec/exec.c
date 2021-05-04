@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 22:46:13 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/04 22:57:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,31 @@ char	**build_argv(char *bin_name, t_list *args)
 	return (argv);
 }
 
-t_bool	build_in(char **argv, t_list **env_var)
+int	ft_exit(int argc, char **argv)
 {
+	if (argc > 2)
+	{
+		ft_putstr_fd("Minishell: exit: too many arguments\n", 2);
+		return (1);
+	}
+	else if (argc == 2)
+		return (ft_atoi(argv[2]) + 2);
+	else
+		return (0 + 2);
+}
+
+int	build_in(char **argv, t_list **env_var)
+{
+	int		argc;
+
+	argc = 0;
+	while (argv[argc])
+		argc++;
 	(void)env_var;
 	if (ft_strcmp(argv[0], "cd") == 0)
 		return (2);//do something
 	else if (ft_strcmp(argv[0], "exit") == 0)
-		return (2);
+		return (ft_exit(argc, argv));
 	else
 		return (false);
 }
