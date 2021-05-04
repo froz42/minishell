@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 16:23:32 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/04 18:23:33 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,17 @@ char	**build_argv(char *bin_name, t_list *args)
 	return (argv);
 }
 
-void	exec_pipes(t_list *pipes_list, t_list *env_vars)
+int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 {
 	char		**envp;
 	char		**argv;
 	t_tube		*tube_list;
+	pid_t		last_pid;
 	pid_t		pid;
 	int			fork_n;
 	int			i;
 	t_command	command;
+	int			status;
 
 	envp = build_env(env_vars);
 	fork_n = ft_lstsize(pipes_list);
@@ -115,20 +117,27 @@ void	exec_pipes(t_list *pipes_list, t_list *env_vars)
 	i = 0;
 	while (pipes_list)
 	{
-		pid = fork();
-		if (pid == 0)
+		command = *(t_command *)pipes_list->content;
+		argv = build_argv(command.cmd, command.args);
+		last_pid = fork();
+		if (last_pid == 0)
 		{
 			close_unused_fds(i, (fork_n - 1), tube_list);
 			if (i != 0)
 				dup2(tube_list[i - 1][0], STDIN_FILENO);
 			if (i < (fork_n -1))
 				dup2(tube_list[i][1], STDOUT_FILENO);
-			command = *(t_command *)pipes_list->content;
-			argv = build_argv(command.cmd, command.args);
-			int ret = execve(argv[0], argv, envp);
-			printf("problem.. exiting fork: %i\n", ret);
-			exit(ret);
+			execve(argv[0], argv, envp);
+			if (i < (fork_n -1))
+				close(tube_list[i][1]);
+			if (i != 0)
+				close(tube_list[i - 1][0]);
+			free_table(&argv);
+			free_table(&envp);
+			free(tube_list);
+			return (1);
 		}
+		free_table(&argv);
 		i++;
 		pipes_list = pipes_list->next;
 	}
@@ -136,10 +145,11 @@ void	exec_pipes(t_list *pipes_list, t_list *env_vars)
 	close_all_pipes(tube_list, fork_n - 1);
 	while (fork_n)
 	{
-		int		status;
-		pid_t	pid = wait(&status);
-		printf("Fork with PID: %i quited with status: %i\n", pid, status);
+		pid = wait(&status);
+		if (pid == last_pid)
+			printf("lastFork quited with status: %i\n", status);
 		fork_n--;
 	}
 	free(tube_list);
+	return (0);
 }

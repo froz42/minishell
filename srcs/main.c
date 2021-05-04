@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 16:16:15 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/04 18:21:05 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,22 @@ void	mute_unused(int argc, char **argv)
 	(void)argv;
 }
 
-void	parse_exec(t_list *commands_list, t_list *env_var)
+int		parse_exec(t_list *commands_list, t_list *env_var)
 {
+	t_list	*backup;
+
+	backup = commands_list;
 	while (commands_list)
 	{
-		exec_pipes(commands_list->content, env_var);
+		if (exec_pipes(commands_list->content, env_var))
+		{
+			ft_lstclear(&backup, free_command_list);
+			return (1);
+		}
 		commands_list = commands_list->next;
 	}
-	ft_lstclear(&commands_list, free_command_list);
+	ft_lstclear(&backup, free_command_list);
+	return (0);
 }
 
 void	minishell(t_list *env_var, t_list *history)
@@ -53,7 +61,8 @@ void	minishell(t_list *env_var, t_list *history)
 		ft_putstr("Minishell $>");
 		if (!get_input_line(&line, true, &history))
 			break ;
-		parse_exec(parse_line(line, env_var), env_var);
+		if (parse_exec(parse_line(line, env_var), env_var))
+			break ;
 		if (!ft_strcmp(line, "exit"))
 			break ;
 		free(line);
