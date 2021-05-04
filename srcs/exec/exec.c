@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 18:23:33 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/04 21:39:16 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ char	**build_env(t_list *env_var)
 	return (envp);
 }
 
-char	**build_argv(char *bin_name, t_list *args)	
+char	**build_argv(char *bin_name, t_list *args)
 {
 	char	**argv;
 	int		i;
-	
+
 	argv = ft_calloc(ft_lstsize(args) + 2, sizeof(char *));
 	if (!argv)
 		return (NULL);
@@ -96,6 +96,26 @@ char	**build_argv(char *bin_name, t_list *args)
 	return (argv);
 }
 
+t_bool	build_in(char **argv, t_list **env_var)
+{
+	(void)env_var;
+	if (ft_strcmp(argv[0], "cd") == 0)
+		return (1);//do something
+	else if (ft_strcmp(argv[0], "exit") == 0)
+		return (1);
+	else
+		return (false);
+}
+
+void	execution_error_write(char *cmd, int error)
+{
+	ft_putstr_fd("Minishell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(strerror(error), STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+}
+
 int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 {
 	char		**envp;
@@ -107,6 +127,7 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 	int			i;
 	t_command	command;
 	int			status;
+	int			return_value;
 
 	envp = build_env(env_vars);
 	fork_n = ft_lstsize(pipes_list);
@@ -127,7 +148,13 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 				dup2(tube_list[i - 1][0], STDIN_FILENO);
 			if (i < (fork_n -1))
 				dup2(tube_list[i][1], STDOUT_FILENO);
-			execve(argv[0], argv, envp);
+			return_value = build_in(argv, &env_vars);
+			if (!return_value)
+			{
+				execve(argv[0], argv, envp);
+				return_value = errno;
+				execution_error_write(argv[0], return_value);
+			}
 			if (i < (fork_n -1))
 				close(tube_list[i][1]);
 			if (i != 0)
@@ -135,7 +162,7 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 			free_table(&argv);
 			free_table(&envp);
 			free(tube_list);
-			return (1);
+			return (return_value);
 		}
 		free_table(&argv);
 		i++;
@@ -147,7 +174,7 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 	{
 		pid = wait(&status);
 		if (pid == last_pid)
-			printf("lastFork quited with status: %i\n", status);
+			//printf("lastFork quited with status: %i\n", status);
 		fork_n--;
 	}
 	free(tube_list);

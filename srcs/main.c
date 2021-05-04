@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 18:21:05 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/04 21:30:44 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,16 @@ void	mute_unused(int argc, char **argv)
 int		parse_exec(t_list *commands_list, t_list *env_var)
 {
 	t_list	*backup;
+	int		ret;
 
 	backup = commands_list;
 	while (commands_list)
 	{
-		if (exec_pipes(commands_list->content, env_var))
+		ret = exec_pipes(commands_list->content, env_var);
+		if (ret)
 		{
 			ft_lstclear(&backup, free_command_list);
-			return (1);
+			return (ret);
 		}
 		commands_list = commands_list->next;
 	}
@@ -52,16 +54,19 @@ int		parse_exec(t_list *commands_list, t_list *env_var)
 	return (0);
 }
 
-void	minishell(t_list *env_var, t_list *history)
+int		minishell(t_list *env_var, t_list *history)
 {
 	char	*line;
+	int		ret;
 
+	ret = 0;
 	while (1)
 	{
 		ft_putstr("Minishell $>");
 		if (!get_input_line(&line, true, &history))
 			break ;
-		if (parse_exec(parse_line(line, env_var), env_var))
+		ret = parse_exec(parse_line(line, env_var), env_var);
+		if (ret)
 			break ;
 		if (!ft_strcmp(line, "exit"))
 			break ;
@@ -69,15 +74,18 @@ void	minishell(t_list *env_var, t_list *history)
 	}
 	ft_lstclear(&history, free);
 	free(line);
+	return (ret);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_list	*env_var;
+	int		ret;
 
 	mute_unused(argc, argv);
 	env_var = build_var(envp);
 	write_header();
-	minishell(env_var, NULL);
+	ret = minishell(env_var, NULL);
 	ft_lstclear(&env_var, free_var);
+	return (ret);
 }
