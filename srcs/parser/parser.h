@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/28 17:58:58 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/04 14:40:20 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 t_list		*parse_line(char *str, t_list *env_var);
 int			is_special(char *str);
-t_command	*get_command(t_list **word_list);
+t_command	*get_command(t_list **word_list, t_list *env_var);
 void		free_command(void *mem);
 char		*special(char **str);
 t_list		*to_word(char *str, int *error, t_list *env_var);
@@ -38,4 +38,5 @@ char		*make_double_quote(char **str, int *error, t_list *env_var);
 char		*word(char **str);
 t_list		*make_word(char **str, int *error, t_list *env_var);
 void		error_detector(t_list *tokens, int *error);
+void		free_table(char ***table);
 #endif

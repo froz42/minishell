@@ -6,11 +6,12 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/28 16:54:51 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/04 14:39:49 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include <sys/stat.h>
 
 /*
 ** Init the command structure
@@ -55,12 +56,73 @@ static t_redir	*get_redir(t_list **word_list)
 }
 
 /*
+** return true if file exist
+*/
+
+t_bool	file_exist(char *path)
+{
+	struct stat	buffer;
+    int			exist;
+	
+	exist = stat(path, &buffer);
+    if (exist == 0)
+		return (true);
+    else
+		return (false);
+}
+
+/*
 ** Set the command in the struct
 */
 
-static void	set_command(t_list	**word_list, t_command *command)
+void	free_table(char ***table)
 {
-	command->cmd = ft_strdup((*word_list)->content);
+	int		i;
+
+	i = 0;
+	while ((*table)[i])
+		free((*table)[i++]);
+	free(*table);
+}
+
+char	*find_bin(char *bin, t_list *env_var)
+{
+	char	**paths;
+	int		i;
+	char	*to_check;
+	
+	if (ft_strchr(bin, '/'))
+		return (ft_strdup(bin));
+	paths = ft_split(search_var(env_var, "PATH"), ':');
+	if (!paths || !*paths)
+	{
+		free_table(&paths);
+		return (ft_strdup(bin));
+	}
+	i = 0;
+	while (paths[i])
+	{
+		to_check = ft_calloc(ft_strlen(paths[i]) + ft_strlen(bin) + 2, sizeof(char));
+		if (!to_check)
+			return (ft_strdup(bin));
+		ft_strcat(to_check, paths[i]);
+		ft_strcat(to_check, "/");
+		ft_strcat(to_check, bin);
+		if (file_exist(to_check))
+		{
+			free_table(&paths);
+			return (to_check);
+		}
+		free(to_check);
+		i++;
+	}
+	free_table(&paths);
+	return(ft_strdup(bin));
+}
+
+static void	set_command(t_list	**word_list, t_command *command, t_list *env_var)
+{
+	command->cmd = find_bin((*word_list)->content, env_var);
 	*word_list = (*word_list)->next;
 }
 
@@ -84,7 +146,7 @@ static char	*get_arg(t_list **word_list)
 ** comme la commande
 */
 
-t_command	*get_command(t_list **word_list)
+t_command	*get_command(t_list **word_list, t_list *env_var)
 {
 	t_command	*command;
 	t_bool		command_set;
@@ -104,7 +166,7 @@ t_command	*get_command(t_list **word_list)
 		else if (!command_set)
 		{
 			command_set = true;
-			set_command(word_list, command);
+			set_command(word_list, command, env_var);
 		}
 		else
 			ft_lstadd_back(&command->args, ft_lstnew(get_arg(word_list)));

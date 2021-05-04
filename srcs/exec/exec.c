@@ -1,0 +1,145 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
+/*   Updated: 2021/05/04 16:23:32 by tmatis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "exec.h"
+#include <sys/wait.h>
+
+void	close_unused_fds(int index, int	size, t_tube *tube_list)
+{
+	int		i;
+
+	i = 0;
+	while (i < (index - 1))
+	{
+		close(tube_list[i][0]);
+		close(tube_list[i][1]);
+		i++;
+	}
+	if (index != 0)
+	{
+		close(tube_list[i++][1]);
+	}
+	if (i < size)
+	{
+		close(tube_list[i++][0]);
+	}
+	while (i < size)
+	{
+		close(tube_list[i][0]);
+		close(tube_list[i][1]);
+		i++;
+	}
+}
+
+void	close_all_pipes(t_tube *tube_list, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		close(tube_list[i][0]);
+		close(tube_list[i][1]);
+		i++;
+	}
+}
+
+char	**build_env(t_list *env_var)
+{
+	char	**envp;
+	int		i;
+	char	*env_str;
+	t_var	var;
+
+	envp = ft_calloc(ft_lstsize(env_var) + 1, sizeof(char *));
+	if (!envp)
+		return (NULL);
+	i = 0;
+	while (env_var)
+	{
+		var = *(t_var *)env_var->content;
+		env_str = ft_calloc(ft_strlen(var.key) + ft_strlen(var.data) + 2, sizeof(char));
+		ft_strcat(env_str, var.key);
+		ft_strcat(env_str, "=");
+		ft_strcat(env_str, var.data);
+		envp[i] = env_str;
+		i++;
+		env_var = env_var->next;
+	}
+	return (envp);
+}
+
+char	**build_argv(char *bin_name, t_list *args)	
+{
+	char	**argv;
+	int		i;
+	
+	argv = ft_calloc(ft_lstsize(args) + 2, sizeof(char *));
+	if (!argv)
+		return (NULL);
+	i = 0;
+	argv[i++] = ft_strdup(bin_name);
+	while (args)
+	{
+		argv[i++] = ft_strdup(args->content);
+		args = args->next;
+	}
+	return (argv);
+}
+
+void	exec_pipes(t_list *pipes_list, t_list *env_vars)
+{
+	char		**envp;
+	char		**argv;
+	t_tube		*tube_list;
+	pid_t		pid;
+	int			fork_n;
+	int			i;
+	t_command	command;
+
+	envp = build_env(env_vars);
+	fork_n = ft_lstsize(pipes_list);
+	tube_list = calloc(fork_n - 1, sizeof(t_tube));
+	i = 0;
+	while (i < (fork_n - 1))
+		pipe(tube_list[i++]);
+	i = 0;
+	while (pipes_list)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			close_unused_fds(i, (fork_n - 1), tube_list);
+			if (i != 0)
+				dup2(tube_list[i - 1][0], STDIN_FILENO);
+			if (i < (fork_n -1))
+				dup2(tube_list[i][1], STDOUT_FILENO);
+			command = *(t_command *)pipes_list->content;
+			argv = build_argv(command.cmd, command.args);
+			int ret = execve(argv[0], argv, envp);
+			printf("problem.. exiting fork: %i\n", ret);
+			exit(ret);
+		}
+		i++;
+		pipes_list = pipes_list->next;
+	}
+	free_table(&envp);
+	close_all_pipes(tube_list, fork_n - 1);
+	while (fork_n)
+	{
+		int		status;
+		pid_t	pid = wait(&status);
+		printf("Fork with PID: %i quited with status: %i\n", pid, status);
+		fork_n--;
+	}
+	free(tube_list);
+}

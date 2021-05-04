@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/28 17:58:27 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/04 12:08:43 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	escape_control(char *str)
 ** Cree une liste de commande execute simultanement relier par des pipes
 */
 
-t_list	*pipes_commands(t_list **word_list)
+t_list	*pipes_commands(t_list **word_list, t_list *env_var)
 {
 	t_list		*pipes_list;
 	int			special_id;
@@ -63,7 +63,7 @@ t_list	*pipes_commands(t_list **word_list)
 			(*word_list) = (*word_list)->next;
 		if (special_id == 5 || !*word_list)
 			break ;
-		ft_lstadd_back(&pipes_list, ft_lstnew(get_command(word_list)));
+		ft_lstadd_back(&pipes_list, ft_lstnew(get_command(word_list, env_var)));
 	}
 	return (pipes_list);
 }
@@ -90,7 +90,7 @@ t_list	*pipes_commands(t_list **word_list)
 ** Vous pouvez generer un graph dans display.c (display_commands)
 */
 
-t_list	*parse_commands(t_list *word_list)
+t_list	*parse_commands(t_list *word_list, t_list *env_var)
 {
 	t_list		*commands_list;
 
@@ -101,7 +101,7 @@ t_list	*parse_commands(t_list *word_list)
 			word_list = word_list->next;
 		if (!word_list)
 			break ;
-		ft_lstadd_back(&commands_list, ft_lstnew(pipes_commands(&word_list)));
+		ft_lstadd_back(&commands_list, ft_lstnew(pipes_commands(&word_list, env_var)));
 	}
 	return (commands_list);
 }
@@ -130,7 +130,7 @@ t_list	*parse_line(char *str, t_list *env_var)
 			write_error(error);
 		else
 		{
-			commands_list = parse_commands(word_list);
+			commands_list = parse_commands(word_list, env_var);
 			display_commands(commands_list);
 		}
 	}
