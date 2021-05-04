@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 21:39:16 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/04 22:25:59 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ t_bool	build_in(char **argv, t_list **env_var)
 {
 	(void)env_var;
 	if (ft_strcmp(argv[0], "cd") == 0)
-		return (1);//do something
+		return (2);//do something
 	else if (ft_strcmp(argv[0], "exit") == 0)
-		return (1);
+		return (2);
 	else
 		return (false);
 }
@@ -162,7 +162,7 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 			free_table(&argv);
 			free_table(&envp);
 			free(tube_list);
-			return (return_value);
+			return (return_value + 2);
 		}
 		free_table(&argv);
 		i++;
@@ -174,7 +174,7 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 	{
 		pid = wait(&status);
 		if (pid == last_pid)
-			//printf("lastFork quited with status: %i\n", status);
+			//printf("lastFork quited with status: %i\n", WEXITSTATUS(status));
 		fork_n--;
 	}
 	free(tube_list);
