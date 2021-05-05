@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 22:57:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/05 15:43:38 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,25 +60,29 @@ char	**build_env(t_list *env_var)
 	char	*env_str;
 	t_var	var;
 
-	envp = ft_calloc(ft_lstsize(env_var) + 1, sizeof(char *));
+	envp = ft_calloc(ft_lstsize(env_var), sizeof(char *));
 	if (!envp)
 		return (NULL);
 	i = 0;
 	while (env_var)
 	{
 		var = *(t_var *)env_var->content;
+		if (!ft_strcmp(var.key, "?"))
+		{
+			env_var = env_var->next;
+			continue ;
+		}
 		env_str = ft_calloc(ft_strlen(var.key) + ft_strlen(var.data) + 2, sizeof(char));
 		ft_strcat(env_str, var.key);
 		ft_strcat(env_str, "=");
 		ft_strcat(env_str, var.data);
-		envp[i] = env_str;
-		i++;
+		envp[i++] = env_str;
 		env_var = env_var->next;
 	}
 	return (envp);
 }
 
-char	**build_argv(char *bin_name, t_list *args)
+char	**build_argv(char *name, t_list *args)
 {
 	char	**argv;
 	int		i;
@@ -87,7 +91,7 @@ char	**build_argv(char *bin_name, t_list *args)
 	if (!argv)
 		return (NULL);
 	i = 0;
-	argv[i++] = ft_strdup(bin_name);
+	argv[i++] = ft_strdup(name);
 	while (args)
 	{
 		argv[i++] = ft_strdup(args->content);
@@ -134,7 +138,7 @@ void	execution_error_write(char *cmd, int error)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-int		exec_pipes(t_list *pipes_list, t_list *env_vars)
+int		exec_pipes(t_list *pipes_list, t_list **env_vars)
 {
 	char		**envp;
 	char		**argv;
@@ -147,7 +151,7 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 	int			status;
 	int			return_value;
 
-	envp = build_env(env_vars);
+	envp = build_env(*env_vars);
 	fork_n = ft_lstsize(pipes_list);
 	tube_list = calloc(fork_n - 1, sizeof(t_tube));
 	i = 0;
@@ -157,7 +161,7 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 	while (pipes_list)
 	{
 		command = *(t_command *)pipes_list->content;
-		argv = build_argv(command.cmd, command.args);
+		argv = build_argv(command.name, command.args);
 		last_pid = fork();
 		if (last_pid == 0)
 		{
@@ -166,10 +170,10 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 				dup2(tube_list[i - 1][0], STDIN_FILENO);
 			if (i < (fork_n -1))
 				dup2(tube_list[i][1], STDOUT_FILENO);
-			return_value = build_in(argv, &env_vars);
+			return_value = build_in(argv, env_vars);
 			if (!return_value)
 			{
-				execve(argv[0], argv, envp);
+				execve(command.cmd, argv, envp);
 				return_value = errno;
 				execution_error_write(argv[0], return_value);
 			}
@@ -191,8 +195,13 @@ int		exec_pipes(t_list *pipes_list, t_list *env_vars)
 	while (fork_n)
 	{
 		pid = wait(&status);
-		//if (pid == last_pid)
-			//printf("lastFork quited with status: %i\n", WEXITSTATUS(status));
+		char	*pid_str;
+		if (pid == last_pid)
+		{
+			pid_str = ft_itoa(pid);
+			edit_var(env_vars, "?", pid_str);
+			free(pid_str);
+		}
 		fork_n--;
 	}
 	free(tube_list);

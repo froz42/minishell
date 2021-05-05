@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 14:39:49 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/05 15:33:09 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_bool	file_exist(char *path)
 {
 	struct stat	buffer;
     int			exist;
-	
+
 	exist = stat(path, &buffer);
     if (exist == 0)
 		return (true);
@@ -90,7 +90,7 @@ char	*find_bin(char *bin, t_list *env_var)
 	char	**paths;
 	int		i;
 	char	*to_check;
-	
+
 	if (ft_strchr(bin, '/'))
 		return (ft_strdup(bin));
 	paths = ft_split(search_var(env_var, "PATH"), ':');
@@ -123,6 +123,7 @@ char	*find_bin(char *bin, t_list *env_var)
 static void	set_command(t_list	**word_list, t_command *command, t_list *env_var)
 {
 	command->cmd = find_bin((*word_list)->content, env_var);
+	command->name = ft_strdup((*word_list)->content);
 	*word_list = (*word_list)->next;
 }
 

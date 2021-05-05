@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 14:17:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/05 15:32:31 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_redir
 
 typedef struct s_command
 {
+	char	*name;
 	char	*cmd;
 	t_list	*args;
 	t_list	*redirs;

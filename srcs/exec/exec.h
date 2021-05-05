@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 18:19:40 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/05 15:11:46 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@
 
 #include "../minishell.h"
 
-int	exec_pipes(t_list *pipes_list, t_list *env_vars);
+int	exec_pipes(t_list *pipes_list, t_list **env_vars);
 
 #endif

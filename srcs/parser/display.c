@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:17:15 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 20:51:45 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/05 15:36:09 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	display_commands(t_list *commands_list)
 			printf("│   │ • ┌ t_command\n");
 			cmd = *((t_command *)pipes_list->content);
 			printf("│   │   │ • cmd = \"%s\"\n", cmd.cmd);
+			printf("│   │   │ • name = \"%s\"\n", cmd.name);
 			printf("│   │   │ • args = ");
 			display_args(cmd.args);
 			printf("│   │   │ • redirs = ");
