@@ -1,5 +1,5 @@
 # MINISHELL
-[![forthebadge](https://forthebadge.com/images/badges/made-with-c.svg)](https://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com) 
+[![forthebadge](https://forthebadge.com/images/badges/made-with-c.svg)](https://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 
 ## SUJET
 
@@ -17,14 +17,14 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] Proteger toutes les fonctions
  - [x] pipes
  - [x] $?
- - [ ] exit
- - [ ] cd
+ - [ ] exit (50%)
+ - [x] cd
  - [ ] echo
  - [ ] export
  - [ ] env
  - [ ] Redirection
  - [ ] Signals ctrl-c ctrl-D ctrl-\
- 
+
 ## Démarrage
 Pour compiler le projet:
 
@@ -34,4 +34,3 @@ Pour compiler le projet:
 * **Théo Matis** _alias_ [@tmatis](https://profile.intra.42.fr/users/tmatis)
 
 [![tmatis's 42 stats](https://badge42.herokuapp.com/api/stats/tmatis)](https://github.com/JaeSeoKim/badge42)
-
