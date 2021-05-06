@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 12:35:26 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 13:17:35 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static int	handle_ctrl(t_buffer *buffer, int *history_fetch,
 		handle_ctrld(buffer);
 		return (1);
 	}
+	else if (buffer->escape_id == 8)
+		handle_ctrl_l(buffer);
 	return (0);
 }
 

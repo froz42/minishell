@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 16:12:51 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 13:22:35 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,21 @@ void	handle_right_key(t_buffer *buffer)
 	{
 		ft_putstr("\033[1C");
 		buffer->position--;
+	}
+}
+
+void	handle_ctrl_l(t_buffer *buffer)
+{
+	int	i;
+
+	ft_putstr("\033[2J\033[H");
+	print_prompt();
+	ft_putstr(buffer->buff);
+
+	i = 0;
+	while (i < buffer->position)
+	{
+		ft_putstr("\033[1D");
+		i++;
 	}
 }

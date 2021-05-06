@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:17:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 12:25:35 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 13:14:44 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,6 @@ void			handle_ctrld(t_buffer *buffer);
 void			handle_left_key(t_buffer *buffer);
 void			handle_right_key(t_buffer *buffer);
 void			print_prompt(void);
+void			handle_ctrl_l(t_buffer *buffer);
+
 #endif

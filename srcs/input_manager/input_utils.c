@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/05 21:19:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 21:28:10 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 13:13:32 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	get_escape_id(char *buff, int size)
 		return (6);
 	if (size == 1 && buff[0] == 4)
 		return (7);
+	if (size == 1 && buff[0] == '\14')
+		return (8);
 	return (-1);
 }
 
