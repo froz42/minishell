@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/05 15:14:11 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 12:44:03 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,27 +34,32 @@ void	mute_unused(int argc, char **argv)
 	(void)argv;
 }
 
-t_bool		check_exit(t_list *commands_list)
+int		 handle_buildin(t_list *commands_list, t_list **env_var)
 {
 	t_command	command;
+	char		**argv;
+	int			argc;
+	int			return_value;
+	char		*status_str;
 
+	return_value = 0;
 	command = *(t_command *)((t_list *)commands_list->content)->content;
 	if (ft_lstsize(commands_list) == 1)
 	{
-		if (ft_strcmp(command.cmd, "exit") == 0)
+		argv = build_argv(command.name, command.args);
+		argc = build_argc(argv);
+		if (ft_strcmp(command.name, "cd") == 0)
 		{
-			if (ft_lstsize(command.args) > 1)
-			{
-				ft_putstr_fd("Minishell: exit: too many arguments\n", 2);
-				return (0);
-			}
-			if (ft_lstsize(command.args) == 1)
-				return (ft_atoi(command.args->content) + 2);
-			else
-				return (0 + 2);
+			status_str = ft_itoa(WEXITSTATUS(ft_cd(argc, argv, env_var)));
+			edit_var(env_var, "?", status_str);
+			ft_safe_free(status_str);
+			return_value = 1;
 		}
+		else if (ft_strcmp(command.name, "exit") == 0)
+			return_value = ft_exit(argc, argv);
+		free_table(&argv);
 	}
-	return (0);
+	return (return_value);
 }
 
 int		parse_exec(t_list *commands_list, t_list **env_var)
@@ -65,10 +70,10 @@ int		parse_exec(t_list *commands_list, t_list **env_var)
 	backup = commands_list;
 	while (commands_list)
 	{
-		ret = check_exit(commands_list);
+		ret = handle_buildin(commands_list, env_var);
 		if (!ret)
 			ret = exec_pipes(commands_list->content, env_var);
-		if (ret)
+		if (ret > 1)
 		{
 			ft_lstclear(&backup, free_command_list);
 			return (ret);
@@ -88,7 +93,7 @@ int		minishell(t_list **env_var, t_list *history)
 	ret = 0;
 	while (1)
 	{
-		ft_putstr("Minishell $>");
+		print_prompt();
 		if (!get_input_line(&line, true, &history))
 			break ;
 		ret = parse_exec(parse_line(line, *env_var), env_var);

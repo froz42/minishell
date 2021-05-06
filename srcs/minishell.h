@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 18:56:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/05 15:12:34 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 11:48:42 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <errno.h>
 # include "../libft/libft.h"
 # include "minishell_types.h"
+# include "buildin/buildin.h"
 # include "parser/parser.h"
 # include "input_manager/input_manager.h"
 # include "exec/exec.h"
@@ -26,4 +27,8 @@ t_list			*build_var(char **envp);
 char			*search_var(t_list *var_list, char *key);
 void			free_var(void *mem);
 void			edit_var(t_list **var_list, char *key, char *value);
+char			**build_env(t_list *env_var);
+char			**build_argv(char *name, t_list *args);
+int				build_argc(char **argv);
+
 #endif

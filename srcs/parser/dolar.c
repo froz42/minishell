@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:24:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/28 16:51:04 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/05 15:47:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ char	*get_key(char **str, int *i)
 {
 	char	*key;
 
+	if (**str == '?')
+	{
+		*i = 1;
+		(*str) += *i;
+		return (ft_strdup("?"));
+	}
 	*i = 0;
 	while ((*str)[*i] && ((*str)[*i] == '_' || ft_isalnum((*str)[*i])))
 		(*i)++;

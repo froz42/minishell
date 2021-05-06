@@ -6,11 +6,12 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 16:12:06 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 12:27:39 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
+
 
 /*
 ** Init my structure

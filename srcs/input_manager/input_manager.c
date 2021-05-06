@@ -6,12 +6,29 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 16:10:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 12:35:26 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
 #include <termios.h>
+
+/*
+** Print the prompt
+*/
+
+void	print_prompt(void)
+{
+	ft_putstr("\x1B[32m");
+	ft_putstr(getenv("USER"));
+	ft_putstr("\x1B[37m");
+	ft_putstr("@");
+	ft_putstr("\x1B[34m");
+	ft_putstr("minishell");
+	ft_putstr("\x1B[37m");
+	ft_putstr("$ ");
+	ft_putstr("\x1B[0m");
+}
 
 /*
 ** Handle ctrl chars and call the right function

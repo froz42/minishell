@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   buildin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/05 21:07:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 12:06:10 by tmatis           ###   ########.fr       */
+/*   Created: 2021/05/06 11:40:31 by tmatis            #+#    #+#             */
+/*   Updated: 2021/05/06 11:42:24 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef BUILDIN_H
+
+# define BUILDIN_H
+
 #include "../minishell.h"
 
-int		ft_cd(int argc, char **argv, t_list **env_var)
-{
-	char	actual_dir[BUFFER_SIZE];
+int		ft_cd(int argc, char **argv, t_list **env_var);
+int		ft_exit(int argc, char **argv);
 
-	(void)env_var;
-	(void)argv;
-	(void)argc;
-
-
-	getcwd(actual_dir, sizeof(actual_dir));
-	return (0);
-}
+#endif

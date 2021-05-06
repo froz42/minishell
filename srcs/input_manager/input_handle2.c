@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 16:13:42 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 12:26:25 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	handle_ctrlc(t_buffer *buffer)
 	buffer->size = 0;
 	buffer->position = 0;
 	ft_putstr("^C\n");
-	ft_putstr("Minishell $>");
+	print_prompt();
 }
 
 /*
