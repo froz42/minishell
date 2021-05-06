@@ -17,7 +17,7 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] Proteger toutes les fonctions
  - [x] pipes
  - [x] $?
- - [ ] exit (50%)
+ - [x] exit
  - [x] cd
  - [ ] echo
  - [ ] export

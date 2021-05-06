@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 22:10:21 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 22:34:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 		argc = build_argc(argv);
 		if (ft_strcmp(command.name, "cd") == 0)
 			return_value_buildin(ft_cd(argc, argv, env_var), env_var, &return_value);
+		if (ft_strcmp(command.name, "echo") == 0)
+			return_value_buildin(ft_echo(argc, argv), env_var, &return_value);
 		else if (ft_strcmp(command.name, "exit") == 0)
 			return_value = ft_exit(argc, argv, env_var) + 2;
 		free_table(&argv);

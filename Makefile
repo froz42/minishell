@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/06 22:16:30 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/06 22:32:52 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ SRCS		= 	input_manager/buffer_manager.c input_manager/history.c \
 				parser/parser.c parser/command.c parser/lexer.c errors.c \
 				var.c parser/destroyer.c parser/display.c parser/lexer_parts.c \
 				parser/dolar.c parser/make_word.c parser/error_detector.c \
-				exec/exec.c buildin/cd.c buildin/exit.c build_args.c
+				exec/exec.c buildin/cd.c buildin/exit.c build_args.c \
+				buildin/echo.c
 
 MAIN		= main.c
 
