@@ -15,8 +15,15 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] Parsing des tokens
  - [x] Analyse des erreurs de syntax
  - [x] Proteger toutes les fonctions
- - [ ] Execution
+ - [x] pipes
+ - [x] $?
+ - [ ] exit
+ - [ ] cd
+ - [ ] echo
+ - [ ] export
+ - [ ] env
  - [ ] Redirection
+ - [ ] Signals ctrl-c ctrl-D ctrl-\
  
 ## Démarrage
 Pour compiler le projet:
