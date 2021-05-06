@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 12:51:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 12:59:50 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,22 @@ void	mute_unused(int argc, char **argv)
 	(void)argv;
 }
 
+void	return_value_buildin(int func_return, t_list **env_var, int *return_value)
+{
+	char	*status_str;
+
+	status_str = ft_itoa(WEXITSTATUS(func_return));
+	edit_var(env_var, "?", status_str);
+	ft_safe_free(status_str);
+	*return_value = 1;
+}
+
 int		 handle_buildin(t_list *commands_list, t_list **env_var)
 {
 	t_command	command;
 	char		**argv;
 	int			argc;
 	int			return_value;
-	char		*status_str;
 
 	return_value = 0;
 	command = *(t_command *)((t_list *)commands_list->content)->content;
@@ -49,12 +58,7 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 		argv = build_argv(command.name, command.args);
 		argc = build_argc(argv);
 		if (ft_strcmp(command.name, "cd") == 0)
-		{
-			status_str = ft_itoa(WEXITSTATUS(ft_cd(argc, argv, env_var)));
-			edit_var(env_var, "?", status_str);
-			ft_safe_free(status_str);
-			return_value = 1;
-		}
+			return_value_buildin(ft_cd(argc, argv, env_var), env_var, &return_value);
 		else if (ft_strcmp(command.name, "exit") == 0)
 			return_value = ft_exit(argc, argv) + 2;
 		free_table(&argv);
