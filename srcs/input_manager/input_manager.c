@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 13:17:35 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 22:14:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@
 
 void	print_prompt(void)
 {
+	char	*user;
+
+	user = getenv("USER");
 	ft_putstr("\x1B[32m");
-	ft_putstr(getenv("USER"));
+	if (user)
+		ft_putstr(user);
 	ft_putstr("\x1B[37m");
 	ft_putstr("@");
 	ft_putstr("\x1B[34m");

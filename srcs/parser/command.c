@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/05 15:33:09 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/06 22:17:28 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	free_table(char ***table)
 	int		i;
 
 	i = 0;
+	if (!*table)
+		return ;
 	while ((*table)[i])
 		free((*table)[i++]);
 	free(*table);

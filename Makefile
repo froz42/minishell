@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/06 12:06:34 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/06 22:16:30 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@
 
 
 NAME	= minishell
-CC 		= clang
-CFLAGS	= -Wall -Werror -Wextra -g
+CC 		= gcc
+CFLAGS	= -Wall -Werror -Wextra -g -fsanitize=address
 LIBFT	= libft/libft.a
 AUTHOR	= tmatis
 DATE	= 25/03/2021
