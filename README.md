@@ -20,8 +20,10 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] exit
  - [x] cd
  - [x] echo
+ - [x] unset
+ - [ ] pwd
  - [ ] export
- - [ ] env
+ - [x] env
  - [ ] Redirection
  - [ ] Signals ctrl-c ctrl-D ctrl-\
 
