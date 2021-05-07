@@ -22,7 +22,7 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] echo
  - [x] unset
  - [x] pwd
- - [ ] export
+ - [x] export
  - [x] env
  - [ ] Signals ctrl-c ctrl-D ctrl-\
  - [ ] Redirection
