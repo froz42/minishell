@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 15:45:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/05 15:22:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 17:40:59 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,11 @@ void	edit_var(t_list **var_list, char *key, char *value)
 		var = (t_var *)save->content;
 		if (!ft_strcmp(var->key, key))
 		{
-			ft_safe_free(var->data);
-			var->data = ft_strdup(value);
+			if (value)
+			{
+				var->data = ft_strdup(value);
+				ft_safe_free(var->data);
+			}
 			return ;
 		}
 		save = save->next;
@@ -86,7 +89,8 @@ void	edit_var(t_list **var_list, char *key, char *value)
 	if (!var)
 		return ;
 	var->key = ft_strdup(key);
-	var->data = ft_strdup(value);
+	if (value)
+		var->data = ft_strdup(value);
 	ft_lstadd_back(var_list, ft_lstnew(var));
 }
 
