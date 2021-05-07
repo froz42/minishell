@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:45:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 12:06:45 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 13:25:04 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**build_env(t_list *env_var)
 	while (env_var)
 	{
 		var = *(t_var *)env_var->content;
-		if (!ft_strcmp(var.key, "?"))
+		if (!ft_strcmp(var.key, "?") || !var.data)
 		{
 			env_var = env_var->next;
 			continue ;

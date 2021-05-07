@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:40:31 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 22:33:48 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 14:06:30 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,6 @@
 int		ft_cd(int argc, char **argv, t_list **env_var);
 int		ft_exit(int argc, char **argv, t_list **env_var);
 int		ft_echo(int argc, char **argv);
+int		ft_env(t_list *env_var);
+int		ft_unset(int argc, char **argv, t_list **env_var);
 #endif

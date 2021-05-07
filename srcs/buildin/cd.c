@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 21:07:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 20:34:02 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 14:16:28 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,25 @@ static void	generic_error(char *error, char *path)
 	ft_putstr_fd("\n", 2);
 }
 
+static int	cd_home(t_list **env_var)
+{
+	char	*home;
+
+	home = search_var(*env_var, "HOME");
+	if (!home)
+	{
+		ft_putstr_fd("Minishell: cd: HOME not set\n", 2);
+		return (1);
+	}
+	else
+		chdir(home);
+	return (0);
+}
+
 int		ft_cd(int argc, char **argv, t_list **env_var)
 {
 	char	actual_dir[BUFFER_SIZE];
 	int		ret;
-	(void)env_var;
-	(void)argv;
-	(void)argc;
 
 	getcwd(actual_dir, sizeof(actual_dir));
 	edit_var(env_var, "OLDPWD", actual_dir);
@@ -47,5 +59,7 @@ int		ft_cd(int argc, char **argv, t_list **env_var)
 		ft_putstr_fd("Minishell: cd: too mutch arguments\n", 2);
 		return (1);
 	}
+	else if (argc == 1)
+		return (cd_home(env_var));
 	return (0);
 }

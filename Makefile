@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/06 22:32:52 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/07 14:06:42 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@
 
 
 NAME	= minishell
-CC 		= gcc
-CFLAGS	= -Wall -Werror -Wextra -g -fsanitize=address
+CC 		= clang
+CFLAGS	= -Wall -Werror -Wextra -g
 LIBFT	= libft/libft.a
 AUTHOR	= tmatis
 DATE	= 25/03/2021
@@ -33,7 +33,7 @@ SRCS		= 	input_manager/buffer_manager.c input_manager/history.c \
 				var.c parser/destroyer.c parser/display.c parser/lexer_parts.c \
 				parser/dolar.c parser/make_word.c parser/error_detector.c \
 				exec/exec.c buildin/cd.c buildin/exit.c build_args.c \
-				buildin/echo.c
+				buildin/echo.c buildin/env.c buildin/unset.c
 
 MAIN		= main.c
 

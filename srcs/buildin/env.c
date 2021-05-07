@@ -1,41 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/06 22:29:02 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 14:22:00 by tmatis           ###   ########.fr       */
+/*   Created: 2021/05/07 12:42:16 by tmatis            #+#    #+#             */
+/*   Updated: 2021/05/07 13:40:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
 
-int		ft_echo(int argc, char **argv)
+int		ft_env(t_list *env_var)
 {
 	int		i;
-	t_bool	n_option;
+	char **envp;
 
-	n_option = false;
-	if (argc >= 2)
+	envp = build_env(env_var);
+	if (!envp)
 	{
-		if (ft_strcmp(argv[1], "-n") == 0)
-		{
-			argv++;
-			argc--;
-			n_option = true;
-		}
-		i = 1;
-		while (i < argc)
-		{
-			ft_putstr(argv[i]);
-			if ((i + 1) < argc)
-				ft_putstr(" ");
-			i++;
-		}
+		ft_putstr_fd("Minishell: env: ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+		return (errno);
 	}
-	if (!n_option)
-			ft_putstr("\n");
+	i = 0;
+	while (envp[i])
+		printf("%s\n", envp[i++]);
+	free_table(&envp);
 	return (0);
 }
