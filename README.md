@@ -21,7 +21,7 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] cd
  - [x] echo
  - [x] unset
- - [ ] pwd
+ - [x] pwd
  - [ ] export
  - [x] env
  - [ ] Redirection
