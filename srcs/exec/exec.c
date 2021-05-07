@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 19:31:53 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 20:20:03 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,9 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-
-pid_t	store_pid(t_bool set, pid_t pid)
-{
-	static pid_t stored_pid;
-
-	if (set)
-		stored_pid = pid;
-	return (stored_pid);
-}
-
 void	sig_handler(int signal_no)
 {
 	(void)signal_no;
-	//printf("the signal number is %i\nyou should do the operation on %i\n", signal_no, store_pid(false, 0));
 }
 
 void	close_unused_fds(int index, int	size, t_tube *tube_list)
@@ -102,6 +91,25 @@ void	execution_error_write(char *cmd, int error)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
+void	handle_status(int status, t_list **env_var)
+{
+	char *status_str;
+	int	 return_value;
+
+	return_value = 0;
+	if (WIFEXITED(status))
+		return_value = WEXITSTATUS(return_value);
+	if (WIFSIGNALED(status))
+		return_value = WTERMSIG(status) + 128;
+	if (return_value == 130)
+		ft_putstr("\n");
+	if (return_value == 131)
+		ft_putstr("Quit (core dumped)\n");
+	status_str = ft_itoa(return_value);
+	edit_var(env_var, "?", status_str);
+	free(status_str);
+}
+
 int		exec_pipes(t_list *pipes_list, t_list **env_vars)
 {
 	char		**envp;
@@ -156,20 +164,13 @@ int		exec_pipes(t_list *pipes_list, t_list **env_vars)
 	}
 	free_table(&envp);
 	close_all_pipes(tube_list, fork_n - 1);
-	store_pid(true, last_pid);
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
 	while (fork_n)
 	{
 		pid = wait(&status);
-		char	*status_str;
 		if (pid == last_pid)
-		{
-			status_str = ft_itoa(WEXITSTATUS(status));
-			printf("the sig is: %i\n", WTERMSIG(status));
-			edit_var(env_vars, "?", status_str);
-			free(status_str);
-		}
+			handle_status(status, env_vars);
 		fork_n--;
 	}
 	free(tube_list);
