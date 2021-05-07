@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buildin.h                                          :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/06 11:40:31 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 16:03:40 by tmatis           ###   ########.fr       */
+/*   Created: 2021/05/07 15:40:14 by tmatis            #+#    #+#             */
+/*   Updated: 2021/05/07 15:44:39 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILDIN_H
+#include "buildin.h"
 
-# define BUILDIN_H
+static int	print_var_sorted(t_list *env_var)
+{
+	return (0);
+}
 
-#include "../minishell.h"
-
-int		ft_cd(int argc, char **argv, t_list **env_var);
-int		ft_exit(int argc, char **argv, t_list **env_var, t_bool show_exit);
-int		ft_echo(int argc, char **argv);
-int		ft_env(t_list *env_var);
-int		ft_unset(int argc, char **argv, t_list **env_var);
-int		ft_pwd(void);
-#endif
+int		ft_export(int argc, char **argv, t_list **env_var)
+{
+	if (argc == 2)
+		return (print_var_sorted(*env_var));
+	return (0);
+}

@@ -6,12 +6,31 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 22:14:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 16:01:51 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
 #include <termios.h>
+
+static char	*get_last_dir(void)
+{
+	char	actual_dir[BUFFER_SIZE];
+	char	**split;
+	char	*last;
+	int		i;
+
+	getcwd(actual_dir, sizeof(actual_dir));
+	split = ft_split(actual_dir, '/');
+	if (!split)
+		return (NULL);
+	i = 0;
+	while (split[i])
+		i++;
+	last = ft_strdup(split[i - 1]);
+	free_table(&split);
+	return (last);
+}
 
 /*
 ** Print the prompt
@@ -20,18 +39,23 @@
 void	print_prompt(void)
 {
 	char	*user;
+	char	*last_dir;
 
 	user = getenv("USER");
 	ft_putstr("\x1B[32m");
 	if (user)
 		ft_putstr(user);
-	ft_putstr("\x1B[37m");
-	ft_putstr("@");
-	ft_putstr("\x1B[34m");
-	ft_putstr("minishell");
-	ft_putstr("\x1B[37m");
-	ft_putstr("$ ");
-	ft_putstr("\x1B[0m");
+	ft_putstr("\x1B[37m@");
+	ft_putstr("\x1B[34mminishell");
+	last_dir = get_last_dir();
+	if (last_dir)
+	{
+		ft_putstr("\x1B[37m (\x1B[33m");
+		ft_putstr(last_dir);
+		free(last_dir);
+		ft_putstr("\x1B[37m)");
+	}
+	ft_putstr("$ \x1B[0m");
 }
 
 /*
