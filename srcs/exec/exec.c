@@ -6,12 +6,29 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 16:28:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 19:31:53 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include <sys/wait.h>
+#include <signal.h>
+
+
+pid_t	store_pid(t_bool set, pid_t pid)
+{
+	static pid_t stored_pid;
+
+	if (set)
+		stored_pid = pid;
+	return (stored_pid);
+}
+
+void	sig_handler(int signal_no)
+{
+	(void)signal_no;
+	//printf("the signal number is %i\nyou should do the operation on %i\n", signal_no, store_pid(false, 0));
+}
 
 void	close_unused_fds(int index, int	size, t_tube *tube_list)
 {
@@ -139,6 +156,9 @@ int		exec_pipes(t_list *pipes_list, t_list **env_vars)
 	}
 	free_table(&envp);
 	close_all_pipes(tube_list, fork_n - 1);
+	store_pid(true, last_pid);
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
 	while (fork_n)
 	{
 		pid = wait(&status);
@@ -146,6 +166,7 @@ int		exec_pipes(t_list *pipes_list, t_list **env_vars)
 		if (pid == last_pid)
 		{
 			status_str = ft_itoa(WEXITSTATUS(status));
+			printf("the sig is: %i\n", WTERMSIG(status));
 			edit_var(env_vars, "?", status_str);
 			free(status_str);
 		}
