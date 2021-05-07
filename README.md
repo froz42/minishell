@@ -26,6 +26,7 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] env
  - [x] Signals ctrl-c ctrl-\
  - [ ] Redirection
+ - [ ] Erreur d'execution de commande comme dans bash (50 %)
  - [ ] Mise a la norme (16 / 33 fichiers)
 
 
