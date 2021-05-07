@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:24:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/05 15:47:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 14:23:02 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,5 @@ t_list	*dolar_tokenize(char **str, int *concat,
 		(*concat) += 2;
 	tokens = split_to_list(to_tokenize);
 	ft_safe_free(to_tokenize);
-	if (ft_lstsize(tokens) == 0)
-		ft_lstadd_back(&tokens, ft_lstnew(ft_strdup("")));
 	return (tokens);
 }
