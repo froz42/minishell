@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 20:20:03 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 20:32:27 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ void	handle_status(int status, t_list **env_var)
 		ft_putstr("\n");
 	if (return_value == 131)
 		ft_putstr("Quit (core dumped)\n");
+	if (return_value == 139)
+		ft_putstr("Segmentation fault (core dumped)\n");
 	status_str = ft_itoa(return_value);
 	edit_var(env_var, "?", status_str);
 	free(status_str);
