@@ -24,7 +24,7 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] pwd
  - [x] export
  - [x] env
- - [ ] Signals ctrl-c ctrl-D ctrl-\
+ - [x] Signals ctrl-c ctrl-\
  - [ ] Redirection
  - [ ] Mise a la norme (16 / 33 fichiers)
 
