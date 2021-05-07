@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 16:55:13 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 21:23:59 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ void	mute_unused(int argc, char **argv)
 	(void)argv;
 }
 
-void	return_value_buildin(int func_return, t_list **env_var, int *return_value)
+int	return_value_buildin(int func_return, t_list **env_var)
 {
 	char	*status_str;
 
 	status_str = ft_itoa(func_return);
 	edit_var(env_var, "?", status_str);
 	ft_safe_free(status_str);
-	*return_value = 1;
+	return (1);
 }
 
 int		 handle_buildin(t_list *commands_list, t_list **env_var)
@@ -49,31 +49,31 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 	t_command	command;
 	char		**argv;
 	int			argc;
-	int			return_value;
+	int			ret;
 
-	return_value = 0;
-	command = *(t_command *)((t_list *)commands_list->content)->content;
+	ret = 0;
 	if (ft_lstsize(commands_list) == 1)
 	{
+		command = *(t_command *)commands_list->content;
 		argv = build_argv(command.name, command.args);
 		argc = build_argc(argv);
 		if (ft_strcmp(command.name, "cd") == 0)
-			return_value_buildin(ft_cd(argc, argv, env_var), env_var, &return_value);
+			ret = return_value_buildin(ft_cd(argc, argv, env_var), env_var);
 		else if (ft_strcmp(command.name, "echo") == 0)
-			return_value_buildin(ft_echo(argc, argv), env_var, &return_value);
+			ret = return_value_buildin(ft_echo(argc, argv), env_var);
 		else if (ft_strcmp(command.name, "env") == 0)
-			return_value_buildin(ft_env(*env_var), env_var, &return_value);
+			ret = return_value_buildin(ft_env(*env_var), env_var);
 		else if (ft_strcmp(command.name, "unset") == 0)
-			return_value_buildin(ft_unset(argc, argv, env_var), env_var, &return_value);
+			ret = return_value_buildin(ft_unset(argc, argv, env_var), env_var);
 		else if (ft_strcmp(command.name, "pwd") == 0)
-			return_value_buildin(ft_pwd(), env_var, &return_value);
+			ret = return_value_buildin(ft_pwd(), env_var);
 		else if (ft_strcmp(command.name, "export") == 0)
-			return_value_buildin(ft_export(argc, argv, env_var), env_var, &return_value);
+			ret = return_value_buildin(ft_export(argc, argv, env_var), env_var);
 		else if (ft_strcmp(command.name, "exit") == 0)
-			return_value = ft_exit(argc, argv, env_var, true) + 2;
+			ret = ft_exit(argc, argv, env_var, true) + 2;
 		free_table(&argv);
 	}
-	return (return_value);
+	return (ret);
 }
 
 int		parse_exec(t_list *commands_list, t_list **env_var)
@@ -84,7 +84,7 @@ int		parse_exec(t_list *commands_list, t_list **env_var)
 	backup = commands_list;
 	while (commands_list)
 	{
-		ret = handle_buildin(commands_list, env_var);
+		ret = handle_buildin(commands_list->content, env_var);
 		if (!ret)
 			ret = exec_pipes(commands_list->content, env_var);
 		if (ret > 1)
