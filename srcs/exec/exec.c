@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 16:06:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 16:28:14 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int	build_in(char **argv, t_list **env_var)
 		return (ft_env(*env_var));
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		return (ft_unset(argc, argv, env_var));
+	else if (ft_strcmp(argv[0], "export") == 0)
+		return (ft_export(argc, argv, env_var));
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		return (ft_pwd());
 	else

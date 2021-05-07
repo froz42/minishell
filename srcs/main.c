@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 16:13:47 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 16:55:13 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 			return_value_buildin(ft_unset(argc, argv, env_var), env_var, &return_value);
 		else if (ft_strcmp(command.name, "pwd") == 0)
 			return_value_buildin(ft_pwd(), env_var, &return_value);
+		else if (ft_strcmp(command.name, "export") == 0)
+			return_value_buildin(ft_export(argc, argv, env_var), env_var, &return_value);
 		else if (ft_strcmp(command.name, "exit") == 0)
 			return_value = ft_exit(argc, argv, env_var, true) + 2;
 		free_table(&argv);
@@ -107,7 +109,10 @@ int		minishell(t_list **env_var, t_list *history)
 	{
 		print_prompt();
 		if (!get_input_line(&line, true, &history))
+		{
+			ret = ft_exit(1, NULL, env_var, true) + 2;
 			break ;
+		}
 		ret = parse_exec(parse_line(line, *env_var), env_var);
 		if (ret)
 			break ;

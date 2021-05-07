@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 12:26:25 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/07 16:56:00 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	handle_ctrlc(t_buffer *buffer)
 
 void	handle_ctrld(t_buffer *buffer)
 {
-	ft_putstr("\nexit\n");
 	free(buffer->buff);
 	buffer->buff = ft_strdup("");
 	buffer->size = ft_strlen(buffer->buff);
