@@ -6,13 +6,13 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 21:23:59 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/08 14:47:52 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <termios.h>
-
+#include <fcntl.h>
 /*
 ** Write a beautifull header O_O
 ** TODO: COLOR
@@ -44,17 +44,64 @@ int	return_value_buildin(int func_return, t_list **env_var)
 	return (1);
 }
 
+int	get_open_flags(int type)
+{
+	if (type == 1)
+		return (O_CREAT | O_WRONLY);
+	else if (type == 2)
+		return (O_RDONLY);
+	else
+		return (O_CREAT | O_WRONLY | O_APPEND);
+}
+
+void	file_error(char *file, char *error)
+{
+	ft_putstr_fd("Minishell: ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(error, 2);
+	ft_putstr_fd("\n", 2);
+}
+
+void	redirect_fd(t_command command, int backup[2])
+{
+	t_list	*redir_list;
+	t_redir	redir;
+	int		open_file;
+
+	backup[0] = dup(STDIN_FILENO);
+	backup[1] = dup(STDOUT_FILENO);
+	redir_list = command.redirs;
+	while (redir_list)
+	{
+		redir = *(t_redir *)redir_list->content;
+		open_file = open(redir.file, get_open_flags(redir.type), 0664);
+		if (!open_file)
+			file_error(redir.file, strerror(errno));
+		else
+		{
+			if (redir.type == 1 || redir.type == 4)
+				dup2(open_file, STDOUT_FILENO);// STD_OUT
+			else
+				dup2(open_file, STDIN_FILENO);//STD_IN
+		}
+		redir_list = redir_list->next;
+	}
+}
+
 int		 handle_buildin(t_list *commands_list, t_list **env_var)
 {
 	t_command	command;
 	char		**argv;
 	int			argc;
 	int			ret;
+	int			fd_backup[2];
 
 	ret = 0;
 	if (ft_lstsize(commands_list) == 1)
 	{
 		command = *(t_command *)commands_list->content;
+		redirect_fd(command, fd_backup);
 		argv = build_argv(command.name, command.args);
 		argc = build_argc(argv);
 		if (ft_strcmp(command.name, "cd") == 0)
@@ -72,6 +119,11 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 		else if (ft_strcmp(command.name, "exit") == 0)
 			ret = ft_exit(argc, argv, env_var, true) + 2;
 		free_table(&argv);
+		if (ft_lstsize(command.redirs) > 0)
+		{
+			dup2(fd_backup[0], STDIN_FILENO);
+			dup2(fd_backup[1], STDOUT_FILENO);
+		}
 	}
 	return (ret);
 }

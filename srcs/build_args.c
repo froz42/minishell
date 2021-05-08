@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:45:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 13:25:04 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/08 14:23:52 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ char	**build_argv(char *name, t_list *args)
 	if (!argv)
 		return (NULL);
 	i = 0;
-	argv[i++] = ft_strdup(name);
+	if (name)
+		argv[i++] = ft_strdup(name);
 	while (args)
 	{
 		argv[i++] = ft_strdup(args->content);
