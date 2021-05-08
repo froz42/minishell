@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/08 14:47:52 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/08 14:52:32 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	file_error(char *file, char *error)
 	ft_putstr_fd("\n", 2);
 }
 
-void	redirect_fd(t_command command, int backup[2])
+int	redirect_fd(t_command command, int backup[2])
 {
 	t_list	*redir_list;
 	t_redir	redir;
@@ -76,8 +76,13 @@ void	redirect_fd(t_command command, int backup[2])
 	{
 		redir = *(t_redir *)redir_list->content;
 		open_file = open(redir.file, get_open_flags(redir.type), 0664);
-		if (!open_file)
+		if (open_file < 0)
+		{
 			file_error(redir.file, strerror(errno));
+			dup2(backup[0], STDIN_FILENO);
+			dup2(backup[1], STDOUT_FILENO);
+			return (1);
+		}
 		else
 		{
 			if (redir.type == 1 || redir.type == 4)
@@ -87,6 +92,7 @@ void	redirect_fd(t_command command, int backup[2])
 		}
 		redir_list = redir_list->next;
 	}
+	return (0);
 }
 
 int		 handle_buildin(t_list *commands_list, t_list **env_var)
