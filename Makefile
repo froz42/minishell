@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/07 16:28:32 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/09 23:21:12 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -122,8 +122,5 @@ fclean:		header clean
 			@printf "%-53b%b" "$(COM_COLOR)fclean:" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"
 
 re:			header fclean all
-
-test:		header ${LIBFT} ${OBJS} ${OBJS_TESTS}
-			@$(call run_and_test,$(CC) $(CFLAGS) -o ./test ${OBJS} ${OBJS_TESTS} -L./libft -lft)
 
 .PHONY:		all clean fclean re libft
