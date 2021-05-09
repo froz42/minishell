@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/08 16:37:05 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/09 18:37:30 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int		exec_pipes(t_list *pipes_list, t_list **env_vars)
 	t_command	command;
 	int			status;
 	int			return_value;
-	int			backup[2];
+	/*int			backup[2];*/
 
 	envp = build_env(*env_vars);
 	fork_n = ft_lstsize(pipes_list);
@@ -146,8 +146,8 @@ int		exec_pipes(t_list *pipes_list, t_list **env_vars)
 				dup2(tube_list[i - 1][0], STDIN_FILENO);
 			if (i < (fork_n -1))
 				dup2(tube_list[i][1], STDOUT_FILENO);
-			if (redirect_fd(command, backup))
-				return_value = 1 + 2;
+			/*if (redirect_fd(command, backup))
+				return_value = 1 + 2;*/
 			if (!return_value)
 				return_value = build_in(argv, env_vars);
 			if (!return_value)
@@ -160,8 +160,8 @@ int		exec_pipes(t_list *pipes_list, t_list **env_vars)
 				close(tube_list[i][1]);
 			if (i != 0)
 				close(tube_list[i - 1][0]);
-			dup2(backup[0], STDIN_FILENO);
-			dup2(backup[1], STDOUT_FILENO);
+			/*dup2(backup[0], STDIN_FILENO);
+			dup2(backup[1], STDOUT_FILENO);*/
 			free_table(&argv);
 			free_table(&envp);
 			free(tube_list);

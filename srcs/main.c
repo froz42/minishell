@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/08 16:35:27 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/09 18:46:15 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	redirect_fd(t_command command, int backup[2])
 				dup2(open_file, STDOUT_FILENO);// STD_OUT
 			else
 				dup2(open_file, STDIN_FILENO);//STD_IN
+			close(open_file);
 		}
 		redir_list = redir_list->next;
 	}
@@ -126,6 +127,8 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 		free_table(&argv);
 		dup2(fd_backup[0], STDIN_FILENO);
 		dup2(fd_backup[1], STDOUT_FILENO);
+		close(fd_backup[0]);
+		close(fd_backup[1]);
 	}
 	return (ret);
 }
@@ -187,5 +190,8 @@ int	main(int argc, char **argv, char **envp)
 	write_header();
 	ret = minishell(&env_var, NULL);
 	ft_lstclear(&env_var, free_var);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 	return (ret);
 }
