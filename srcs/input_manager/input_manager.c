@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 16:01:51 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/09 22:34:40 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ static char	*get_last_dir(void)
 	i = 0;
 	while (split[i])
 		i++;
-	last = ft_strdup(split[i - 1]);
+	if (i > 0)
+		last = ft_strdup(split[i - 1]);
+	else
+		return (ft_strdup("/"));
 	free_table(&split);
 	return (last);
 }

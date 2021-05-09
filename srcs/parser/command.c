@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 22:17:28 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/09 20:52:59 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ char	*find_bin(char *bin, t_list *env_var)
 		i++;
 	}
 	free_table(&paths);
-	return(ft_strdup(bin));
+	return(NULL);
 }
 
 static void	set_command(t_list	**word_list, t_command *command, t_list *env_var)
