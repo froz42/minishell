@@ -39,7 +39,7 @@ Pour compiler le projet:
 
 ## Auteurs
 * **Théo Matis** _alias_ [@tmatis](https://profile.intra.42.fr/users/tmatis)
-* **Julien Mazoyer** _alias_ [@jmazoyer](https://profile.intra.42.fr/users/tmatis)
+* **Julien Mazoyer** _alias_ [@jmazoyer](https://profile.intra.42.fr/users/jmazoyer)
 
 
 [![tmatis's 42 stats](https://badge42.herokuapp.com/api/stats/tmatis)](https://github.com/JaeSeoKim/badge42)
