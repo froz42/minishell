@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/09 21:43:32 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/10 00:46:47 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	handle_status(int status, t_list **env_var)
 
 	return_value = 0;
 	if (WIFEXITED(status))
-		return_value = WEXITSTATUS(return_value);
+		return_value = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))
 		return_value = WTERMSIG(status) + 128;
 	if (return_value == 130)
