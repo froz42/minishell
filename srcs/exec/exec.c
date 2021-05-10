@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/10 13:30:52 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/10 13:35:30 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ int		exec_pipes(t_list *pipes_list, t_list **env_vars)
 			if (i != 0)
 				close(tube_list[i - 1][0]);
 			free(tube_list);
-			return (return_value + 2);
+			return (return_value);
 		}
 		i++;
 		pipes_list = pipes_list->next;
