@@ -26,8 +26,8 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] env
  - [x] Signals ctrl-c ctrl-\
  - [x] Redirection
- - [ ] Verification des path d'exec comme bash
- - [ ] Erreur d'execution de commande comme dans bash (50 %)
+ - [x] Verification des path d'exec comme bash
+ - [x] Erreur d'execution de commande comme dans bash
  - [ ] check des valeur de retours
  - [ ] Mise a la norme (16 / 33 fichiers)
 
@@ -44,4 +44,3 @@ Pour compiler le projet:
 
 [![tmatis's 42 stats](https://badge42.herokuapp.com/api/stats/tmatis)](https://github.com/JaeSeoKim/badge42)
 [![jmazoyer's 42 stats](https://badge42.herokuapp.com/api/stats/jmazoyer)](https://github.com/JaeSeoKim/badge42)
-
