@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/09 21:29:28 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/10 18:09:13 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int		parse_exec(t_list *commands_list, t_list **env_var)
 	while (commands_list)
 	{
 		ret = handle_buildin(commands_list->content, env_var);
-		if (!ret)
+		if (ret == 0)
 			ret = exec_pipes(commands_list->content, env_var);
 		if (ret > 1)
 		{

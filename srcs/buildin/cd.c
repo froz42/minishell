@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 21:07:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 14:16:28 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/10 22:50:59 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,44 @@ static int	cd_home(t_list **env_var)
 	return (0);
 }
 
+int		cd_oldpwd(t_list **env_var)
+{
+	char	*old_pwd;
+	int		ret;
+	char	actual_dir[BUFFER_SIZE];
+
+	old_pwd = ft_strdup(search_var(*env_var, "OLDPWD"));
+	if (!old_pwd)
+	{
+		ft_putstr_fd("Minishell: cd: OLDPWD not set\n", 2);
+		return (1);
+	}
+	getcwd(actual_dir, sizeof(actual_dir));
+	edit_var(env_var, "OLDPWD", actual_dir);
+	ret = chdir(old_pwd);
+	if (ret == -1)
+	{
+		generic_error(strerror(errno), old_pwd);
+		free(old_pwd);
+		return (1);
+	}
+	getcwd(actual_dir, sizeof(actual_dir));
+	edit_var(env_var, "PWD", actual_dir);
+	free(old_pwd);
+	return (0);
+}
+
 int		ft_cd(int argc, char **argv, t_list **env_var)
 {
 	char	actual_dir[BUFFER_SIZE];
 	int		ret;
 
-	getcwd(actual_dir, sizeof(actual_dir));
-	edit_var(env_var, "OLDPWD", actual_dir);
 	if (argc == 2)
 	{
+		if (!ft_strcmp(argv[1], "-"))
+			return (cd_oldpwd(env_var));
+		getcwd(actual_dir, sizeof(actual_dir));
+		edit_var(env_var, "OLDPWD", actual_dir);
 		ret = chdir(argv[1]);
 		if (ret == -1)
 		{
