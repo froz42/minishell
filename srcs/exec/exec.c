@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/10 13:47:56 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/10 13:55:04 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,19 @@ int	build_in(char **argv, t_list **env_var)
 
 	argc = build_argc(argv);
 	if (ft_strcmp(argv[0], "cd") == 0)
-		return (ft_cd(argc, argv, env_var));
+		return (ft_cd(argc, argv, env_var) + 2);
 	else if (ft_strcmp(argv[0], "exit") == 0)
-		return (ft_exit(argc, argv, env_var, false));
+		return (ft_exit(argc, argv, env_var, false) + 2);
 	else if (ft_strcmp(argv[0], "echo") == 0)
-		return (ft_echo(argc, argv));
+		return (ft_echo(argc, argv) + 2);
 	else if (ft_strcmp(argv[0], "env") == 0)
-		return (ft_env(*env_var));
+		return (ft_env(*env_var) + 2);
 	else if (ft_strcmp(argv[0], "unset") == 0)
-		return (ft_unset(argc, argv, env_var));
+		return (ft_unset(argc, argv, env_var) + 2);
 	else if (ft_strcmp(argv[0], "export") == 0)
-		return (ft_export(argc, argv, env_var));
+		return (ft_export(argc, argv, env_var) + 2);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
-		return (ft_pwd());
+		return (ft_pwd() + 2);
 	else
 		return (0);
 }
@@ -137,7 +137,7 @@ int		execution_rules(t_command command, t_list **env_vars)
 	if (redirect_fd(command, backup))
 		return_value = 1 + 2;
 	if (!return_value)
-		return_value = build_in(argv, env_vars) + 2;
+		return_value = build_in(argv, env_vars);
 	if (!return_value && !command.cmd)
 	{
 		execution_error_write(command.name, "command not found");
