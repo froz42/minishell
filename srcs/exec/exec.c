@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/10 13:35:30 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/10 13:42:14 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,19 @@ int	build_in(char **argv, t_list **env_var)
 
 	argc = build_argc(argv);
 	if (ft_strcmp(argv[0], "cd") == 0)
-		return (ft_cd(argc, argv, env_var) + 2);
+		return (ft_cd(argc, argv, env_var));
 	else if (ft_strcmp(argv[0], "exit") == 0)
-		return (ft_exit(argc, argv, env_var, false) + 2);
+		return (ft_exit(argc, argv, env_var, false));
 	else if (ft_strcmp(argv[0], "echo") == 0)
-		return (ft_echo(argc, argv) + 2);
+		return (ft_echo(argc, argv));
 	else if (ft_strcmp(argv[0], "env") == 0)
-		return (ft_env(*env_var) + 2);
+		return (ft_env(*env_var));
 	else if (ft_strcmp(argv[0], "unset") == 0)
-		return (ft_unset(argc, argv, env_var) + 2);
+		return (ft_unset(argc, argv, env_var));
 	else if (ft_strcmp(argv[0], "export") == 0)
-		return (ft_export(argc, argv, env_var) + 2);
+		return (ft_export(argc, argv, env_var));
 	else if (ft_strcmp(argv[0], "pwd") == 0)
-		return (ft_pwd() + 2);
+		return (ft_pwd());
 	else
 		return (0);
 }
@@ -102,13 +102,15 @@ void	handle_status(int status, t_list **env_var)
 	if (WIFEXITED(status))
 		return_value = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))
+	{
 		return_value = WTERMSIG(status) + 128;
-	if (return_value == 130)
-		ft_putstr("\n");
-	if (return_value == 131)
-		ft_putstr("Quit (core dumped)\n");
-	if (return_value == 139)
-		ft_putstr("Segmentation fault (core dumped)\n");
+		if (return_value == 130)
+			ft_putstr("\n");
+		if (return_value == 131)
+			ft_putstr("Quit (core dumped)\n");
+		if (return_value == 139)
+			ft_putstr("Segmentation fault (core dumped)\n");
+	}
 	status_str = ft_itoa(return_value);
 	edit_var(env_var, "?", status_str);
 	free(status_str);
@@ -133,7 +135,7 @@ int		execution_rules(t_command command, t_list **env_vars)
 	argv = build_argv(command.name, command.args);
 	envp = build_env(*env_vars);
 	if (redirect_fd(command, backup))
-		return_value = 1 + 2;
+		return_value = 1;
 	if (!return_value)
 		return_value = build_in(argv, env_vars);
 	if (!return_value && !command.cmd)
@@ -161,7 +163,7 @@ int		execution_rules(t_command command, t_list **env_vars)
 	dup2(backup[1], STDOUT_FILENO);
 	close(backup[0]);
 	close(backup[1]);
-	return (return_value);
+	return (return_value + 2);
 }
 
 int		exec_pipes(t_list *pipes_list, t_list **env_vars)
