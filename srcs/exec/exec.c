@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/10 13:42:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/10 13:47:56 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,27 +135,27 @@ int		execution_rules(t_command command, t_list **env_vars)
 	argv = build_argv(command.name, command.args);
 	envp = build_env(*env_vars);
 	if (redirect_fd(command, backup))
-		return_value = 1;
+		return_value = 1 + 2;
 	if (!return_value)
-		return_value = build_in(argv, env_vars);
+		return_value = build_in(argv, env_vars) + 2;
 	if (!return_value && !command.cmd)
 	{
 		execution_error_write(command.name, "command not found");
-		return_value = 127;
+		return_value = 127 + 2;
 	}
 	if (!return_value)
 	{
 		if (is_directory(command.cmd))
 		{
 			execution_error_write(command.name, "Is a directory");
-			return_value = 126;
+			return_value = 126 + 2;
 		}
 	}
 	if (!return_value)
 	{
 		execve(command.cmd, argv, envp);
 		execution_error_write(argv[0], strerror(errno));
-		return_value = 126;
+		return_value = 126 + 2;
 	}
 	free_table(&argv);
 	free_table(&envp);
@@ -163,7 +163,7 @@ int		execution_rules(t_command command, t_list **env_vars)
 	dup2(backup[1], STDOUT_FILENO);
 	close(backup[0]);
 	close(backup[1]);
-	return (return_value + 2);
+	return (return_value);
 }
 
 int		exec_pipes(t_list *pipes_list, t_list **env_vars)
