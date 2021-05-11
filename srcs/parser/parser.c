@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 20:37:48 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 22:46:53 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
 
 	token_list = tokenize(str, error, env_var, true);
 	pipes_list = pipes_commands(token_list, env_var);
-	printf("the len of the list is %i\n", ft_lstsize(pipes_list));
+	ft_lstclear(&token_list, ft_safe_free);
 	return (pipes_list);
 }
 
@@ -101,7 +101,12 @@ void	parse_line(char *str, t_list **env_var)
 			write_error(error);
 		else
 		{
-			pipes_list = get_next_pipes(&str, &error, *env_var);
+			while (*str)
+			{
+				pipes_list = get_next_pipes(&str, &error, *env_var);
+				exec(pipes_list, env_var);
+				ft_lstclear(&pipes_list, free_command);
+			}
 		}
 	}
 }

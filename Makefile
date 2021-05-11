@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/11 16:34:15 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/11 22:43:31 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRCS		= 	input_manager/buffer_manager.c input_manager/history.c \
 				parser/dolar.c parser/make_word.c parser/error_detector.c \
 				exec/exec.c buildin/cd.c buildin/exit.c build_args.c \
 				buildin/echo.c buildin/env.c buildin/unset.c buildin/pwd.c \
-				buildin/export.c
+				buildin/export.c exec/prepare_exec.c
 
 MAIN		= main.c
 
