@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 14:40:20 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 20:37:58 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@
 
 # include "../minishell.h"
 
-t_list		*parse_line(char *str, t_list *env_var);
 int			is_special(char *str);
+t_list		*tokenize(char **str, int *error, t_list *env_var,
+				t_bool just_pipes);
+t_list		*tokenize_all(char *str, int *error, t_list *env_var);
 t_command	*get_command(t_list **word_list, t_list *env_var);
 void		free_command(void *mem);
 char		*special(char **str);
-t_list		*to_word(char *str, int *error, t_list *env_var);
+void		parse_line(char *str, t_list **env_var);
 int			escape_control(char *str);
 void		free_command_list(void *mem);
 void		display_commands(t_list *commands_list);
