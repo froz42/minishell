@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/09 22:34:40 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 13:08:34 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ static char	*get_last_dir(void)
 ** Print the prompt
 */
 
-void	print_prompt(void)
+void	print_prompt(char *status)
 {
 	char	*user;
 	char	*last_dir;
+
 
 	user = getenv("USER");
 	ft_putstr("\x1B[32m");
@@ -58,7 +59,14 @@ void	print_prompt(void)
 		free(last_dir);
 		ft_putstr("\x1B[37m)");
 	}
-	ft_putstr("$ \x1B[0m");
+	ft_putstr(" (");
+	if (ft_atoi(status) > 0)
+		ft_putstr("\x1B[31m");
+	else
+		ft_putstr("\x1B[32m");
+	ft_putstr(status);
+	ft_putstr("\x1B[0m)");
+	ft_putstr("$ ");
 }
 
 /*
@@ -124,7 +132,7 @@ static int	wait_line(char buff[10], t_buffer *buffer,
 */
 
 int	get_input_line(char **line, t_bool manage_history,
-		t_list **history)
+		t_list **history, char *status)
 {
 	char			*temp;
 	t_buffer		buffer;
@@ -133,9 +141,10 @@ int	get_input_line(char **line, t_bool manage_history,
 	int				ret;
 
 	buff[0] = 0;
-	buffer = init_buffer(manage_history);
+	buffer = init_buffer(manage_history, status);
 	temp = NULL;
 	old = raw_mode();
+	print_prompt(status);
 	ret = wait_line(buff, &buffer, &temp, history);
 	buff_mode(old);
 	if (temp)

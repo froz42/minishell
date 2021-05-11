@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 16:56:00 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 12:31:20 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	handle_ctrlc(t_buffer *buffer)
 	buffer->size = 0;
 	buffer->position = 0;
 	ft_putstr("^C\n");
-	print_prompt();
+	print_prompt(buffer->status);
 }
 
 /*

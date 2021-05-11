@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/05 15:32:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 12:24:38 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_buffer
 	int		position;
 	char	*buff;
 	int		escape_id;
+	char	*status;
 	t_bool	manage_history;
 }				t_buffer;
 

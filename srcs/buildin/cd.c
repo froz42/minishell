@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 21:07:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/10 22:50:59 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 13:10:27 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,13 @@ int		cd_oldpwd(t_list **env_var)
 	int		ret;
 	char	actual_dir[BUFFER_SIZE];
 
-	old_pwd = ft_strdup(search_var(*env_var, "OLDPWD"));
+	old_pwd = search_var(*env_var, "OLDPWD");
 	if (!old_pwd)
 	{
 		ft_putstr_fd("Minishell: cd: OLDPWD not set\n", 2);
 		return (1);
 	}
+	old_pwd = ft_strdup(old_pwd);
 	getcwd(actual_dir, sizeof(actual_dir));
 	edit_var(env_var, "OLDPWD", actual_dir);
 	ret = chdir(old_pwd);
