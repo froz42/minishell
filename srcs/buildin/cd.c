@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 21:07:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 13:33:12 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 13:10:27 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int		ft_cd(int argc, char **argv, t_list **env_var)
 	}
 	else if (argc > 2)
 	{
-		ft_putstr_fd("Minishell: cd: too many arguments\n", 2);
+		ft_putstr_fd("Minishell: cd: too mutch arguments\n", 2);
 		return (1);
 	}
 	else if (argc == 1)
