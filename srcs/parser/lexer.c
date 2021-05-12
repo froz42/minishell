@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/04 21:11:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 20:38:51 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,27 +86,34 @@ char	*cat_list(t_list *to_cat)
 }
 
 /*
-** Tokenize tout ca
+** Tokenize tout ca pour le error check
 */
 
-t_list	*to_word(char *str, int *error, t_list *env_var)
+t_list	*tokenize(char **str, int *error, t_list *env_var, t_bool just_pipes)
 {
 	t_list	*word_list;
 	t_list	*word_tokens;
 
 	word_list = NULL;
-	while (*str)
+	while (**str && (!just_pipes || **str != ';'))
 	{
-		while (ft_isspace(*str))
-			str++;
-		if (is_special(str))
-			ft_lstadd_back(&word_list, ft_lstnew(special(&str)));
-		else if (*str)
+		if (is_special(*str))
+			ft_lstadd_back(&word_list, ft_lstnew(special(str)));
+		else if (**str)
 		{
-			word_tokens = make_word(&str, error, env_var);
+			word_tokens = make_word(str, error, env_var);
 			ft_lstcat(&word_list, word_tokens);
 			ft_lstclear(&word_tokens, ft_nofree);
 		}
+		while (ft_isspace(**str))
+			(*str)++;
 	}
+	if (**str == ';')
+		(*str)++;
 	return (word_list);
+}
+
+t_list	*tokenize_all(char *str, int *error, t_list *env_var)
+{
+	return (tokenize(&str, error, env_var, true));
 }

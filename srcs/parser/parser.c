@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/10 00:51:02 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 22:55:15 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,90 +50,67 @@ int	escape_control(char *str)
 ** Cree une liste de commande execute simultanement relier par des pipes
 */
 
-t_list	*pipes_commands(t_list **word_list, t_list *env_var)
+t_list	*pipes_commands(t_list *word_list, t_list *env_var)
 {
 	t_list		*pipes_list;
 	int			special_id;
 
 	pipes_list = NULL;
-	while (*word_list)
+	while (word_list)
 	{
-		special_id = escape_control((*word_list)->content);
+		special_id = escape_control(word_list->content);
 		if (special_id == 3)
-			(*word_list) = (*word_list)->next;
-		if (special_id == 5 || !*word_list)
+			word_list = word_list->next;
+		if (special_id == 5 || !word_list)
 			break ;
-		ft_lstadd_back(&pipes_list, ft_lstnew(get_command(word_list, env_var)));
+		ft_lstadd_back(&pipes_list, ft_lstnew(get_command(&word_list, env_var)));
 	}
 	return (pipes_list);
 }
 
-/*
-** Parse les commande a partire des tokens et genere une structure de donnee
-** EX: 'cat Makefile | cat -e > test_out; < test_out wc -l'
-**┌ t_list
-**│ • ┌ t_list
-**│   │ • ┌ t_command
-**│   │   │ • cmd = "cat"
-**│   │   │ • args = {"Makefile"}
-**│   │   │ • redirs = {}
-**│   │ • ┌ t_command
-**│   │   │ • cmd = "cat"
-**│   │   │ • args = {"-e"}
-**│   │   │ • redirs = {{type = 1, file = test_out}}
-**│ • ┌ t_list
-**│   │ • ┌ t_command
-**│   │   │ • cmd = "wc"
-**│   │   │ • args = {"-l"}
-**│   │   │ • redirs = {{type = 2, file = test_out}}
-**
-** Vous pouvez generer un graph dans display.c (display_commands)
-*/
-
-t_list	*parse_commands(t_list *word_list, t_list *env_var)
+t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
 {
-	t_list		*commands_list;
+	t_list	*token_list;
+	t_list	*pipes_list;
 
-	commands_list = NULL;
-	while (word_list)
-	{
-		if (escape_control(word_list->content) == 5)
-			word_list = word_list->next;
-		if (!word_list)
-			break ;
-		ft_lstadd_back(&commands_list, ft_lstnew(pipes_commands(&word_list, env_var)));
-	}
-	return (commands_list);
+	token_list = tokenize(str, error, env_var, true);
+	pipes_list = pipes_commands(token_list, env_var);
+	ft_lstclear(&token_list, ft_safe_free);
+	return (pipes_list);
 }
 
 /*
-** Fonction qui va call le tokensisateur et parse_commands et afficher une erreur
-** TODO: Assignation
-** TODO: Verification
+** Fonction qui va call le tokensisateur et parse_commands et call l'exec
 */
 
-t_list	*parse_line(char *str, t_list *env_var)
+int	exec_line(char *str, t_list **env_var)
 {
 	t_list		*word_list;
-	t_list		*commands_list;
+	t_list		*pipes_list;
 	int			error;
+	int			return_value;
 
-	commands_list = NULL;
 	error = -1;
-	word_list = to_word(str, &error, env_var);
+	word_list = tokenize_all(str, &error, *env_var);
 	if (error != -1)
 		write_error(error);
 	else
 	{
 		error_detector(word_list, &error);
+		ft_lstclear(&word_list, free);
 		if (error != -1)
 			write_error(error);
 		else
 		{
-			commands_list = parse_commands(word_list, env_var);
-			//display_commands(commands_list);
+			while (*str)
+			{
+				pipes_list = get_next_pipes(&str, &error, *env_var);
+				return_value = exec(pipes_list, env_var);
+				ft_lstclear(&pipes_list, free_command);
+				if (return_value)
+					return (return_value);
+			}
 		}
 	}
-	ft_lstclear(&word_list, free);
-	return (commands_list);
+	return (0);
 }

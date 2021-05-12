@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 12:30:32 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 22:55:42 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,6 @@ void	mute_unused(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
-}
-
-int	return_value_buildin(int func_return, t_list **env_var)
-{
-	char	*status_str;
-
-	status_str = ft_itoa(func_return);
-	edit_var(env_var, "?", status_str);
-	ft_safe_free(status_str);
-	return (1);
 }
 
 int	get_open_flags(int type)
@@ -94,67 +84,6 @@ int	redirect_fd(t_command command, int backup[2])
 	return (0);
 }
 
-int		 handle_buildin(t_list *commands_list, t_list **env_var)
-{
-	t_command	command;
-	char		**argv;
-	int			argc;
-	int			ret;
-	int			fd_backup[2];
-
-	ret = 0;
-	if (ft_lstsize(commands_list) == 1)
-	{
-		command = *(t_command *)commands_list->content;
-		argv = build_argv(command.name, command.args);
-		argc = build_argc(argv);
-		if (redirect_fd(command, fd_backup))
-			ret = return_value_buildin(1, env_var);
-		if (ft_strcmp(command.name, "cd") == 0)
-			ret = return_value_buildin(ft_cd(argc, argv, env_var), env_var);
-		else if (ft_strcmp(command.name, "echo") == 0)
-			ret = return_value_buildin(ft_echo(argc, argv), env_var);
-		else if (ft_strcmp(command.name, "env") == 0)
-			ret = return_value_buildin(ft_env(*env_var), env_var);
-		else if (ft_strcmp(command.name, "unset") == 0)
-			ret = return_value_buildin(ft_unset(argc, argv, env_var), env_var);
-		else if (ft_strcmp(command.name, "pwd") == 0)
-			ret = return_value_buildin(ft_pwd(), env_var);
-		else if (ft_strcmp(command.name, "export") == 0)
-			ret = return_value_buildin(ft_export(argc, argv, env_var), env_var);
-		else if (ft_strcmp(command.name, "exit") == 0)
-			ret = ft_exit(argc, argv, env_var, true) + 2;
-		free_table(&argv);
-		dup2(fd_backup[0], STDIN_FILENO);
-		dup2(fd_backup[1], STDOUT_FILENO);
-		close(fd_backup[0]);
-		close(fd_backup[1]);
-	}
-	return (ret);
-}
-
-int		parse_exec(t_list *commands_list, t_list **env_var)
-{
-	t_list	*backup;
-	int		ret;
-
-	backup = commands_list;
-	while (commands_list)
-	{
-		ret = handle_buildin(commands_list->content, env_var);
-		if (ret == 0)
-			ret = exec_pipes(commands_list->content, env_var);
-		if (ret > 1)
-		{
-			ft_lstclear(&backup, free_command_list);
-			return (ret);
-		}
-		commands_list = commands_list->next;
-	}
-	ft_lstclear(&backup, free_command_list);
-	return (0);
-}
-
 int		minishell(t_list **env_var, t_list *history)
 {
 	char	*line;
@@ -169,7 +98,7 @@ int		minishell(t_list **env_var, t_list *history)
 			ret = ft_exit(1, NULL, env_var, true) + 2;
 			break ;
 		}
-		ret = parse_exec(parse_line(line, *env_var), env_var);
+		ret = exec_line(line, env_var);
 		if (ret)
 			break ;
 		free(line);
