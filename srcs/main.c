@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 22:46:09 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 22:55:42 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int		minishell(t_list **env_var, t_list *history)
 			ret = ft_exit(1, NULL, env_var, true) + 2;
 			break ;
 		}
-		parse_line(line, env_var);
+		ret = exec_line(line, env_var);
 		if (ret)
 			break ;
 		free(line);

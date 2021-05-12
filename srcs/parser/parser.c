@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 22:46:53 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/11 22:55:15 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,12 @@ t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
 ** Fonction qui va call le tokensisateur et parse_commands et call l'exec
 */
 
-void	parse_line(char *str, t_list **env_var)
+int	exec_line(char *str, t_list **env_var)
 {
 	t_list		*word_list;
 	t_list		*pipes_list;
 	int			error;
+	int			return_value;
 
 	error = -1;
 	word_list = tokenize_all(str, &error, *env_var);
@@ -104,9 +105,12 @@ void	parse_line(char *str, t_list **env_var)
 			while (*str)
 			{
 				pipes_list = get_next_pipes(&str, &error, *env_var);
-				exec(pipes_list, env_var);
+				return_value = exec(pipes_list, env_var);
 				ft_lstclear(&pipes_list, free_command);
+				if (return_value)
+					return (return_value);
 			}
 		}
 	}
+	return (0);
 }
