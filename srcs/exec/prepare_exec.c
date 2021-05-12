@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 22:37:57 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/12 12:58:05 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/12 13:22:13 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 		else if (ft_strcmp(command.name, "export") == 0)
 			ret = return_value_buildin(ft_export(argc, argv, env_var), env_var);
 		else if (ft_strcmp(command.name, "exit") == 0)
-			ret = ft_exit(argc, argv, env_var, true) + 2;
+			ret = ft_exit(argc, argv, env_var, false);
 		free_table(&argv);
 		dup2(fd_backup[0], STDIN_FILENO);
 		dup2(fd_backup[1], STDOUT_FILENO);
