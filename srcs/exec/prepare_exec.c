@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 22:37:57 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 22:42:07 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/12 12:58:05 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 		argc = build_argc(argv);
 		if (redirect_fd(command, fd_backup))
 			ret = return_value_buildin(1, env_var);
-		if (ft_strcmp(command.name, "cd") == 0)
+		else if (ft_strcmp(command.name, "cd") == 0)
 			ret = return_value_buildin(ft_cd(argc, argv, env_var), env_var);
 		else if (ft_strcmp(command.name, "echo") == 0)
 			ret = return_value_buildin(ft_echo(argc, argv), env_var);
