@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 16:33:02 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/28 18:32:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/12 13:00:26 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	write_error(int error_number)
 	error_table[5] = "syntax error near unexpected token `|'";
 	error_table[6] = "syntax error near unexpected token `>>'";
 	error_table[7] = "syntax error near unexpected token `;'";
+	error_table[8] = "syntax error near unexpected token `newline'";
 	ft_putstr_fd("Minishell: ", 2);
 	ft_putstr_fd(error_table[error_number], 2);
 	ft_putstr_fd("\n", 2);

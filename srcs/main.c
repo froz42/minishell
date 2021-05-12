@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 22:55:42 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/12 12:58:36 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,11 @@ int	redirect_fd(t_command command, int backup[2])
 	while (redir_list)
 	{
 		redir = *(t_redir *)redir_list->content;
+		if (!redir.file)
+		{
+			ft_putstr_fd("Minishell: ambiguous redirect\n", 2);
+			return (1);
+		}
 		open_file = open(redir.file, get_open_flags(redir.type), 0664);
 		if (open_file < 0)
 		{
