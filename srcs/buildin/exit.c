@@ -6,11 +6,22 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:39:53 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/12 13:24:48 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/13 16:25:53 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static	t_bool is_str_numeric(char *str)
+{
+	while (*str)
+	{
+		if (!ft_isnum(*str))
+			return (false);
+		str++;
+	}
+	return (true);
+}
 
 int		ft_exit(int argc, char **argv, t_list **env_var, t_bool in_pipes)
 {
@@ -21,6 +32,15 @@ int		ft_exit(int argc, char **argv, t_list **env_var, t_bool in_pipes)
 		offset = 0;
 	else
 		offset = 2;
+	if (!in_pipes)
+		ft_putstr("exit\n");
+	if (argc >= 2 && !is_str_numeric(argv[1]))
+	{
+		ft_putstr_fd("Minishell: exit: ", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		return (2 + offset);
+	}
 	if (argc > 2)
 	{
 		ft_putstr_fd("Minishell: exit: too many arguments\n", 2);
@@ -29,8 +49,6 @@ int		ft_exit(int argc, char **argv, t_list **env_var, t_bool in_pipes)
 	}
 	else
 	{
-		if (!in_pipes)
-			ft_putstr("exit\n");
 		if (argc == 2)
 			ret = ft_atoi(argv[1]);
 		else
