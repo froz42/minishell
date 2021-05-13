@@ -1,3 +1,5 @@
+name: norminette
+
 on:
   push:
     branches: [ master ]
