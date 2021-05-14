@@ -6,11 +6,26 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 15:45:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/14 16:11:52 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/14 22:30:58 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	*load_var_error(char *message, t_var *var_to_free, void *ret_value)
+{
+	if (var_to_free)
+		free_var(var_to_free);
+	ft_putstr_fd("Minishell: ", STDERR_FILENO);
+	ft_putstr_fd(message, STDERR_FILENO);
+	if (errno != 0)
+	{
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+	}
+	ft_putstr_fd("\n", STDERR_FILENO);
+	return (ret_value);
+}
 
 /*
 ** Parse key=value
@@ -23,17 +38,17 @@ t_var	*create_var(char *str)
 
 	var = ft_calloc(1, sizeof(t_var));
 	if (!var)
-		return (NULL);		// creer message d'erreur
+		return (load_var_error(ENV_VAR_ERROR, NULL, NULL));
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
 	var->key = ft_substr(str, 0, i);
 	if (!var->key)
-		return (NULL);		// creer message d'erreur
+		return (load_var_error(ENV_VAR_ERROR, var, NULL));
 	str += i + 1;
 	var->data = ft_strdup(str);
 	if (!var->data)
-		return (NULL);		// creer message d'erreur
+		return (load_var_error(ENV_VAR_ERROR, var, NULL));
 	return (var);
 }
 
@@ -69,9 +84,36 @@ char	*search_var(t_list *var_list, char *key)
 ** add a var or edit an existing one
 */
 
-static t_bool	add_var(t_list **var_list, char *key, char *value);
+static t_bool	add_var(t_list **var_list, char *key, char *value)
+{
+	t_var	*var;
+	t_list	*elem;
 
-t_bool	edit_var(t_list **var_list, char *key, char *value)
+	var = ft_calloc(1, sizeof(t_var));
+	if (!var)
+	{
+		load_var_error(ENV_VAR_ERROR, NULL, NULL);
+		return (false);
+	}
+	var->key = ft_strdup(key);
+	if (var->key && value)
+		var->data = ft_strdup(value);
+	if (!var->key || (value && !var->data))
+	{
+		load_var_error(ENV_VAR_ERROR, var, NULL);
+		return (false);
+	}
+	elem = ft_lstnew(var);
+	if (!elem)
+	{
+		load_var_error(ENV_VAR_ERROR, var, NULL);
+		return (false);
+	}
+	ft_lstadd_back(var_list, elem);
+	return (true);
+}
+
+t_bool	edit_var(t_list **var_list, char *key, char *value)		// protect everywhere to avoid segfault!
 {
 	t_var	*var;
 	t_list	*current;
@@ -86,40 +128,18 @@ t_bool	edit_var(t_list **var_list, char *key, char *value)
 			{
 				ft_safe_free(var->data);
 				var->data = ft_strdup(value);
+//				var->data = NULL;
 				if (!var->data)
-					return (false);	//creer message d'erreur
+				{
+					load_var_error(ENV_VAR_ERROR, NULL, NULL);
+					return (false);
+				}
 			}
 			return (true);
 		}
 		current = current->next;
 	}
 	return (add_var(var_list, key, value));
-}
-
-static t_bool	add_var(t_list **var_list, char *key, char *value)
-{
-	t_var	*var;
-	t_list	*elem;
-
-	var = ft_calloc(1, sizeof(t_var));
-	if (!var)
-		return (false);		// creer message d'erreur
-	var->key = ft_strdup(key);
-	if (var->key && value)
-		var->data = ft_strdup(value);
-	if (!var->key || (value && !var->data))
-	{
-		free_var(var);
-		return (false);		// creer message d'erreur
-	}
-	elem = ft_lstnew(var);
-	if (!elem)
-	{
-		free_var(var);
-		return (false);		// creer message d'erreur
-	}
-	ft_lstadd_back(var_list, elem);
-	return (true);
 }
 
 /*
@@ -140,7 +160,7 @@ t_list	*build_var(char **envp)
 			return (NULL);
 		elem = ft_lstnew(var);
 		if (!elem)
-			return (NULL);		// creer message d'erreur
+			return (load_var_error(ENV_VAR_ERROR, NULL, NULL));
 		ft_lstadd_back(&var_list, elem);
 		envp++;
 	}

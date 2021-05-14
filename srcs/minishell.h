@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 18:56:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/14 16:11:11 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/14 22:30:05 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include "parser/parser.h"
 # include "input_manager/input_manager.h"
 # include "exec/exec.h"
+
+# define ENV_VAR_ERROR	"Error while creating an environment variable"
 
 void			write_error(int error_number);
 t_list			*build_var(char **envp);

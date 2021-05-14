@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/14 16:08:53 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/14 22:53:05 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ int	redirect_fd(t_command command, int backup[2])
 		else
 		{
 			if (redir.type == 1 || redir.type == 4)
-				dup2(open_file, STDOUT_FILENO);// STD_OUT
+				dup2(open_file, STDOUT_FILENO);
 			else
-				dup2(open_file, STDIN_FILENO);//STD_IN
+				dup2(open_file, STDIN_FILENO);
 			close(open_file);
 		}
 		redir_list = redir_list->next;
@@ -89,12 +89,13 @@ int	redirect_fd(t_command command, int backup[2])
 	return (0);
 }
 
-int		minishell(t_list **env_var, t_list *history)
+int	minishell(t_list **env_var, t_list *history)
 {
 	char	*line;
 	int		ret;
 
-	edit_var(env_var, "?", "0");
+	if (edit_var(env_var, "?", "0") == false)
+		return (127);
 	ret = 0;
 	while (1)
 	{
@@ -134,5 +135,5 @@ int	main(int argc, char **argv, char **envp)
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	close(STDERR_FILENO);
-	return (-1);
+	return (127);
 }
