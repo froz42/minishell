@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 15:40:14 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/14 09:56:53 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/14 17:58:54 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*catch_key(char **str, int *error, int *append)
 	i = 0;
 	while ((*str)[i] && ((*str)[i] == '_' || ft_isalnum((*str)[i])))
 		i++;
-	if ((*str)[i] != '=' && ft_memcmp((*str) + i, "+=", 2) && (*str)[i] != 0)
+	if (!i || ((*str)[i] != '=' && ft_memcmp((*str) + i, "+=", 2) && (*str)[i] != 0))
 	{
 		*error = 1;
 		return (NULL);
@@ -112,7 +112,7 @@ void	add_var(char *key, char *work_str, t_list **env_var, int append)
 	int		len_var;
 
 	len_var = 0;
-	if (!*work_str)
+	if (!*work_str && *(work_str - 1) != '=')
 		edit_var(env_var, key, NULL);
 	else
 	{
