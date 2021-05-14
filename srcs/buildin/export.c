@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 15:40:14 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 17:44:25 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/14 09:56:53 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	print_export(t_list *env_var)
 	return (0);
 }
 
-char	*catch_key(char **str, int *error)
+char	*catch_key(char **str, int *error, int *append)
 {
 	int		i;
 	char	*dest;
@@ -91,24 +91,47 @@ char	*catch_key(char **str, int *error)
 	i = 0;
 	while ((*str)[i] && ((*str)[i] == '_' || ft_isalnum((*str)[i])))
 		i++;
-	if ((*str)[i] != '=' && (*str)[i] != 0)
+	if ((*str)[i] != '=' && ft_memcmp((*str) + i, "+=", 2) && (*str)[i] != 0)
 	{
 		*error = 1;
 		return (NULL);
 	}
+	if (!ft_memcmp((*str) + i, "+=", 2))
+		*append = true;
+	else
+		*append = false;
 	dest = ft_substr(*str, 0, i);
-	(*str) += i;
+	(*str) += i + 1 + *append;
 	return (dest);
 }
 
-void	add_var(char *key, char *work_str, t_list **env_var)
+void	add_var(char *key, char *work_str, t_list **env_var, int append)
 {
+	char	*dest;
+	char	*var;
+	int		len_var;
+
+	len_var = 0;
 	if (!*work_str)
 		edit_var(env_var, key, NULL);
 	else
 	{
-		work_str++;
-		edit_var(env_var, key, work_str);
+		if (append)
+		{
+			var = search_var(*env_var, key);
+			if (var)
+				len_var = ft_strlen(var);
+			dest = ft_calloc(len_var + ft_strlen(work_str) + 1, sizeof(char));
+			if (!dest)
+				return ;
+			if (var)
+				ft_strcat(dest, var);
+			ft_strcat(dest, work_str);
+			edit_var(env_var, key, dest);
+			free(dest);
+		}
+		else
+			edit_var(env_var, key, work_str);
 	}
 }
 
@@ -118,7 +141,7 @@ int		ft_export(int argc, char **argv, t_list **env_var)
 	char	*work_str;
 	int		error;
 	char	*key;
-
+	int		append;
 
 	if (argc == 1)
 		return (print_export(*env_var));
@@ -127,7 +150,7 @@ int		ft_export(int argc, char **argv, t_list **env_var)
 	{
 		error = 0;
 		work_str = argv[i];
-		key = catch_key(&work_str, &error);
+		key = catch_key(&work_str, &error, &append);
 		if (error)
 		{
 			ft_putstr_fd("Minishell: export: `", 2);
@@ -135,7 +158,7 @@ int		ft_export(int argc, char **argv, t_list **env_var)
 			ft_putstr_fd("' not a valid indentifier\n", 2);
 		}
 		else
-			add_var(key, work_str, env_var);
+			add_var(key, work_str, env_var, append);
 		ft_safe_free(key);
 		i++;
 	}
