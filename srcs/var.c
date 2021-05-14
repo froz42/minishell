@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 15:45:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 17:52:54 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/14 16:11:52 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,17 @@ t_var	*create_var(char *str)
 
 	var = ft_calloc(1, sizeof(t_var));
 	if (!var)
-		return (NULL);
+		return (NULL);		// creer message d'erreur
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
 	var->key = ft_substr(str, 0, i);
+	if (!var->key)
+		return (NULL);		// creer message d'erreur
 	str += i + 1;
 	var->data = ft_strdup(str);
+	if (!var->data)
+		return (NULL);		// creer message d'erreur
 	return (var);
 }
 
@@ -62,36 +66,60 @@ char	*search_var(t_list *var_list, char *key)
 }
 
 /*
-** add a var or edit the one does exits
+** add a var or edit an existing one
 */
 
-void	edit_var(t_list **var_list, char *key, char *value)
+static t_bool	add_var(t_list **var_list, char *key, char *value);
+
+t_bool	edit_var(t_list **var_list, char *key, char *value)
 {
 	t_var	*var;
-	t_list	*save;
+	t_list	*current;
 
-	save = *var_list;
-	while (save)
+	current = *var_list;
+	while (current)
 	{
-		var = (t_var *)save->content;
+		var = (t_var *)current->content;
 		if (!ft_strcmp(var->key, key))
 		{
 			if (value)
 			{
 				ft_safe_free(var->data);
 				var->data = ft_strdup(value);
+				if (!var->data)
+					return (false);	//creer message d'erreur
 			}
-			return ;
+			return (true);
 		}
-		save = save->next;
+		current = current->next;
 	}
+	return (add_var(var_list, key, value));
+}
+
+static t_bool	add_var(t_list **var_list, char *key, char *value)
+{
+	t_var	*var;
+	t_list	*elem;
+
 	var = ft_calloc(1, sizeof(t_var));
 	if (!var)
-		return ;
+		return (false);		// creer message d'erreur
 	var->key = ft_strdup(key);
-	if (value)
+	if (var->key && value)
 		var->data = ft_strdup(value);
-	ft_lstadd_back(var_list, ft_lstnew(var));
+	if (!var->key || (value && !var->data))
+	{
+		free_var(var);
+		return (false);		// creer message d'erreur
+	}
+	elem = ft_lstnew(var);
+	if (!elem)
+	{
+		free_var(var);
+		return (false);		// creer message d'erreur
+	}
+	ft_lstadd_back(var_list, elem);
+	return (true);
 }
 
 /*
@@ -101,11 +129,19 @@ void	edit_var(t_list **var_list, char *key, char *value)
 t_list	*build_var(char **envp)
 {
 	t_list	*var_list;
+	t_var	*var;
+	t_list	*elem;
 
 	var_list = NULL;
 	while (*envp)
 	{
-		ft_lstadd_back(&var_list, ft_lstnew(create_var(*envp)));
+		var = create_var(*envp);
+		if (!var)
+			return (NULL);
+		elem = ft_lstnew(var);
+		if (!elem)
+			return (NULL);		// creer message d'erreur
+		ft_lstadd_back(&var_list, elem);
 		envp++;
 	}
 	return (var_list);

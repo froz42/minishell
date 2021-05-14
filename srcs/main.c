@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/12 13:22:34 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/14 16:08:53 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,19 @@ int	main(int argc, char **argv, char **envp)
 
 	mute_unused(argc, argv);
 	env_var = build_var(envp);
-	write_header();
-	ret = minishell(&env_var, NULL);
+	if (env_var)
+	{
+		write_header();
+		ret = minishell(&env_var, NULL);
+		ft_lstclear(&env_var, free_var);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+		close(STDERR_FILENO);
+		return (ret);
+	}
 	ft_lstclear(&env_var, free_var);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	close(STDERR_FILENO);
-	return (ret);
+	return (-1);
 }
