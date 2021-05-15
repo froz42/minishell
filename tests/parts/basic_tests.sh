@@ -4,3 +4,4 @@
 echo Basic Testing
 ls
 cat test.sh
+exit 0
