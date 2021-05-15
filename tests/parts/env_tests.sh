@@ -10,6 +10,7 @@ export | grep var_unset
 echo $var_unset
 export var_unset="set now"
 echo $var_unset
+env | grep var_unset
 export var_unset=
 echo $var_unset
 export var2=yo var2+=yo
