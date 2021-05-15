@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install valgrind
-      run: apt install -y valgrind
+      run: sudo apt install -y valgrind
     - name: make
       run: make
     - name: Unit tests
