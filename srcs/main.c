@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/15 15:30:26 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 16:34:47 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,27 @@ int	read_next_line(char **line, t_list **history, char *status)
 	}
 }
 
+/*
+** En attendant de pouvoir free GNL
+** Donc a refaire
+*/
+
+void	go_to_end(void)
+{
+	char	*line;
+	int		gnl_status;
+
+	gnl_status = 2;
+	while (gnl_status > 0)
+	{
+		if (gnl_status == 1)
+			free(line);
+		gnl_status = ft_gnl(STDIN_FILENO, &line);
+	}
+	if (gnl_status == -1)
+		file_error("STDIN", strerror(errno));
+}
+
 int	minishell(t_list **env_var, t_list *history)
 {
 	char	*line;
@@ -123,12 +144,18 @@ int	minishell(t_list **env_var, t_list *history)
 			break ;
 		if (!gnl_status)
 		{
+			if (!isatty(STDIN_FILENO))
+				go_to_end();
 			ret = ft_exit(1, NULL, env_var, false);
 			break ;
 		}
 		ret = exec_line(line, env_var);
 		if (ret)
+		{
+			if (!isatty(STDIN_FILENO))
+				go_to_end();
 			break ;
+		}
 		free(line);
 	}
 	ft_lstclear(&history, free);
