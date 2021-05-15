@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/10 23:00:24 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 14:40:33 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ t_command	*get_command(t_list **word_list, t_list *env_var)
 		else
 			ft_lstadd_back(&command->args, ft_lstnew(get_arg(word_list)));
 	}
-	if (!ft_strcmp(command->name, "ls") && !has_redir_out(command->redirs))
+	if (!ft_strcmp(command->name, "ls") && !has_redir_out(command->redirs) && isatty(STDIN_FILENO))
 		ft_lstadd_back(&command->args, ft_lstnew(ft_strdup("--color")));
 	return (command);
 }
