@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 12:24:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/14 22:54:43 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ typedef struct s_var
 	char	*data;
 }			t_var;
 
-typedef int t_tube[2];
+typedef int	t_tube[2];
+
 #endif
