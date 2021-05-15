@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/15 12:44:13 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/15 15:45:07 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,7 +94,7 @@ header:
 	@echo
 	@printf "%b" "$(OBJ_COLOR)Name:	$(WARN_COLOR)$(NAME)\n"
 	@printf "%b" "$(OBJ_COLOR)Author:	$(WARN_COLOR)$(AUTHOR)\n"
-	@printf "%b" "$(OBJ_COLOR)Date: 	$(WARN_COLOR)$(DATE)\n"
+	@printf "%b" "$(OBJ_COLOR)Date: 	$(WARN_COLOR)$(DATE)\n\033[m"
 	@echo
 
 $(NAME): 	$(LIBFT) ${OBJS} ${OBJ_MAIN}
@@ -123,4 +123,7 @@ fclean:		header clean
 
 re:			fclean all
 
-.PHONY:		all clean fclean re libft header
+check:		all
+			@cd tests; bash test.sh
+
+.PHONY:		all clean fclean re libft header check
