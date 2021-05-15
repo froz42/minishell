@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/11 22:43:31 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/15 12:44:13 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,7 @@ rm -f $@.log; \
 exit $$RESULT
 endef
 
-all:	$(NAME)
+all:	header $(NAME)
 
 header:
 	@printf "%b" "$(OK_COLOR)"
@@ -97,10 +97,10 @@ header:
 	@printf "%b" "$(OBJ_COLOR)Date: 	$(WARN_COLOR)$(DATE)\n"
 	@echo
 
-$(NAME): 	header $(LIBFT) ${OBJS} ${OBJ_MAIN}
+$(NAME): 	$(LIBFT) ${OBJS} ${OBJ_MAIN}
 			@$(call run_and_test,$(CC) $(CFLAGS) -o $@ ${OBJS} ${OBJ_MAIN} -L./libft -lft)
 
-objs/%.o: srcs/%.c
+objs/%.o: 	srcs/%.c
 			@mkdir -p $(dir $@)
 			@$(call run_and_test,$(CC) $(CFLAGS) -c $< -o $@)
 
@@ -108,7 +108,7 @@ objs_tests/%.o: tests/%.c
 			@mkdir -p $(dir $@)
 			@$(call run_and_test,$(CC) $(CFLAGS) -c $< -o $@)
 
-$(LIBFT):	header
+$(LIBFT):
 			@$(call run_and_test,make -sC ./libft libft.a)
 
 clean:		header
@@ -121,6 +121,6 @@ fclean:		header clean
 			@make -sC ./libft fclean
 			@printf "%-53b%b" "$(COM_COLOR)fclean:" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"
 
-re:			header fclean all
+re:			fclean all
 
-.PHONY:		all clean fclean re libft
+.PHONY:		all clean fclean re libft header
