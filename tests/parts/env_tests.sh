@@ -17,4 +17,5 @@ echo $var2
 export var5=yo; echo $var5
 export var6=yo var7=log
 echo $var6 echo $var7
+env | grep USER
 exit 0;

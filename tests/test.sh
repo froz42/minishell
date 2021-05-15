@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/15 13:57:53 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/15 17:09:32 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/15 17:26:17 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,10 @@ do
 		printf "\033[0;31m [KO]\033[m  (check ./logs/$elem.log)\n"
 		error=1
 	fi
-	diff outs/$elem\_bash.out outs/$elem\_minishell.out
+	diff outs/$elem\_bash.out outs/$elem\_minishell.out > /dev/null
+	error_code=$?
 	printf "  \033[0;34moutput: "
-	if [ $? -eq 0 ]
+	if [ $error_code -eq 0 ]
 	then
 		printf "\033[0;32m[OK]\033[m\n"
 	else
