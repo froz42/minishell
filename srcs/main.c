@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/15 16:28:30 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 16:34:47 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ void	go_to_end(void)
 	}
 	if (gnl_status == -1)
 		file_error("STDIN", strerror(errno));
-	ft_safe_free(line);
 }
 
 int	minishell(t_list **env_var, t_list *history)
