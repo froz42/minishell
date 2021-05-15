@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 12:42:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 13:40:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 17:31:18 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ int		ft_env(t_list *env_var)
 	}
 	i = 0;
 	while (envp[i])
-		printf("%s\n", envp[i++]);
+	{
+		ft_putstr_fd(envp[i], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		i++;
+	}
 	free_table(&envp);
 	return (0);
 }

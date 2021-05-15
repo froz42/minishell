@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/10 23:00:24 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 14:47:05 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,20 +142,6 @@ static char	*get_arg(t_list **word_list)
 	return (dst);
 }
 
-t_bool	has_redir_out(t_list *redirs)
-{
-	t_redir	redir;
-
-	while (redirs)
-	{
-		redir = *(t_redir *)redirs->content;
-		if (redir.type == 1 || redir.type == 4)
-			return (true);
-		redirs = redirs->next;
-	}
-	return (false);
-}
-
 /*
 ** retourne l'objet t_command en utilisant les tokens
 ** jusqu'a rencontrer un token | ou ;
@@ -188,7 +174,5 @@ t_command	*get_command(t_list **word_list, t_list *env_var)
 		else
 			ft_lstadd_back(&command->args, ft_lstnew(get_arg(word_list)));
 	}
-	if (!ft_strcmp(command->name, "ls") && !has_redir_out(command->redirs))
-		ft_lstadd_back(&command->args, ft_lstnew(ft_strdup("--color")));
 	return (command);
 }

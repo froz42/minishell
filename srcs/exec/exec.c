@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/12 13:21:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 14:52:34 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ int		execution_rules(t_command command, t_list **env_vars)
 	int			backup[2];
 
 	return_value = 0;
+	if (!ft_strcmp(command.name, "ls") && isatty(STDOUT_FILENO))
+		ft_lstadd_back(&command.args, ft_lstnew("--color"));
 	argv = build_argv(command.name, command.args);
 	envp = build_env(*env_vars);
 	if (redirect_fd(command, backup))
@@ -153,6 +155,7 @@ int		execution_rules(t_command command, t_list **env_vars)
 	}
 	if (!return_value)
 	{
+
 		execve(command.cmd, argv, envp);
 		execution_error_write(argv[0], strerror(errno));
 		return_value = 126 + 2;
