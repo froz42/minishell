@@ -1,0 +1,79 @@
+==36303== Memcheck, a memory error detector
+==36303== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==36303== Using Valgrind-3.16.1 and LibVEX; rerun with -h for copyright info
+==36303== Command: ../minishell
+==36303== 
+==36303== 
+==36303== FILE DESCRIPTORS: 21 open at exit.
+==36303== Open file descriptor 103: /opt/visual-studio-code/v8_context_snapshot.bin
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 53: /dev/ptmx
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 52: /opt/visual-studio-code/resources/app/node_modules.asar
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 51: /opt/visual-studio-code/resources/app/node_modules.asar
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 50: /usr/share/fonts/gsfonts/NimbusSans-Regular.otf
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 47: /dev/shm/.org.chromium.Chromium.24w07a (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 46: /dev/shm/.org.chromium.Chromium.8ZkUfW (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 45: /dev/shm/.org.chromium.Chromium.j1bzjz (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 44: /dev/shm/.org.chromium.Chromium.tcLqil (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 43: /dev/shm/.org.chromium.Chromium.qVNj1d (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 42: /dev/shm/.org.chromium.Chromium.blC6uH (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 41: /dev/shm/.org.chromium.Chromium.p9yIx3 (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 40: /dev/shm/.org.chromium.Chromium.qkxHcw (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 39: /dev/shm/.org.chromium.Chromium.B0TCfw (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open AF_UNIX socket 38: <unknown>
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 33: /tmp/.org.chromium.Chromium.PJ5OVk (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 32: /proc/3191/status
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 31: /proc/3191/statm
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 30: /dev/shm/.org.chromium.Chromium.tHLrRC (deleted)
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open AF_UNIX socket 29: <unknown>
+==36303==    <inherited from parent>
+==36303== 
+==36303== Open file descriptor 20: /opt/visual-studio-code/v8_context_snapshot.bin
+==36303==    <inherited from parent>
+==36303== 
+==36303== 
+==36303== HEAP SUMMARY:
+==36303==     in use at exit: 0 bytes in 0 blocks
+==36303==   total heap usage: 504 allocs, 504 frees, 9,154 bytes allocated
+==36303== 
+==36303== All heap blocks were freed -- no leaks are possible
+==36303== 
+==36303== For lists of detected and suppressed errors, rerun with: -s
+==36303== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
