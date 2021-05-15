@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 15:40:14 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/14 17:58:54 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 12:22:11 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,9 @@ char	*catch_key(char **str, int *error, int *append)
 	else
 		*append = false;
 	dest = ft_substr(*str, 0, i);
-	(*str) += i + 1 + *append;
+	if ((*str)[i])
+		(*str) += 1;
+	(*str) += i + *append;
 	return (dest);
 }
 
