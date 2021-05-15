@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/15 13:10:58 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 14:57:49 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ int	redirect_fd(t_command command, int backup[2])
 /*
 ** Cette fonction vas decider a l'aide de istty si on utilse gnl ou get_input
 */
-int	read_next_line(char **line, t_list *history, char *status)
+int	read_next_line(char **line, t_list **history, char *status)
 {
 	int		gnl_status;
 
 	if (isatty(STDIN_FILENO))
-		return (get_input_line(line, true, &history, status));
+		return (get_input_line(line, true, history, status));
 	else
 	{
 		gnl_status = ft_gnl(STDIN_FILENO, line);
@@ -118,7 +118,7 @@ int	minishell(t_list **env_var, t_list *history)
 	ret = 0;
 	while (1)
 	{
-		gnl_status = read_next_line(&line, history, search_var(*env_var, "?"));
+		gnl_status = read_next_line(&line, &history, search_var(*env_var, "?"));
 		if (gnl_status < 0)
 			break ;
 		if (!gnl_status)
