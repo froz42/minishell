@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 12:31:20 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 23:32:21 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** This is called when user type ctrl-c
 */
 
-void	handle_ctrlc(t_buffer *buffer)
+void	handle_ctrl_c(t_buffer *buffer)
 {
 	char	*dst;
 
@@ -38,7 +38,7 @@ void	handle_ctrlc(t_buffer *buffer)
 ** This is called when user type ctrl-d
 */
 
-void	handle_ctrld(t_buffer *buffer)
+void	handle_ctrl_d(t_buffer *buffer)
 {
 	free(buffer->buff);
 	buffer->buff = ft_strdup("");
@@ -54,15 +54,15 @@ void	erase_char(t_buffer *buffer)
 {
 	int		i;
 
-	if (buffer->size <= buffer->position)
+	if (buffer->size <= buffer->position)	// rename buffer->position ?
 		return ;
 	i = 0;
 	while (i++ < buffer->position)
-		ft_putstr("\033[1C");
+		ft_putstr(CUR_RIGHT);
 	erase_x_chars(buffer->position + 1);
 	ft_putstr(buffer->buff + (buffer->size - buffer->position));
 	i = 0;
 	while (i++ < buffer->position)
-		ft_putstr("\033[1D");
+		ft_putstr(CUR_LEFT);
 	buffer_delete(buffer->size - buffer->position, buffer);
 }
