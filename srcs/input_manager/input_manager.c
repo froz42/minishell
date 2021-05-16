@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/16 17:49:52 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/16 23:18:08 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,19 +106,22 @@ static int	wait_line(char buff[10], t_buffer *buffer,
 	int		ret;
 	int		history_fetch;
 
-	history_fetch = -1;
+	history_fetch = -1;	// define genre "NOT_IN_HIST"
 	while (get_escape_id(buff, 0) != LF_ID)
 	{
+		ft_bzero(buff, 10);
 		ret = read(STDIN_FILENO, buff, 10);	// protect against read error
 		if (buff[0] != LF && ft_iscntrl(buff[0]))
 		{
 			buffer_add(LF, buffer);
 			buffer->escape_id = get_escape_id(buff, ret);
-			if (handle_ctrl(buffer, &history_fetch, temp, history) == EOT)
+			if (handle_ctrl(buffer, &history_fetch, temp, history) == EOT_ID)
 				return (0);	// rename return via define
 		}
 		else
 			buffer_add_chain(buff, ret, buffer);
+		if (buffer->escape_id == EOT_ID && !buffer->size)	// plutot if(buffer->error)
+			return (0);
 	}
 	return (1);	// rename return via define
 }
@@ -132,11 +135,12 @@ int	get_input_line(char **line, t_bool manage_history,
 {
 	char			buff[10];
 	t_buffer		buffer;
-	char			*temp;	// rename genre "save_curr_line" ?
+	char			*temp;	// rename genre "save_curr_line" ? Et mettre dans buffer pour plus de flexibilite ?
 	struct termios	old_termios;
 	int				ret;
 
-	buff[0] = '\0';
+//	buff[0] = '\0';
+	ft_bzero(buff, 10);
 	buffer = init_buffer(manage_history, status);
 	temp = NULL;
 	old_termios = raw_mode();
@@ -145,7 +149,7 @@ int	get_input_line(char **line, t_bool manage_history,
 	buff_mode(old_termios);
 	if (temp)
 		free(temp);
-	if (buffer.size > 0)
+	if (buffer.size > 0 && buffer.buff)
 		push_history(ft_strdup(buffer.buff), history);
 	*line = buffer.buff;
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/15 13:31:07 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/16 23:15:40 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ void	buffer_add(char c, t_buffer *buffer)
 	if ((c == LF && (i > 0 || !buffer->buff))
 		|| (&buff[i] == &buff[sizeof(buff)]))
 	{
-//		if (i != 5)
-//			dst = ft_calloc(i + buffer->size + 1, sizeof(char));
-//		else
-//			dst = NULL;
-		dst = ft_calloc(i + buffer->size + 1, sizeof(char));
+		if (i != 5)
+			dst = ft_calloc(i + buffer->size + 1, sizeof(char));
+		else
+			dst = NULL;
+//		dst = ft_calloc(i + buffer->size + 1, sizeof(char));
 		if (!dst)	// re-afficher le prompt d'avant erreur ?
 		{
 			ft_log_error(strerror(errno));
@@ -75,11 +75,13 @@ void	buffer_add_pos(char c, int pos, t_buffer *buffer)
 {
 	char	*dst;
 
-	buffer_add(10, buffer);
+	buffer_add(LF, buffer);
 	dst = ft_calloc(buffer->size + 2, sizeof(char));
 	if (!dst)
 	{
 		ft_log_error(strerror(errno));
+		buffer->size = 0;
+		buffer->escape_id = handle_ctrl_d(buffer);
 		return ;
 	}
 	ft_memcpy(dst, buffer->buff, pos);
@@ -102,11 +104,11 @@ void	buffer_add_chain(char *src, int size, t_buffer *buffer)
 	write(STDOUT_FILENO, src, size);
 	if (src[0] != LF && buffer->position)
 	{
-		buffer_add(10, buffer);
+		buffer_add(LF, buffer);
 		ft_putstr(buffer->buff + (buffer->size - buffer->position));
 		i = 0;
 		while (i++ < buffer->position)
-			ft_putstr("\033[1D");
+			ft_putstr(CURSOR_LEFT);
 		i = 0;
 		while (i < size)
 			buffer_add_pos(src[i++], buffer->size - buffer->position, buffer);

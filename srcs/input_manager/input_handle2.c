@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/16 16:56:06 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/16 22:52:56 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	handle_ctrl_c(t_buffer *buffer)
 	if (!dst)
 	{
 		ft_log_error(strerror(errno));
+		buffer->size = 0;
+		buffer->escape_id = handle_ctrl_d(buffer);
 		return ;
 	}
 	free(buffer->buff);
@@ -41,10 +43,11 @@ void	handle_ctrl_c(t_buffer *buffer)
 int	handle_ctrl_d(t_buffer *buffer)
 {
 	free(buffer->buff);
+	buffer->buff = NULL;
 //	buffer->buff = ft_strdup("");
 //	buffer->size = ft_strlen(buffer->buff);
 //	buffer->position = 0;
-	return (EOT);
+	return (EOT_ID);
 }
 
 /*
