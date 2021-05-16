@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/15 22:52:58 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/16 17:49:52 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,24 +77,21 @@ static int	handle_ctrl(t_buffer *buffer, int *history_fetch,
 {
 	if (buffer->escape_id == DEL_ID && buffer->size)
 		erase_char(buffer);
-	else if (buffer->escape_id == 1 && buffer->manage_history
-		&& ft_lstsize(*history))
+	else if (buffer->escape_id == UP_KEY_ID && buffer->manage_history
+			&& *history)
 		handle_up_key(buffer, history_fetch, temp, *history);
-	else if (buffer->escape_id == 2 && buffer->manage_history
-		&& ft_lstsize(*history) && *temp)
+	else if (buffer->escape_id == DOWN_KEY_ID && buffer->manage_history
+			&& *history && *temp)
 		handle_down_key(buffer, history_fetch, temp, *history);
-	else if (buffer->escape_id == 3)
+	else if (buffer->escape_id == RIGHT_KEY_ID)
 		handle_right_key(buffer);
-	else if (buffer->escape_id == 4)
+	else if (buffer->escape_id == LEFT_KEY_ID)
 		handle_left_key(buffer);
-	else if (buffer->escape_id == 6)
+	else if (buffer->escape_id == ETX_ID)
 		handle_ctrl_c(buffer);
-	else if (buffer->escape_id == EOT_ID && !buffer->size)
-	{
-		handle_ctrl_d(buffer);
-		return (EOT);
-	}
-	else if (buffer->escape_id == 8)
+	if (buffer->escape_id == EOT_ID && !buffer->size)
+		return (handle_ctrl_d(buffer));
+	else if (buffer->escape_id == CLR_SCREEN_ID)
 		handle_ctrl_l(buffer);
 	return (0);
 }
@@ -135,7 +132,7 @@ int	get_input_line(char **line, t_bool manage_history,
 {
 	char			buff[10];
 	t_buffer		buffer;
-	char			*temp;
+	char			*temp;	// rename genre "save_curr_line" ?
 	struct termios	old_termios;
 	int				ret;
 
