@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/16 16:19:01 by jmazoyer         ###   ########.fr        #
+#    Updated: 2021/05/16 17:52:16 by jmazoyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -112,7 +112,7 @@ $(LIBFT):
 			@$(call run_and_test,make -sC ./libft libft.a)
 
 clean:		header
-			@rm -rf objs objs_tests
+			@rm -rf objs objs_tests tests/logs tests/outs tests/diffs
 			@make -sC ./libft clean
 			@printf "%-53b%b" "$(COM_COLOR)clean:" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"
 

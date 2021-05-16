@@ -4,3 +4,4 @@ libft.a
 *.o
 *.out
 *.log
+*.diff

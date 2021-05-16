@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/15 14:52:34 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 20:58:01 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int		execution_rules(t_command command, t_list **env_vars)
 
 		execve(command.cmd, argv, envp);
 		execution_error_write(argv[0], strerror(errno));
-		return_value = 126 + 2;
+		return_value = 127 + 2;
 	}
 	free_table(&argv);
 	free_table(&envp);
