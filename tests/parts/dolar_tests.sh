@@ -15,6 +15,6 @@ echo $space_token$space_token2$space_token3
 echo $space_token3$space_token2$space_token1
 echo $space_token3$space_token1$space_token2
 echo $space_token2$space_token1$space_token3
-
+echo $USER$var\$USER$USER\$USERtest$USER
 echo $var_unset
 echo "$var_unset"
