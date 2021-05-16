@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 21:07:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 13:33:12 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/16 11:46:11 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int		cd_oldpwd(t_list **env_var)
 	getcwd(actual_dir, sizeof(actual_dir));
 	edit_var(env_var, "OLDPWD", actual_dir);
 	ret = chdir(old_pwd);
+	ft_putnl(old_pwd);
 	if (ret == -1)
 	{
 		generic_error(strerror(errno), old_pwd);
