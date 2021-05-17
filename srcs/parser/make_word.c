@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 13:41:26 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 19:35:38 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,15 @@ static void	handle_dolar(t_list *dolar_tokens, t_list **tokens,
 		ft_lstadd_back(tokens, ft_lstnew(join_list(*to_join)));
 		ft_lstclear(to_join, ft_safe_free);
 	}
-
+	if (append->end && dolar_tokens)
+	{
+		ft_lstadd_back(to_join, ft_lstnew(ft_strdup(ft_lstlast(dolar_tokens)->content)));
+		ft_lstremove_last(&dolar_tokens, ft_safe_free);
+	}
+	append->start = true;
+	append->end = true;
+	ft_lstcat(tokens, dolar_tokens);
+	ft_lstclear(&dolar_tokens, ft_nofree);
 }
 
 /*
