@@ -6,15 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 13:21:15 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 22:05:08 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 /*
-** Geres les char `; | >> > <` met un \33 (escape) devant
-** pour les diff des user input
+** Geres les char "; | >> > <" : met un \33 (escape) devant
+** pour les differencier de l'user input
 */
 
 char	*special(char **str)
@@ -24,8 +24,8 @@ char	*special(char **str)
 	token = ft_calloc(4, sizeof (char));
 	if (!token)
 		return (NULL);
-	token[0] = '\33';
-	if (is_special(*str) == 4)
+	token[0] = ESC;
+	if (is_special(*str) == APPEND)
 	{
 		ft_memcpy(token + 1, *str, 2);
 		(*str) += 2;
@@ -85,21 +85,47 @@ char	*join_list(t_list *to_cat)
 	return (dest);
 }
 
+t_bool	add_special_str(t_list **word_list, char **str, int *error)
+{
+	char	*special_str;
+	t_list	*elem;
+
+	special_str = special(str);
+	if (!special_str)
+	{
+		*error = LOG_ERROR;
+		return (false);
+	}
+	elem = ft_lstnew(special_str);
+	if (!elem)
+	{
+		free(special_str);
+		*error = LOG_ERROR;
+		return (false);
+	}
+	ft_lstadd_back(word_list, elem);
+	return (true);
+}
+
 /*
 ** Tokenize tout ca pour le error check
 */
 
-t_list	*tokenize(char **str, int *error, t_list *env_var, t_bool just_pipes)
+//t_list	*tokenize(char **str, int *error, t_list *env_var, t_bool just_pipes)
+t_list	*tokenize(char **str, int *error, t_list *env_var)
 {
 	t_list	*word_list;
 	t_list	*word_tokens;
 
 	word_list = NULL;
-	while (**str && (!just_pipes || **str != ';'))
+	while (**str && **str != ';')
 	{
 		if (is_special(*str))
-			ft_lstadd_back(&word_list, ft_lstnew(special(str)));
-		else if (**str)
+		{
+			if (!add_special_str(&word_list, str, error))
+				break ;
+		}
+		else
 		{
 			word_tokens = make_word(str, error, env_var);
 			ft_lstcat(&word_list, word_tokens);
@@ -115,5 +141,5 @@ t_list	*tokenize(char **str, int *error, t_list *env_var, t_bool just_pipes)
 
 t_list	*tokenize_all(char *str, int *error, t_list *env_var)
 {
-	return (tokenize(&str, error, env_var, true));
+	return (tokenize(&str, error, env_var));
 }

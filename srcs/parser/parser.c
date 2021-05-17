@@ -6,14 +6,14 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/12 12:29:03 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 21:54:42 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 /*
-** Retourne la valeur associer a chaque caractere special et 0 si pas bon
+** Retourne la valeur associee a un caractere special et 0 sinon
 */
 
 int	is_special(char *str)
@@ -22,15 +22,15 @@ int	is_special(char *str)
 
 	strlen = ft_strlen(str);
 	if (strlen >= 2 && !ft_memcmp(str, ">>", 2))
-		return (4);
+		return (APPEND);
 	if (*str == '>')
-		return (1);
+		return (REDIR_OUT);
 	if (*str == '<')
-		return (2);
+		return (REDIR_IN);
 	if (*str == '|')
-		return (3);
+		return (PIPE);
 	if (*str == ';')
-		return (5);
+		return (SEMICOLON);
 	return (0);
 }
 
@@ -73,7 +73,8 @@ t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
 	t_list	*token_list;
 	t_list	*pipes_list;
 
-	token_list = tokenize(str, error, env_var, true);
+//	token_list = tokenize(str, error, env_var, true);
+	token_list = tokenize(str, error, env_var);
 	pipes_list = pipes_commands(token_list, env_var);
 	ft_lstclear(&token_list, ft_safe_free);
 	return (pipes_list);
@@ -86,31 +87,33 @@ t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
 int	exec_line(char *str, t_list **env_var)
 {
 	t_list		*word_list;
-	t_list		*pipes_list;
+	t_list		*pipe_list;
 	int			error;
 	int			return_value;
 
-	error = -1;
+	error = NO_ERROR;
 	word_list = tokenize_all(str, &error, *env_var);
-	if (error != -1)
+//	word_list = tokenize(str, &error, *env_var); // passer direct juste le ptr ?
+	if (error != NO_ERROR)
 		write_error(error);
 	else
 	{
 		error_detector(word_list, &error);
 		ft_lstclear(&word_list, free);
-		if (error != -1)
+		if (error != NO_ERROR)
 			write_error(error);
 		else
 		{
 			while (*str)
 			{
-				pipes_list = get_next_pipes(&str, &error, *env_var);
-				return_value = exec(pipes_list, env_var);
-				ft_lstclear(&pipes_list, free_command);
+				pipe_list = get_next_pipes(&str, &error, *env_var);
+				return_value = exec(pipe_list, env_var);
+				ft_lstclear(&pipe_list, free_command);
 				if (return_value)
 					return (return_value);
 			}
 		}
 	}
 	return (0);
+//	return (0 + (error != NO_ERROR)); // exit si erreur ?
 }

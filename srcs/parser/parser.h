@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 13:20:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 22:00:59 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,20 @@
 
 # include "../minishell.h"
 
+# define REDIR_OUT	1
+# define REDIR_IN	2
+# define PIPE		3
+# define APPEND		4
+# define SEMICOLON	5
+
+# define LOG_ERROR	10
+
+# define ESC		'\33'
+
 int			is_special(char *str);
-t_list		*tokenize(char **str, int *error, t_list *env_var,
-				t_bool just_pipes);
+//t_list		*tokenize(char **str, int *error, t_list *env_var,
+//				t_bool just_pipes);
+t_list		*tokenize(char **str, int *error, t_list *env_var);
 t_list		*tokenize_all(char *str, int *error, t_list *env_var);
 t_command	*get_command(t_list **word_list, t_list *env_var);
 void		free_command(void *mem);
