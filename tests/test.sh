@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/15 13:57:53 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/16 11:17:20 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/17 12:53:25 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,17 +32,27 @@ do
 	../minishell < parts/$elem > outs/$elem\_minishell.out 2> ./logs/$elem.log
 	error_code=$?
 	rm -rf ./sandbox
-	printf "  \033[0;34mleaks: "
+	printf "  \033[0;34mleaks:			"
 	if [ $error_code -eq 0 ]
 	then
-		printf "\033[0;32m [OK]\033[m\n"
+		printf "\033[0;32m[OK]\033[m\n"
 	else
-		printf "\033[0;31m [KO]\033[m  (check tests/logs/$elem.log)\n"
+		printf "\033[0;31m[KO]\033[m  (check tests/logs/$elem.log)\n"
+		error=1
+	fi
+	grep < ./logs/$elem.log "still reachable" > /dev/null
+	error_code=$?
+	printf "  \033[0;34mstill reachable:		"
+	if [ $error_code -eq 1 ]
+	then
+		printf "\033[0;32m[OK]\033[m\n"
+	else
+		printf "\033[0;31m[KO]\033[m  (check tests/logs/$elem.log)\n"
 		error=1
 	fi
 	diff outs/$elem\_bash.out outs/$elem\_minishell.out > ./diffs/$elem.diff
 	error_code=$?
-	printf "  \033[0;34moutput: "
+	printf "  \033[0;34moutput:			"
 	if [ $error_code -eq 0 ]
 	then
 		printf "\033[0;32m[OK]\033[m\n"
