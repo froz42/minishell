@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/04/26 20:57:08 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/17 14:53:39 by jmazoyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,9 @@ SRCS_STRING		= ft_christr.c ft_split.c ft_str_is_alpha.c \
 				  ft_strnlen.c ft_strnstr.c ft_strrchr.c ft_strtrim.c \
 				  ft_substr.c
 
-SRCS_GNL		= ft_gnl.c ft_gnl_utils.c
+SRCS_GNL		= ft_gnl.c ft_gnl_utils.c ft_strjoin_del_bonus.c \
+				  ft_strnjoin_del_bonus.c get_next_line_bonus.c \
+				  ft_min_size_t_bonus.c
 
 SRCS_WSTRING	= ft_wstr_strlen.c ft_wstrlen.c ft_wstrnlen.c ft_wstrtostr.c
 

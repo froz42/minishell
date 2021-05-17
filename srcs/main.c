@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 13:04:12 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 15:06:16 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,72 +95,44 @@ int	redirect_fd(t_command command, int backup[2])
 
 int	read_next_line(char **line, t_list **history, char *status)
 {
-	int		gnl_status;
+	int		left_to_read;
 
 	if (isatty(STDIN_FILENO))
 		return (get_input_line(line, true, history, status));
-	else
-	{
-		gnl_status = ft_gnl(STDIN_FILENO, line);
-		if (gnl_status < 0)
-			file_error("STDIN_FILENO", strerror(errno));
-		return (gnl_status);
-	}
-}
-
-/*
-** En attendant de pouvoir free GNL
-** Donc a refaire
-*/
-
-void	go_to_end(void)
-{
-	char	*line;
-	int		gnl_status;
-
-	gnl_status = 2;
-	while (gnl_status > 0)
-	{
-		if (gnl_status == 1)
-			free(line);
-		gnl_status = ft_gnl(STDIN_FILENO, &line);
-	}
-	if (gnl_status == -1)
-		file_error("STDIN", strerror(errno));
+	left_to_read = get_next_line(STDIN_FILENO, line);
+	if (left_to_read < 0)
+		file_error("STDIN_FILENO", strerror(errno));
+	else if (left_to_read == 0 && (*line)[0] != '\0')
+		left_to_read = 1;
+	return (left_to_read);
 }
 
 int	minishell(t_list **env_var, t_list *history)
 {
 	char	*line;
 	int		ret;
-	int		gnl_status;
+	int		left_to_read;
 
 	if (edit_var(env_var, "?", "0") == false)
 		return (127);
 	ret = 0;
 	while (1)
 	{
-		gnl_status = read_next_line(&line, &history, search_var(*env_var, "?"));
-		if (gnl_status < 0)
+		left_to_read = read_next_line(&line, &history, search_var(*env_var, "?"));
+		if (left_to_read < 0)
 			break ;
-		if (!gnl_status)
+		if (!left_to_read)
 		{
-			if (!isatty(STDIN_FILENO))
-				go_to_end();
 			ret = ft_exit(1, NULL, env_var, false);
 			break ;
 		}
 		ret = exec_line(line, env_var);
 		if (ret)
-		{
-			if (!isatty(STDIN_FILENO))
-				go_to_end();
 			break ;
-		}
 		free(line);
 	}
 	ft_lstclear(&history, free);
-	if (gnl_status >= 0)
+	if (left_to_read >= 0)
 		ft_safe_free(line);
 	return (ret - 2);
 }
