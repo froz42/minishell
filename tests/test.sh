@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/15 13:57:53 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/17 12:53:25 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/17 13:54:30 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,16 @@ do
 	error_code=$?
 	printf "  \033[0;34mstill reachable:		"
 	if [ $error_code -eq 1 ]
+	then
+		printf "\033[0;32m[OK]\033[m\n"
+	else
+		printf "\033[0;31m[KO]\033[m  (check tests/logs/$elem.log)\n"
+		error=1
+	fi
+	grep < ./logs/$elem.log "FILE DESCRIPTORS: 0 open at exit." > /dev/null
+	error_code=$?
+	printf "  \033[0;34mfd leaks:			"
+	if [ $error_code -eq 0 ]
 	then
 		printf "\033[0;32m[OK]\033[m\n"
 	else
