@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:24:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 14:23:02 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 12:32:52 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,30 +95,4 @@ char	*dolar(char **str, t_list *env_var)
 	if (!value)
 		return (ft_strdup(""));
 	return (value);
-}
-
-/*
-** Transforme la valeur en tokens et set selon les espace *concat
-** concat :
-**			0: first: YES | next: YES
-**			1: first: NO | next: YES
-**			2: first: YES | next: NO
-**			3: first: NO | next: NO
-*/
-
-t_list	*dolar_tokenize(char **str, int *concat,
-			t_list *env_var)
-{
-	char	*to_tokenize;
-	t_list	*tokens;
-
-	to_tokenize = dolar(str, env_var);
-	if (to_tokenize[0] == ' ' && *concat < 1)
-		(*concat) += 1;
-	if (ft_strlen(to_tokenize)
-		&& to_tokenize[ft_strlen(to_tokenize) - 1] == ' ' && *concat < 2)
-		(*concat) += 2;
-	tokens = split_to_list(to_tokenize);
-	ft_safe_free(to_tokenize);
-	return (tokens);
 }

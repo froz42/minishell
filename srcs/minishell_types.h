@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/16 20:08:12 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/16 20:12:05 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ typedef int	t_tube[2];
 
 typedef struct s_append
 {
-	t_bool append_start;
-	t_bool append_end;
+	t_bool start;
+	t_bool end;
 }				t_append;
 
 #endif
