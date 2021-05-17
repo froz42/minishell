@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 12:25:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 10:34:48 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ t_buffer	init_buffer(t_bool manage_history, char *status)
 	t_buffer	buffer;
 
 	buffer.size = 0;
-	buffer.position = 0;
+	buffer.pos_before_cursor = 0;
 	buffer.buff = malloc(sizeof(char));
 	buffer.buff[0] = '\0';
 	buffer.escape_id = -1;
 	buffer.manage_history = manage_history;
+	buffer.history_lvl = -1;
+	buffer.error = false;
 	buffer.status = status;
 	return (buffer);
 }
@@ -39,28 +41,30 @@ t_buffer	init_buffer(t_bool manage_history, char *status)
 void	buffer_add(char c, t_buffer *buffer)
 {
 	static char		buff[10];
-	static int		buff_size = 0;
+	static int		i = 0;
 	char			*dst;
 
-	if ((c == 10 && (buff_size > 0 || !buffer->buff))
-		|| (&buff[buff_size] == &buff[sizeof(buff)]))
+	if ((c == LF && (i > 0 || !buffer->buff))
+		|| (&buff[i] == &buff[sizeof(buff)]))
 	{
-		dst = ft_calloc(buff_size + buffer->size + 1, sizeof(char));
+		dst = ft_calloc(i + buffer->size + 1, sizeof(char));
 		if (!dst)
 		{
 			ft_log_error(strerror(errno));
+			handle_ctrl_d(buffer);
+			buffer->error = true;
 			return ;
 		}
 		ft_memcpy(dst, buffer->buff, buffer->size);
-		ft_memcpy(dst + buffer->size, buff, buff_size);
-		buffer->size += buff_size;
-		buff_size = 0;
+		ft_memcpy(dst + buffer->size, buff, i);
+		buffer->size += i;
+		i = 0;
 		if (buffer->buff)
 			free(buffer->buff);
 		buffer->buff = dst;
 	}
-	if (c != 10)
-		buff[buff_size++] = c;
+	if (c != LF)
+		buff[i++] = c;
 }
 
 /*
@@ -71,11 +75,13 @@ void	buffer_add_pos(char c, int pos, t_buffer *buffer)
 {
 	char	*dst;
 
-	buffer_add(10, buffer);
+	buffer_add(LF, buffer);
 	dst = ft_calloc(buffer->size + 2, sizeof(char));
 	if (!dst)
 	{
 		ft_log_error(strerror(errno));
+		handle_ctrl_d(buffer);
+		buffer->error = true;
 		return ;
 	}
 	ft_memcpy(dst, buffer->buff, pos);
@@ -95,17 +101,18 @@ void	buffer_add_chain(char *src, int size, t_buffer *buffer)
 {
 	int	i;
 
-	write(1, src, size);
-	if (src[0] != 10 && buffer->position)
+	write(STDOUT_FILENO, src, size);
+	if (src[0] != LF && buffer->pos_before_cursor)
 	{
-		buffer_add(10, buffer);
-		ft_putstr(buffer->buff + (buffer->size - buffer->position));
+		buffer_add(LF, buffer);
+		ft_putstr(buffer->buff + (buffer->size - buffer->pos_before_cursor));
 		i = 0;
-		while (i++ < buffer->position)
-			ft_putstr("\033[1D");
+		while (i++ < buffer->pos_before_cursor)
+			ft_putstr(CURSOR_LEFT);
 		i = 0;
 		while (i < size)
-			buffer_add_pos(src[i++], buffer->size - buffer->position, buffer);
+			buffer_add_pos(src[i++],
+					buffer->size - buffer->pos_before_cursor, buffer);
 	}
 	else
 	{

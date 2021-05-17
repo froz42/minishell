@@ -6,7 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/05/16 20:12:05 by tmatis           ###   ########.fr       */
+=======
+/*   Updated: 2021/05/17 10:34:34 by jmazoyer         ###   ########.fr       */
+>>>>>>> origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +31,13 @@
 typedef struct s_buffer
 {
 	int		size;
-	int		position;
+	int		pos_before_cursor;
 	char	*buff;
 	int		escape_id;
 	char	*status;
 	t_bool	manage_history;
+	int		history_lvl;
+	t_bool	error;
 }				t_buffer;
 
 typedef struct s_redir

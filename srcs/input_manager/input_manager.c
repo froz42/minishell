@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 13:08:34 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 10:40:08 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static char	*get_last_dir(void)
 {
 	char	actual_dir[BUFFER_SIZE];
 	char	**split;
-	char	*last;
 	int		i;
+	char	*last_dir;
 
 	getcwd(actual_dir, sizeof(actual_dir));
 	split = ft_split(actual_dir, '/');
@@ -28,11 +28,11 @@ static char	*get_last_dir(void)
 	while (split[i])
 		i++;
 	if (i > 0)
-		last = ft_strdup(split[i - 1]);
+		last_dir = ft_strdup(split[i - 1]);
 	else
 		return (ft_strdup("/"));
 	free_table(&split);
-	return (last);
+	return (last_dir);
 }
 
 /*
@@ -43,7 +43,6 @@ void	print_prompt(char *status)
 {
 	char	*user;
 	char	*last_dir;
-
 
 	user = getenv("USER");
 	ft_putstr("\x1B[32m");
@@ -70,32 +69,29 @@ void	print_prompt(char *status)
 }
 
 /*
-** Handle ctrl chars and call the right function
+** Handle ctrl-chars and call the corresponding function
 */
 
-static int	handle_ctrl(t_buffer *buffer, int *history_fetch,
-				char **temp, t_list **history)
+static int	handle_ctrl(t_buffer *buffer, char **save_curr_line,
+									t_list **history)
 {
-	if (buffer->escape_id == 0 && buffer->size)
+	if (buffer->escape_id == DEL_ID && buffer->size)
 		erase_char(buffer);
-	else if (buffer->escape_id == 1 && buffer->manage_history
-		&& ft_lstsize(*history))
-		handle_up_key(buffer, history_fetch, temp, *history);
-	else if (buffer->escape_id == 2 && buffer->manage_history
-		&& ft_lstsize(*history) && *temp)
-		handle_down_key(buffer, history_fetch, temp, *history);
-	else if (buffer->escape_id == 3)
+	else if (buffer->escape_id == UP_KEY_ID && buffer->manage_history
+			&& *history)
+		handle_up_key(buffer, &buffer->history_lvl, save_curr_line, *history);
+	else if (buffer->escape_id == DOWN_KEY_ID && buffer->manage_history
+			&& *history && *save_curr_line)
+		handle_down_key(buffer, &buffer->history_lvl, save_curr_line, *history);
+	else if (buffer->escape_id == RIGHT_KEY_ID)
 		handle_right_key(buffer);
-	else if (buffer->escape_id == 4)
+	else if (buffer->escape_id == LEFT_KEY_ID)
 		handle_left_key(buffer);
-	else if (buffer->escape_id == 6)
-		handle_ctrlc(buffer);
-	else if (buffer->escape_id == 7 && !buffer->size)
-	{
-		handle_ctrld(buffer);
-		return (1);
-	}
-	else if (buffer->escape_id == 8)
+	else if (buffer->escape_id == ETX_ID)
+		handle_ctrl_c(buffer);
+	if (buffer->escape_id == EOT_ID && !buffer->size)
+		return (handle_ctrl_d(buffer));
+	else if (buffer->escape_id == CLR_SCREEN_ID)
 		handle_ctrl_l(buffer);
 	return (0);
 }
@@ -105,51 +101,57 @@ static int	handle_ctrl(t_buffer *buffer, int *history_fetch,
 */
 
 static int	wait_line(char buff[10], t_buffer *buffer,
-				char **temp, t_list **history)
+						char **save_curr_line, t_list **history)
 {
 	int		ret;
-	int		history_fetch;
 
-	history_fetch = -1;
-	while (get_escape_id(buff, 0) != 5)
+	while (get_escape_id(buff, 0) != LF_ID)
 	{
+		ft_bzero(buff, 10);
 		ret = read(STDIN_FILENO, buff, 10);
-		if (buff[0] != 10 && ft_iscntrl(buff[0]))
+		if (buff[0] != LF && ft_iscntrl(buff[0]) && ret != -1)
 		{
-			buffer_add(10, buffer);
+			buffer_add(LF, buffer);
 			buffer->escape_id = get_escape_id(buff, ret);
-			if (handle_ctrl(buffer, &history_fetch, temp, history))
-				return (0);
+			if (handle_ctrl(buffer, save_curr_line, history) == EOT)
+				return (false);
 		}
-		else
+		else if (ret != -1)
 			buffer_add_chain(buff, ret, buffer);
+		if (ret == -1)
+		{
+			ft_log_error(strerror(errno));
+			handle_ctrl_d(buffer);
+		}
+		if (buffer->error || ret == -1)
+			return (false);
 	}
-	return (1);
+	return (true);
 }
 
 /*
-** similar working as get_next_line, read from STDIN_FILENO, handle ctrl char
+** similar working as get_next_line, read from STDIN_FILENO, handle ctrl-char
 */
 
 int	get_input_line(char **line, t_bool manage_history,
-		t_list **history, char *status)
+							t_list **history, char *status)
 {
-	char			*temp;
-	t_buffer		buffer;
 	char			buff[10];
-	struct termios	old;
+	t_buffer		buffer;
+	char			*save_curr_line;
+	struct termios	old_termios;
 	int				ret;
 
-	buff[0] = 0;
+	ft_bzero(buff, 10);
 	buffer = init_buffer(manage_history, status);
-	temp = NULL;
-	old = raw_mode();
+	save_curr_line = NULL;
+	old_termios = raw_mode();
 	print_prompt(status);
-	ret = wait_line(buff, &buffer, &temp, history);
-	buff_mode(old);
-	if (temp)
-		free(temp);
-	if (buffer.size > 0)
+	ret = wait_line(buff, &buffer, &save_curr_line, history);
+	buff_mode(old_termios);
+	if (save_curr_line)
+		free(save_curr_line);
+	if (buffer.size > 0 && buffer.buff)
 		push_history(ft_strdup(buffer.buff), history);
 	*line = buffer.buff;
 	return (ret);

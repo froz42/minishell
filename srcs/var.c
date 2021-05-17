@@ -6,13 +6,13 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 15:45:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/14 22:30:58 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/15 12:18:15 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*load_var_error(char *message, t_var *var_to_free, void *ret_value)
+void	*load_var_error(char *message, t_var *var_to_free, void *ret)
 {
 	if (var_to_free)
 		free_var(var_to_free);
@@ -24,7 +24,7 @@ void	*load_var_error(char *message, t_var *var_to_free, void *ret_value)
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
 	}
 	ft_putstr_fd("\n", STDERR_FILENO);
-	return (ret_value);
+	return (ret);
 }
 
 /*
