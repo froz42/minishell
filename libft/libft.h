@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 16:43:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/03/29 12:28:06 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 14:56:46 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,17 @@
 # include "gnl/ft_gnl.h"
 # include "log/log.h"
 # include "maths/maths.h"
+
+typedef struct	s_file_buff
+{
+	char				buffer[BUFFER_SIZE + 1];
+	size_t				i;
+	int					stored;
+}				t_file_buff;
+
+int			get_next_line(int fd, char **line);
+size_t		ft_min_size_t(size_t a, size_t b);
+char		*ft_strjoin_del(char *s1, char *s2, int to_del);
+char		*ft_strnjoin_del(char *s1, char *s2, size_t n, int to_del);
 
 #endif
