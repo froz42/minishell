@@ -6,32 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:24:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 12:32:52 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 13:38:54 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-/*
-** Fais un split et le met dans une liste chainee
-*/
-
-t_list	*split_to_list(char *str)
-{
-	char	**split;
-	int		i;
-	t_list	*token_list;
-
-	token_list = NULL;
-	split = ft_split(str, ' ');
-	if (!split)
-		return (NULL);
-	i = 0;
-	while (split[i])
-		ft_lstadd_back(&token_list, ft_lstnew(split[i++]));
-	free(split);
-	return (token_list);
-}
 
 /*
 ** Cherche la var dans l'env puis dans les locals

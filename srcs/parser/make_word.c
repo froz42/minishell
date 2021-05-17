@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 12:33:10 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 13:41:26 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,7 @@ t_list	*split_to_list(char *str)
 }
 
 /*
-** Transforme la valeur en tokens et set selon les espace *concat
-** concat :
-**			0: first: YES | next: YES
-**			1: first: NO | next: YES
-**			2: first: YES | next: NO
-**			3: first: NO | next: NO
+** Transforme la valeur en tokens et set selon les espace append
 */
 
 t_list	*dolar_tokenize(char **str, t_append *append,
@@ -56,6 +51,8 @@ t_list	*dolar_tokenize(char **str, t_append *append,
 		&& to_tokenize[ft_strlen(to_tokenize) - 1] == ' ')
 		append->end = false;
 	tokens = split_to_list(to_tokenize);
+	if (ft_lstsize(tokens) == 0)
+		ft_lstadd_back(&tokens, ft_lstnew(ft_strdup("")));
 	ft_safe_free(to_tokenize);
 	return (tokens);
 }
@@ -64,8 +61,18 @@ t_list	*dolar_tokenize(char **str, t_append *append,
 */
 
 static void	handle_dolar(t_list *dolar_tokens, t_list **tokens,
-				t_list **to_cat, t_append *append)
+				t_list **to_join, t_append *append)
 {
+	if (append->start)
+	{
+		ft_lstadd_back(to_join, ft_lstnew(ft_strdup(dolar_tokens->content)));
+		ft_lstremove_first(&dolar_tokens, ft_safe_free);
+	}
+	if (dolar_tokens && *to_join)
+	{
+		ft_lstadd_back(tokens, ft_lstnew(join_list(*to_join)));
+		ft_lstclear(to_join, ft_safe_free);
+	}
 
 }
 
@@ -73,12 +80,12 @@ static void	handle_dolar(t_list *dolar_tokens, t_list **tokens,
 ** Init les value pour gagner quelques ligne \O_O/
 */
 
-static void	init_value(t_append *append, t_list **tokens, t_list **to_cat)
+static void	init_value(t_append *append, t_list **tokens, t_list **to_join)
 {
 	append->start = true;
 	append->end = true;
 	*tokens = NULL;
-	*to_cat = NULL;
+	*to_join = NULL;
 }
 
 /*
@@ -88,27 +95,27 @@ static void	init_value(t_append *append, t_list **tokens, t_list **to_cat)
 t_list	*make_word(char **str, int *error, t_list *env_var)
 {
 	t_list	*tokens;
-	t_list	*to_cat;
+	t_list	*to_join;
 	t_append append;
 
-	init_value(&append, &tokens, &to_cat);
+	init_value(&append, &tokens, &to_join);
 	while (**str && !ft_isspace(**str) && !is_special(*str))
 	{
 		if (**str == '"')
-			ft_lstadd_back(&to_cat,
+			ft_lstadd_back(&to_join,
 				ft_lstnew(make_double_quote(str, error, env_var)));
 		else if (**str == '\'')
-			ft_lstadd_back(&to_cat, ft_lstnew(single_quote(str, error)));
+			ft_lstadd_back(&to_join, ft_lstnew(single_quote(str, error)));
 		else if (**str == '\\')
-			ft_lstadd_back(&to_cat, ft_lstnew(backslash(str)));
+			ft_lstadd_back(&to_join, ft_lstnew(backslash(str)));
 		else if (**str == '$')
 			handle_dolar(dolar_tokenize(str, &append, env_var),
-				&tokens, &to_cat, &append);
+				&tokens, &to_join, &append);
 		else
-			ft_lstadd_back(&to_cat, ft_lstnew(word(str)));
+			ft_lstadd_back(&to_join, ft_lstnew(word(str)));
 	}
-	if (to_cat)
-		ft_lstadd_back(&tokens, ft_lstnew(cat_list(to_cat)));
-	ft_lstclear(&to_cat, ft_safe_free);
+	if (to_join)
+		ft_lstadd_back(&tokens, ft_lstnew(join_list(to_join)));
+	ft_lstclear(&to_join, ft_safe_free);
 	return (tokens);
 }
