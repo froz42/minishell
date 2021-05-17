@@ -6,25 +6,28 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 20:22:27 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/26 20:57:44 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 23:29:02 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lst.h"
 
-void	ft_lstadd_back(t_list **alst, t_list *new)
+int	ft_lstadd_back(t_list **alst, t_list *new)
 {
 	t_list	*temp;
 
+	if (!new)
+		return (0);
 	if (!*alst)
 	{
 		*alst = new;
-		return ;
+		return (1);
 	}
 	temp = *alst;
 	while (temp->next)
 		temp = temp->next;
 	temp->next = new;
+	return (1);
 }
 
 void	ft_lstcat(t_list **dst, t_list *src)

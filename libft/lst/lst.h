@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 15:16:26 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/27 15:52:40 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 23:27:30 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_list
 	struct s_list	*next;
 }				t_list;
 
-void			ft_lstadd_back(t_list **alst, t_list *new);
+int				ft_lstadd_back(t_list **alst, t_list *new);
 void			ft_lstadd_front(t_list **alst, t_list *new);
 void			ft_lstclear(t_list **lst, void (*del)(void*));
 void			ft_lstdelone(t_list *lst, void (*del)(void*));

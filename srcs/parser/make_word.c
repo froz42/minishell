@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 19:35:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 23:26:43 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ t_list	*dolar_tokenize(char **str, t_append *append,
 	ft_safe_free(to_tokenize);
 	return (tokens);
 }
+
 /*
 ** Comportement du dolar savoir si on cat ou pas selon la valeur de concat
 */
@@ -96,15 +97,44 @@ static void	init_value(t_append *append, t_list **tokens, t_list **to_join)
 	*to_join = NULL;
 }
 
+t_bool	add_special_word(char **str, int *error,
+										t_list *env_var, t_list **to_join)
+{
+	char	*word_str;
+	t_list	*elem;
+
+	if (**str == '"')
+		word_str = make_double_quote(str, error, env_var);
+	else if (**str == '\'')
+		word_str = single_quote(str, error);
+	else if (**str == '\\')
+		word_str = backslash(str);
+	else
+		word_str = word(str);
+	if (!word_str)
+		return (false);
+	if (**str == '"')
+		elem = ft_lstnew(word_str);
+	else if (**str == '\'')
+		elem = ft_lstnew(word_str);
+	else if (**str == '\\')
+		elem = ft_lstnew(word_str);
+	else
+		elem = ft_lstnew(word_str);
+	if (!elem)
+		free(word_str);
+	return (ft_lstadd_back(to_join, elem));
+}
+
 /*
 ** Permet de tokeniser une suite de mot en correspondant a bash
 */
 
 t_list	*make_word(char **str, int *error, t_list *env_var)
 {
+	t_append append;
 	t_list	*tokens;
 	t_list	*to_join;
-	t_append append;
 
 	init_value(&append, &tokens, &to_join);
 	while (**str && !ft_isspace(**str) && !is_special(*str))
