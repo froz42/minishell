@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:02:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/08 11:38:16 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/16 21:49:01 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,20 @@
 
 void	push_history(char *command, t_list **history)
 {
-	t_list	*new;
+	t_list	*elem;
 
-	new = ft_lstnew((void *)command);
-	if (!new)
+	if (!command)
 	{
 		ft_log_error(strerror(errno));
 		return ;
 	}
-	ft_lstadd_front(history, new);
+	elem = ft_lstnew((void *)command);
+	if (!elem)
+	{
+		ft_log_error(strerror(errno));
+		return ;
+	}
+	ft_lstadd_front(history, elem);
 }
 
 /*

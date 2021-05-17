@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/05 21:19:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/09 22:19:05 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/16 17:26:48 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,22 @@
 struct termios	raw_mode(void)
 {
 	struct termios	termios;
-	struct termios	old;
+	struct termios	old_termios;
 
 	tcgetattr(STDIN_FILENO, &termios);
-	old = termios;
+	old_termios = termios;
 	termios.c_lflag &= ~(ECHO | ICANON | ISIG);
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termios);
-	return (old);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termios);	// test avec TCSANOW ?
+	return (old_termios);
 }
 
 /*
 ** Set terminal in buff mode (line by line)
 */
 
-void	buff_mode(struct termios old)
+void	buff_mode(struct termios old_termios)
 {
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &old_termios);
 }
 
 /*
@@ -50,36 +50,38 @@ void	erase_x_chars(int x)
 
 /*
 ** Return an id from an escape sequence
-** DEL -> 0
-** ARROW_UP -> 1
-** ARROW_DOWN -> 2
-** ARROW_RIGHT -> 3
-** ARROW_LEFT -> 4
-** RETURN -> 5
-** CTRL-C -> 6
-** CTRL-D -> 7
+** DEL (DEL = ASCII 127) -> DEL_ID -> 0
+** BS (BS = ASCII 8) -> DEL_ID -> 0
+** UP_KEY ("\33\133\101") -> UP_KEY_ID -> 1
+** DOWN_KEY ("\33\133\102") -> DOWN_KEY_ID -> 2
+** RIGHT_KEY ("\33\133\103") -> RIGHT_KEY_ID -> 3
+** LEFT_KEY ("\33\133\104") -> LEFT_KEY_ID -> 4
+** RETURN (LF = ASCII 10) -> LF_ID -> 5
+** CTRL-C (ETX = ASCII 3) -> ETF_ID -> 6
+** CTRL-D (EOT = ASCII 4) -> EOT_ID -> 7
+** CTRL-L (FF = ASCII 12) -> CLR_SCREEN_ID -> 8
 */
 
 int	get_escape_id(char *buff, int size)
 {
-	if (buff[0] == 0177)
-		return (0);
-	if (size == 3 && !ft_memcmp(buff, "\33\133\101", 3))
-		return (1);
-	if (size == 3 && !ft_memcmp(buff, "\33\133\102", 3))
-		return (2);
-	if (size == 3 && !ft_memcmp(buff, "\33\133\103", 3))
-		return (3);
-	if (size == 3 && !ft_memcmp(buff, "\33\133\104", 3))
-		return (4);
-	if (buff[0] == 10)
-		return (5);
-	if (size == 1 && buff[0] == 3)
-		return (6);
-	if (size == 1 && buff[0] == 4)
-		return (7);
-	if (size == 1 && buff[0] == '\14')
-		return (8);
+	if (buff[0] == DEL || buff[0] == BS)
+		return (DEL_ID);
+	if (size == 3 && !ft_memcmp(buff, UP_KEY, 3))
+		return (UP_KEY_ID);
+	if (size == 3 && !ft_memcmp(buff, DOWN_KEY, 3))
+		return (DOWN_KEY_ID);
+	if (size == 3 && !ft_memcmp(buff, RIGHT_KEY, 3))
+		return (RIGHT_KEY_ID);
+	if (size == 3 && !ft_memcmp(buff, LEFT_KEY, 3))
+		return (LEFT_KEY_ID);
+	if (buff[0] == LF)
+		return (LF_ID);
+	if (size == 1 && buff[0] == ETX)
+		return (ETX_ID);
+	if (size == 1 && buff[0] == EOT)
+		return (EOT_ID);
+	if (size == 1 && buff[0] == FF)
+		return (CLR_SCREEN_ID);
 	return (-1);
 }
 

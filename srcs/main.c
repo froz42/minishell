@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/15 16:34:47 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/15 23:52:11 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,9 @@ int	redirect_fd(t_command command, int backup[2])
 }
 
 /*
-** Cette fonction vas decider a l'aide de istty si on utilse gnl ou get_input
+** Cette fonction va decider a l'aide de istty si on utilse gnl ou get_input
 */
+
 int	read_next_line(char **line, t_list **history, char *status)
 {
 	int		gnl_status;
