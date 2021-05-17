@@ -32,7 +32,7 @@ do
 	../minishell < parts/$elem > outs/$elem\_minishell.out 2> ./logs/$elem.log
 	error_code=$?
 	rm -rf ./sandbox
-	printf "  \033[0;34mleaks:			"
+	printf "  \033[0;34mmemory health:		"
 	if [ $error_code -eq 0 ]
 	then
 		printf "\033[0;32m[OK]\033[m\n"

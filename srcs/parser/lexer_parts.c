@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/04/28 18:00:10 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 13:38:07 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,22 +114,22 @@ char	*double_quote(char **str)
 char	*make_double_quote(char **str, int *error,
 			t_list *env_var)
 {
-	t_list	*to_cat;
+	t_list	*to_join;
 	char	*dest;
 
 	(*str) += 1;
-	to_cat = NULL;
+	to_join = NULL;
 	while (**str && **str != '"')
 	{
 		if (**str == '$')
-			ft_lstadd_back(&to_cat, ft_lstnew(dolar(str, env_var)));
+			ft_lstadd_back(&to_join, ft_lstnew(dolar(str, env_var)));
 		else if (**str == '\\')
-			ft_lstadd_back(&to_cat, ft_lstnew(backslash_double_quote(str)));
+			ft_lstadd_back(&to_join, ft_lstnew(backslash_double_quote(str)));
 		else
-			ft_lstadd_back(&to_cat, ft_lstnew(double_quote(str)));
+			ft_lstadd_back(&to_join, ft_lstnew(double_quote(str)));
 	}
-	dest = cat_list(to_cat);
-	ft_lstclear(&to_cat, ft_safe_free);
+	dest = join_list(to_join);
+	ft_lstclear(&to_join, ft_safe_free);
 	if (**str == '"')
 		(*str) += 1;
 	else

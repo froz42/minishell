@@ -6,32 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:24:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 14:23:02 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 13:38:54 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-/*
-** Fais un split et le met dans une liste chainee
-*/
-
-t_list	*split_to_list(char *str)
-{
-	char	**split;
-	int		i;
-	t_list	*token_list;
-
-	token_list = NULL;
-	split = ft_split(str, ' ');
-	if (!split)
-		return (NULL);
-	i = 0;
-	while (split[i])
-		ft_lstadd_back(&token_list, ft_lstnew(split[i++]));
-	free(split);
-	return (token_list);
-}
 
 /*
 ** Cherche la var dans l'env puis dans les locals
@@ -95,30 +74,4 @@ char	*dolar(char **str, t_list *env_var)
 	if (!value)
 		return (ft_strdup(""));
 	return (value);
-}
-
-/*
-** Transforme la valeur en tokens et set selon les espace *concat
-** concat :
-**			0: first: YES | next: YES
-**			1: first: NO | next: YES
-**			2: first: YES | next: NO
-**			3: first: NO | next: NO
-*/
-
-t_list	*dolar_tokenize(char **str, int *concat,
-			t_list *env_var)
-{
-	char	*to_tokenize;
-	t_list	*tokens;
-
-	to_tokenize = dolar(str, env_var);
-	if (to_tokenize[0] == ' ' && *concat < 1)
-		(*concat) += 1;
-	if (ft_strlen(to_tokenize)
-		&& to_tokenize[ft_strlen(to_tokenize) - 1] == ' ' && *concat < 2)
-		(*concat) += 2;
-	tokens = split_to_list(to_tokenize);
-	ft_safe_free(to_tokenize);
-	return (tokens);
 }

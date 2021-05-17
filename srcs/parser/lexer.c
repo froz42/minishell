@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/11 20:38:51 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 13:21:15 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*word(char **str)
 ** Prend une liste chainee avec content = str et cat en une seule string
 */
 
-char	*cat_list(t_list *to_cat)
+char	*join_list(t_list *to_cat)
 {
 	char	*dest;
 	t_list	*temp;
