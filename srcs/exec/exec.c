@@ -132,6 +132,10 @@ int execution_rules(t_command command, t_list **env_vars)
 	int backup[2];
 
 	return_value = 0;
+	if (!ft_strcmp(command.name, "ls") && isatty(STDOUT_FILENO))
+		ft_lstadd_back(&command.args, ft_lstnew("-G"));
+	argv = build_argv(command.name, command.args);
+	envp = build_env(*env_vars);
 	if (redirect_fd(command, backup))
 		return_value = 1 + 2;
 	if (command.name)
