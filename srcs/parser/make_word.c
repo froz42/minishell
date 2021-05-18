@@ -6,32 +6,54 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 15:37:50 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 20:28:12 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-
 /*
 ** Fais un split et le met dans une liste chainee
 */
 
-t_list	*split_to_list(char *str)
+char	**force_split(void)
+{
+	char	**split;
+
+	split = ft_split(" ", '\0');
+	if (!split)
+		return (NULL);
+	split[0][0] = '\0';
+	return (split);
+}
+
+t_bool	split_to_list(char *str, t_list **tokens)
 {
 	char	**split;
 	int		i;
-	t_list	*token_list;
+	t_list	*elem;
 
-	token_list = NULL;
 	split = ft_split(str, ' ');
+	if (split && !split[0])
+		split = force_split();
 	if (!split)
-		return (NULL);
-	i = 0;
-	while (split[i])
-		ft_lstadd_back(&token_list, ft_lstnew(split[i++]));
+		return (false);
+	i = -1;
+	while (split[++i])
+	{
+		elem = ft_lstnew(split[i]);
+		if (!elem)
+		{
+			ft_lstclear(tokens, free);
+			while (split[i])
+				free(split[i++]);
+			free(split);
+			return (false);
+		}
+		ft_lstadd_back(tokens, elem);
+	}
 	free(split);
-	return (token_list);
+	return (true);
 }
 
 /*
@@ -39,21 +61,26 @@ t_list	*split_to_list(char *str)
 */
 
 t_list	*dollar_tokenize(char **str, t_append *append,
-			t_list *env_var)
+							int *error, t_list *env_var)
 {
 	char	*to_tokenize;
 	t_list	*tokens;
 
 	to_tokenize = dollar(str, env_var);
+	if (!to_tokenize)
+		return (NULL);
 	if (to_tokenize[0] == ' ')
 		append->start = false;
-	if (ft_strlen(to_tokenize)
-		&& to_tokenize[ft_strlen(to_tokenize) - 1] == ' ')
+	if (*to_tokenize && to_tokenize[ft_strlen(to_tokenize) - 1] == ' ')
 		append->end = false;
-	tokens = split_to_list(to_tokenize);
-	if (ft_lstsize(tokens) == 0)
-		ft_lstadd_back(&tokens, ft_lstnew(ft_strdup("")));
-	ft_safe_free(to_tokenize);
+	tokens = NULL;
+	if (!split_to_list(to_tokenize, &tokens))
+	{
+		*error = LOG_ERROR;
+		free(to_tokenize);
+		return (NULL);
+	}
+	free(to_tokenize);
 	return (tokens);
 }
 
@@ -62,7 +89,7 @@ t_list	*dollar_tokenize(char **str, t_append *append,
 */
 
 static void	handle_dollar(t_list *dollar_tokens, t_list **tokens,
-				t_list **to_join, t_append *append)
+							t_list **to_join, t_append *append)
 {
 	if (append->start)
 	{
@@ -89,10 +116,12 @@ static void	handle_dollar(t_list *dollar_tokens, t_list **tokens,
 ** Init les value pour gagner quelques ligne \O_O/
 */
 
-static void	init_value(t_append *append, t_list **tokens, t_list **to_join)
+static void	init_value(t_append *append, t_list ** dollar_tokens,
+							t_list **tokens, t_list **to_join)
 {
 	append->start = true;
 	append->end = true;
+	*dollar_tokens = NULL;
 	*tokens = NULL;
 	*to_join = NULL;
 }
@@ -105,7 +134,7 @@ t_bool	add_word(char **str, int *error, t_list *env_var, t_list **to_join)
 	if (**str == '"')
 		word_str = make_double_quote(str, error, env_var);
 	else if (**str == '\'')
-		word_str = single_quote(str, error); //
+		word_str = single_quote(str, error);
 	else if (**str == '\\')
 		word_str = backslash(str);
 	else
@@ -130,19 +159,22 @@ t_bool	add_word(char **str, int *error, t_list *env_var, t_list **to_join)
 t_list	*make_word(char **str, int *error, t_list *env_var)
 {
 	t_append append;
+	t_list	*dollar_tokens;
 	t_list	*tokens;
 	t_list	*to_join;
 
-	init_value(&append, &tokens, &to_join);
+	init_value(&append, &dollar_tokens, &tokens, &to_join);
 	while (**str && !ft_isspace(**str) && !is_special(*str))
 	{
-		if (**str != '$')
-			add_word(str, error, env_var, &to_join);
-		if (*error != NO_ERROR)
-			break ;
 		if (**str == '$')
-			handle_dollar(dollar_tokenize(str, &append, env_var),
-				&tokens, &to_join, &append);
+		{
+			dollar_tokens = dollar_tokenize(str, &append, error, env_var);
+			if (!dollar_tokens)
+				break ;
+			handle_dollar(dollar_tokens, &tokens, &to_join, &append);
+		}
+		else if (!add_word(str, error, env_var, &to_join))
+			break ;
 	}
 	if (to_join)
 		ft_lstadd_back(&tokens, ft_lstnew(join_list(to_join)));

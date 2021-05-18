@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 15:40:39 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 18:39:06 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ int			escape_control(char *str);
 void		free_command_list(void *mem);
 void		display_commands(t_list *commands_list);
 char		*make_double_quote(char **str, int *error,
-				t_list *env_var);
+								t_list *env_var);
 char		*dollar(char **str, t_list *env_var);
-t_list		*dollar_tokenize(char **str, t_append *append, t_list *env_var);
+t_list		*dollar_tokenize(char **str, t_append *append,
+								int *error, t_list *env_var);
 char		*join_list(t_list *to_cat);
 char		*single_quote(char **str, int *error);
 char		*backslash_double_quote(char **str);
