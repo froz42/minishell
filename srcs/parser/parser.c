@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/12 12:29:03 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/18 10:52:42 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,20 @@ int	escape_control(char *str)
 		return (is_special(str + 1));
 	else
 		return (0);
+}
+
+void	set_status_env(t_list **env_var, int status)
+{
+	char *status_str;
+
+	status_str = ft_itoa(status);
+	if (!status_str)
+	{
+		ft_putstr_fd("Minishell: cannot set status\n", STDERR_FILENO);
+		return ;
+	}
+	edit_var(env_var, "?", status_str);
+	free(status_str);
 }
 
 /*
@@ -93,13 +107,21 @@ int	exec_line(char *str, t_list **env_var)
 	error = -1;
 	word_list = tokenize_all(str, &error, *env_var);
 	if (error != -1)
+	{
 		write_error(error);
+		set_status_env(env_var, 2);
+		return (0);
+	}
 	else
 	{
 		error_detector(word_list, &error);
 		ft_lstclear(&word_list, free);
 		if (error != -1)
+		{
 			write_error(error);
+			set_status_env(env_var, 2);
+			return (0);
+		}
 		else
 		{
 			while (*str)
