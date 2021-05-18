@@ -6,12 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 10:34:48 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 10:26:15 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
-
 
 /*
 ** Init my structure
@@ -112,7 +111,7 @@ void	buffer_add_chain(char *src, int size, t_buffer *buffer)
 		i = 0;
 		while (i < size)
 			buffer_add_pos(src[i++],
-					buffer->size - buffer->pos_before_cursor, buffer);
+				buffer->size - buffer->pos_before_cursor, buffer);
 	}
 	else
 	{
