@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 12:28:02 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 12:55:03 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,17 +115,26 @@ char	*make_double_quote(char **str, int *error, t_list *env_var)
 {
 	t_list	*to_join;
 	char	*dest;
+	t_list	*elem;
 
 	(*str) += 1; // a l'appel de la fctn pour gagner ligne ?
 	to_join = NULL;
 	while (**str && **str != '"')
 	{
 		if (**str == '$')
-			ft_lstadd_back(&to_join, ft_lstnew(dollar(str, env_var)));
+			dest = dollar(str, env_var);
 		else if (**str == '\\')
-			ft_lstadd_back(&to_join, ft_lstnew(backslash_double_quote(str)));
+			dest = backslash_double_quote(str);	//
 		else
-			ft_lstadd_back(&to_join, ft_lstnew(double_quote(str)));
+			dest = double_quote(str);
+		if (dest)
+			elem = ft_lstnew(dest);
+		if (!dest || !elem)
+		{
+			ft_lstclear(&to_join, ft_safe_free);
+			return (NULL);
+		}
+		ft_lstadd_back(&to_join, elem);
 	}
 	dest = join_list(to_join);
 	ft_lstclear(&to_join, ft_safe_free);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dolar.c                                            :+:      :+:    :+:   */
+/*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:24:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 12:27:02 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 12:53:09 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*dollar(char **str, t_list *env_var)
 	char	*key;
 	char	*value;
 
-	(*str) += 1; // a l'appel de la fctn pour gagner ligne ?
+	(*str) += 1;
 	if (ft_isnum(**str))
 	{
 		(*str) += 1;
@@ -74,5 +74,5 @@ char	*dollar(char **str, t_list *env_var)
 	}
 	value = get_var(key, env_var);
 	free(key);
-	return (value); // si renvoie NULL -> alloc error
+	return (value);
 }
