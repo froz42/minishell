@@ -30,3 +30,4 @@ echo "$var_unset"
 echo $USER$
 echo $
 echo $+
+echo $
