@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/05 21:19:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/16 17:26:48 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 10:26:48 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ struct termios	raw_mode(void)
 	tcgetattr(STDIN_FILENO, &termios);
 	old_termios = termios;
 	termios.c_lflag &= ~(ECHO | ICANON | ISIG);
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termios);	// test avec TCSANOW ?
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termios);
 	return (old_termios);
 }
 
