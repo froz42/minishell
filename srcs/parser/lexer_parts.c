@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 13:38:07 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/18 12:28:02 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,18 +111,17 @@ char	*double_quote(char **str)
 ** EX "Hello $USER you have 10\$" -> "Hello tmatis you have 10$"
 */
 
-char	*make_double_quote(char **str, int *error,
-			t_list *env_var)
+char	*make_double_quote(char **str, int *error, t_list *env_var)
 {
 	t_list	*to_join;
 	char	*dest;
 
-	(*str) += 1;
+	(*str) += 1; // a l'appel de la fctn pour gagner ligne ?
 	to_join = NULL;
 	while (**str && **str != '"')
 	{
 		if (**str == '$')
-			ft_lstadd_back(&to_join, ft_lstnew(dolar(str, env_var)));
+			ft_lstadd_back(&to_join, ft_lstnew(dollar(str, env_var)));
 		else if (**str == '\\')
 			ft_lstadd_back(&to_join, ft_lstnew(backslash_double_quote(str)));
 		else

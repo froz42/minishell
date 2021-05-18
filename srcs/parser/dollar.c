@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:24:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 13:38:54 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/18 12:27:02 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ char	*get_var(char *key, t_list *env_var)
 
 	search = search_var(env_var, key);
 	if (search)
-		return (search);
-	return ("");
+		return (ft_strdup(search));
+	return (ft_strdup(""));
 }
 
 /*
@@ -52,26 +52,27 @@ char	*get_key(char **str, int *i)
 ** Retourne la valeur du $ au bon format
 */
 
-char	*dolar(char **str, t_list *env_var)
+char	*dollar(char **str, t_list *env_var)
 {
 	int		i;
 	char	*key;
 	char	*value;
 
-	(*str) += 1;
+	(*str) += 1; // a l'appel de la fctn pour gagner ligne ?
 	if (ft_isnum(**str))
 	{
 		(*str) += 1;
 		return (ft_strdup(""));
 	}
 	key = get_key(str, &i);
-	if (i == 0)
-		return (ft_strdup("$"));
 	if (!key)
 		return (NULL);
-	value = ft_strdup(get_var(key, env_var));
+	if (i == 0)
+	{
+		ft_safe_free(key);
+		return (ft_strdup("$"));
+	}
+	value = get_var(key, env_var);
 	free(key);
-	if (!value)
-		return (ft_strdup(""));
-	return (value);
+	return (value); // si renvoie NULL -> alloc error
 }

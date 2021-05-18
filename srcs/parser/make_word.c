@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 11:33:35 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 12:27:18 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_list	*split_to_list(char *str)
 ** Transforme la valeur en tokens et set selon les espace append
 */
 
-t_list	*dolar_tokenize(char **str, t_append *append,
+t_list	*dollar_tokenize(char **str, t_append *append,
 			t_list *env_var)
 {
 	char	*to_tokenize;

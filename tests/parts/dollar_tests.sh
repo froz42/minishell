@@ -26,3 +26,7 @@ echo $USER$var\$USER$USER\$USERtest$USER
 
 echo $var_unset
 echo "$var_unset"
+
+echo $USER$
+echo $
+echo $+
