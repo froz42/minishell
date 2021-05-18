@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 12:27:18 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 15:04:15 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_list	*dollar_tokenize(char **str, t_append *append,
 	char	*to_tokenize;
 	t_list	*tokens;
 
-	to_tokenize = dolar(str, env_var);
+	to_tokenize = dollar(str, env_var);
 	if (to_tokenize[0] == ' ')
 		append->start = false;
 	if (ft_strlen(to_tokenize)
@@ -58,31 +58,31 @@ t_list	*dollar_tokenize(char **str, t_append *append,
 }
 
 /*
-** Comportement du dolar savoir si on cat ou pas selon la valeur de concat
+** Comportement du dollar savoir si on cat ou pas selon la valeur de concat
 */
 
-static void	handle_dolar(t_list *dolar_tokens, t_list **tokens,
+static void	handle_dollar(t_list *dollar_tokens, t_list **tokens,
 				t_list **to_join, t_append *append)
 {
 	if (append->start)
 	{
-		ft_lstadd_back(to_join, ft_lstnew(ft_strdup(dolar_tokens->content)));
-		ft_lstremove_first(&dolar_tokens, ft_safe_free);
+		ft_lstadd_back(to_join, ft_lstnew(ft_strdup(dollar_tokens->content)));
+		ft_lstremove_first(&dollar_tokens, ft_safe_free);
 	}
-	if (dolar_tokens && *to_join)
+	if (dollar_tokens && *to_join)
 	{
 		ft_lstadd_back(tokens, ft_lstnew(join_list(*to_join)));
 		ft_lstclear(to_join, ft_safe_free);
 	}
-	if (append->end && dolar_tokens)
+	if (append->end && dollar_tokens)
 	{
-		ft_lstadd_back(to_join, ft_lstnew(ft_strdup(ft_lstlast(dolar_tokens)->content)));
-		ft_lstremove_last(&dolar_tokens, ft_safe_free);
+		ft_lstadd_back(to_join, ft_lstnew(ft_strdup(ft_lstlast(dollar_tokens)->content)));
+		ft_lstremove_last(&dollar_tokens, ft_safe_free);
 	}
 	append->start = true;
 	append->end = true;
-	ft_lstcat(tokens, dolar_tokens);
-	ft_lstclear(&dolar_tokens, ft_nofree);
+	ft_lstcat(tokens, dollar_tokens);
+	ft_lstclear(&dollar_tokens, ft_nofree);
 }
 
 /*
@@ -105,24 +105,21 @@ t_bool	add_word(char **str, int *error, t_list *env_var, t_list **to_join)
 	if (**str == '"')
 		word_str = make_double_quote(str, error, env_var);
 	else if (**str == '\'')
-		word_str = single_quote(str, error);
+		word_str = single_quote(str, error); //
 	else if (**str == '\\')
 		word_str = backslash(str);
 	else
 		word_str = word(str);
-	if (!word_str)
+	if (word_str)
+		elem = ft_lstnew(word_str);
+	if (!word_str || !elem)
 	{
+		ft_safe_free(word_str);
 		*error = LOG_ERROR;
 		return (false);
 	}
-	elem = ft_lstnew(word_str);
-	if (!elem)
-	{
-		free(word_str);
-		*error = LOG_ERROR;
-		return (false);
-	}
-	return (ft_lstadd_back(to_join, elem));
+	ft_lstadd_back(to_join, elem);
+	return (true);
 }
 
 /*
@@ -143,7 +140,7 @@ t_list	*make_word(char **str, int *error, t_list *env_var)
 		if (*error == LOG_ERROR)
 			break ;
 		if (**str == '$')
-			handle_dolar(dolar_tokenize(str, &append, env_var),
+			handle_dollar(dollar_tokenize(str, &append, env_var),
 				&tokens, &to_join, &append);
 	}
 	if (to_join)

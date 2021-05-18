@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 12:55:03 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 15:01:40 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,29 @@ char	*double_quote(char **str)
 	return (token);
 }
 
+t_bool	add_db_quote_word(char **str, t_list *env_var, t_list **to_join)
+{
+	char	*word_str;
+	t_list	*elem;
+
+	if (**str == '$')
+		word_str = dollar(str, env_var);
+	else if (**str == '\\')
+		word_str = backslash_double_quote(str);
+	else
+		word_str = double_quote(str);
+	if (word_str)
+		elem = ft_lstnew(word_str);
+	if (!word_str || !elem)
+	{
+		ft_safe_free(word_str);
+		ft_lstclear(to_join, ft_safe_free);
+		return (false);
+	}
+	ft_lstadd_back(to_join, elem);
+	return (true);
+}
+
 /*
 ** Retourne le str de l'interieur des double quote
 ** EX "Hello $USER you have 10\$" -> "Hello tmatis you have 10$"
@@ -115,32 +138,19 @@ char	*make_double_quote(char **str, int *error, t_list *env_var)
 {
 	t_list	*to_join;
 	char	*dest;
-	t_list	*elem;
 
-	(*str) += 1; // a l'appel de la fctn pour gagner ligne ?
+	(*str) += 1;
 	to_join = NULL;
 	while (**str && **str != '"')
-	{
-		if (**str == '$')
-			dest = dollar(str, env_var);
-		else if (**str == '\\')
-			dest = backslash_double_quote(str);	//
-		else
-			dest = double_quote(str);
-		if (dest)
-			elem = ft_lstnew(dest);
-		if (!dest || !elem)
-		{
-			ft_lstclear(&to_join, ft_safe_free);
+		if (!add_db_quote_word(str, env_var, &to_join))
 			return (NULL);
-		}
-		ft_lstadd_back(&to_join, elem);
-	}
 	dest = join_list(to_join);
 	ft_lstclear(&to_join, ft_safe_free);
+	if (!dest)
+		return (NULL);
 	if (**str == '"')
 		(*str) += 1;
 	else
-		*error = 0;
+		*error = DB_QUOTE;
 	return (dest);
 }
