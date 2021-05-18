@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 11:07:58 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 11:33:35 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ t_bool	add_word(char **str, int *error, t_list *env_var, t_list **to_join)
 		return (false);
 	}
 	elem = ft_lstnew(word_str);
-	elem = NULL;
 	if (!elem)
 	{
 		free(word_str);
