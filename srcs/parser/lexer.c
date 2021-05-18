@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 22:05:08 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 10:22:57 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,8 @@ t_list	*tokenize(char **str, int *error, t_list *env_var)
 			ft_lstcat(&word_list, word_tokens);
 			ft_lstclear(&word_tokens, ft_nofree);
 		}
+		if (*error == LOG_ERROR)
+			break ;
 		while (ft_isspace(**str))
 			(*str)++;
 	}

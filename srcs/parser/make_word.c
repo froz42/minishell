@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 23:26:43 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 11:07:58 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ static void	init_value(t_append *append, t_list **tokens, t_list **to_join)
 	*to_join = NULL;
 }
 
-t_bool	add_special_word(char **str, int *error,
-										t_list *env_var, t_list **to_join)
+t_bool	add_word(char **str, int *error, t_list *env_var, t_list **to_join)
 {
 	char	*word_str;
 	t_list	*elem;
@@ -112,17 +111,18 @@ t_bool	add_special_word(char **str, int *error,
 	else
 		word_str = word(str);
 	if (!word_str)
+	{
+		*error = LOG_ERROR;
 		return (false);
-	if (**str == '"')
-		elem = ft_lstnew(word_str);
-	else if (**str == '\'')
-		elem = ft_lstnew(word_str);
-	else if (**str == '\\')
-		elem = ft_lstnew(word_str);
-	else
-		elem = ft_lstnew(word_str);
+	}
+	elem = ft_lstnew(word_str);
+	elem = NULL;
 	if (!elem)
+	{
 		free(word_str);
+		*error = LOG_ERROR;
+		return (false);
+	}
 	return (ft_lstadd_back(to_join, elem));
 }
 
@@ -139,18 +139,13 @@ t_list	*make_word(char **str, int *error, t_list *env_var)
 	init_value(&append, &tokens, &to_join);
 	while (**str && !ft_isspace(**str) && !is_special(*str))
 	{
-		if (**str == '"')
-			ft_lstadd_back(&to_join,
-				ft_lstnew(make_double_quote(str, error, env_var)));
-		else if (**str == '\'')
-			ft_lstadd_back(&to_join, ft_lstnew(single_quote(str, error)));
-		else if (**str == '\\')
-			ft_lstadd_back(&to_join, ft_lstnew(backslash(str)));
-		else if (**str == '$')
+		if (**str != '$')
+			add_word(str, error, env_var, &to_join);
+		if (*error == LOG_ERROR)
+			break ;
+		if (**str == '$')
 			handle_dolar(dolar_tokenize(str, &append, env_var),
 				&tokens, &to_join, &append);
-		else
-			ft_lstadd_back(&to_join, ft_lstnew(word(str)));
 	}
 	if (to_join)
 		ft_lstadd_back(&tokens, ft_lstnew(join_list(to_join)));
