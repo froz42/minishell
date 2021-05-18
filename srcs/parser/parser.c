@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 11:10:30 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 15:28:27 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int	exec_line(char *str, t_list **env_var)
 	{
 		write_error(error);
 		set_status_env(env_var, 2);
+		ft_lstclear(&word_list, free);
 		return (0);
 	}
 	else

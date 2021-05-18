@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 14:42:06 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 15:40:39 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@
 
 # include "../minishell.h"
 
-# define REDIR_OUT	1
-# define REDIR_IN	2
-# define PIPE		3
-# define APPEND		4
-# define SEMICOLON	5
+# define REDIR_OUT		1
+# define REDIR_IN		2
+# define PIPE			3
+# define APPEND			4
+# define SEMICOLON		5
 
-# define DB_QUOTE	0
-# define LOG_ERROR	10
+# define DB_QUOTE		0
+# define SINGLE_QUOTE	1
+# define LOG_ERROR		10
 
 # define ESC		'\33'
 

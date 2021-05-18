@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 15:04:15 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 15:37:50 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ t_bool	add_word(char **str, int *error, t_list *env_var, t_list **to_join)
 	if (!word_str || !elem)
 	{
 		ft_safe_free(word_str);
-		*error = LOG_ERROR;
+		if (*error == NO_ERROR)
+			*error = LOG_ERROR;
 		return (false);
 	}
 	ft_lstadd_back(to_join, elem);
@@ -137,7 +138,7 @@ t_list	*make_word(char **str, int *error, t_list *env_var)
 	{
 		if (**str != '$')
 			add_word(str, error, env_var, &to_join);
-		if (*error == LOG_ERROR)
+		if (*error != NO_ERROR)
 			break ;
 		if (**str == '$')
 			handle_dollar(dollar_tokenize(str, &append, env_var),

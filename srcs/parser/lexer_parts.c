@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 15:01:40 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 15:42:54 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 
 char	*single_quote(char **str, int *error)
 {
-	int		i;
 	char	*token;
+	int		i;
 
 	(*str)++;
-	i = 0;
 	token = NULL;
+	i = 0;
 	while ((*str)[i] && (*str)[i] != '\'')
 		i++;
 	if ((*str)[i] == '\'')
@@ -32,10 +32,7 @@ char	*single_quote(char **str, int *error)
 		(*str) += i + 1;
 	}
 	else
-	{
-		(*str) += i;
-		*error = 1;
-	}
+		*error = SINGLE_QUOTE;
 	return (token);
 }
 
@@ -148,9 +145,12 @@ char	*make_double_quote(char **str, int *error, t_list *env_var)
 	ft_lstclear(&to_join, ft_safe_free);
 	if (!dest)
 		return (NULL);
-	if (**str == '"')
-		(*str) += 1;
-	else
+	if (**str != '"')
+	{
+		free(dest);
 		*error = DB_QUOTE;
+		return (NULL);
+	}
+	(*str) += 1;
 	return (dest);
 }
