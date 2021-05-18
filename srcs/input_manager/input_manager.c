@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 10:40:08 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/18 10:23:38 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ static int	handle_ctrl(t_buffer *buffer, char **save_curr_line,
 	if (buffer->escape_id == DEL_ID && buffer->size)
 		erase_char(buffer);
 	else if (buffer->escape_id == UP_KEY_ID && buffer->manage_history
-			&& *history)
+		&& *history)
 		handle_up_key(buffer, &buffer->history_lvl, save_curr_line, *history);
 	else if (buffer->escape_id == DOWN_KEY_ID && buffer->manage_history
-			&& *history && *save_curr_line)
+		&& *history && *save_curr_line)
 		handle_down_key(buffer, &buffer->history_lvl, save_curr_line, *history);
 	else if (buffer->escape_id == RIGHT_KEY_ID)
 		handle_right_key(buffer);

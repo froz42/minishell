@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 22:37:57 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/12 13:22:13 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/17 21:12:57 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 	if (ft_lstsize(commands_list) == 1)
 	{
 		command = *(t_command *)commands_list->content;
+		if (!command.name)
+			return (ret);
 		argv = build_argv(command.name, command.args);
 		argc = build_argc(argv);
 		if (redirect_fd(command, fd_backup))

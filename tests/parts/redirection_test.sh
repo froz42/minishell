@@ -12,6 +12,5 @@ rm -rf file
 echo "hi" > file1 > file2 > file3
 ls
 cat file1 file2 file3
-> file3 cat > file4
-cat file4
+> file2 > file3
 exit 0
