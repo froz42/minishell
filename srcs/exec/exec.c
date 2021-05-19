@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 13:59:18 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/19 14:06:28 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,18 @@ int execution_rules(t_command command, t_list **env_vars)
 		if (!ft_strcmp(command.name, "ls") && isatty(STDOUT_FILENO))
 			ft_lstadd_back(&command.args, ft_lstnew("-G"));
 		argv = build_argv(command.name, command.args);
+		if (!argv)
+		{
+			execution_error_write("Alloc error", strerror(errno));
+			return (errno + 2);
+		}
 		envp = build_env(*env_vars);
+		if (!envp)
+		{
+			execution_error_write("Alloc error", strerror(errno));
+			free_table(&argv);
+			return (errno + 2);
+		}
 		if (!return_value)
 			return_value = build_in(argv, env_vars);
 		if (!return_value && !command.cmd)
@@ -162,8 +173,10 @@ int execution_rules(t_command command, t_list **env_vars)
 		free_table(&argv);
 		free_table(&envp);
 	}
-	dup2(backup[0], STDIN_FILENO);
-	dup2(backup[1], STDOUT_FILENO);
+	if (dup2(backup[0], STDIN_FILENO) < 0)
+		execution_error_write("dup2", "Cannot restore STDIN");
+	if (dup2(backup[1], STDOUT_FILENO) < 0)
+		execution_error_write("dup2", "Cannot restore STDOUT");
 	close(backup[0]);
 	close(backup[1]);
 	return (return_value);

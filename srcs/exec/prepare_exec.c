@@ -6,29 +6,25 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 22:37:57 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 21:12:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/19 14:09:31 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	return_value_buildin(int func_return, t_list **env_var)
+int return_value_buildin(int func_return, t_list **env_var)
 {
-	char	*status_str;
-
-	status_str = ft_itoa(func_return);
-	edit_var(env_var, "?", status_str);
-	ft_safe_free(status_str);
+	set_status_env(env_var, func_return);
 	return (1);
 }
 
-int		 handle_buildin(t_list *commands_list, t_list **env_var)
+int handle_buildin(t_list *commands_list, t_list **env_var)
 {
-	t_command	command;
-	char		**argv;
-	int			argc;
-	int			ret;
-	int			fd_backup[2];
+	t_command command;
+	char **argv;
+	int argc;
+	int ret;
+	int backup[2];
 
 	ret = 0;
 	if (ft_lstsize(commands_list) == 1)
@@ -37,8 +33,12 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 		if (!command.name)
 			return (ret);
 		argv = build_argv(command.name, command.args);
+		if (!argv)
+		{
+			ft_putstr_fd("Minishell: ALloc failled\n", STDERR_FILENO);
+		}
 		argc = build_argc(argv);
-		if (redirect_fd(command, fd_backup))
+		if (redirect_fd(command, backup))
 			ret = return_value_buildin(1, env_var);
 		else if (ft_strcmp(command.name, "cd") == 0)
 			ret = return_value_buildin(ft_cd(argc, argv, env_var), env_var);
@@ -55,17 +55,19 @@ int		 handle_buildin(t_list *commands_list, t_list **env_var)
 		else if (ft_strcmp(command.name, "exit") == 0)
 			ret = ft_exit(argc, argv, env_var, false);
 		free_table(&argv);
-		dup2(fd_backup[0], STDIN_FILENO);
-		dup2(fd_backup[1], STDOUT_FILENO);
-		close(fd_backup[0]);
-		close(fd_backup[1]);
+		if (dup2(backup[0], STDIN_FILENO) < 0)
+			execution_error_write("dup2", "Cannot restore STDIN");
+		if (dup2(backup[1], STDOUT_FILENO) < 0)
+			execution_error_write("dup2", "Cannot restore STDOUT");
+		close(backup[0]);
+		close(backup[1]);
 	}
 	return (ret);
 }
 
-int		exec(t_list *pipes_list, t_list **env_var)
+int exec(t_list *pipes_list, t_list **env_var)
 {
-	int		ret;
+	int ret;
 
 	ret = handle_buildin(pipes_list, env_var);
 	if (ret == 0)
