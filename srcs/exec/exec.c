@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 14:06:28 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/19 17:50:45 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,12 @@ int exec_pipes(t_list *pipes_list, t_list **env_vars)
 	int return_value;
 
 	fork_n = ft_lstsize(pipes_list);
+	if (fork_n <= 0)
+	{
+		set_status_env(env_vars, 127);
+		ft_putstr_fd("Minishell: Not enough pipes\n", STDERR_FILENO);
+		return (0);
+	}
 	tube_list = make_tubes(fork_n, env_vars);
 	if (!tube_list)
 		return (0);
