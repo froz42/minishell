@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 15:32:02 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/19 22:20:59 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,12 @@ t_bool	add_joint_tokens(t_list **dollar_tokens, t_list **tokens,
 static int	handle_dollar(t_list **dollar_tokens, t_list **tokens,
 								t_list **to_join, t_append *append)
 {
+	if (!*dollar_tokens)
+	{
+		ft_lstclear(to_join, ft_safe_free);
+		ft_lstclear(tokens, ft_safe_free);
+		return (LOG_ERROR);
+	}
 	if (append->start)
 		if (!append_dollar_token(dollar_tokens, tokens, to_join, START))
 			return (LOG_ERROR);
@@ -190,8 +196,8 @@ t_bool	add_word(char **str, int *error, t_list *env_var, t_list **to_join)
 	if (!word_str || !elem)
 	{
 		ft_safe_free(word_str);
-		if (*error == NO_ERROR)
-			*error = LOG_ERROR;
+		ft_lstclear(to_join, ft_safe_free);
+		*error = LOG_ERROR;
 		return (false);
 	}
 	ft_lstadd_back(to_join, elem);
@@ -215,14 +221,15 @@ t_list	*make_word(char **str, int *error, t_list *env_var)
 		if (**str == '$')
 		{
 			dollar_tokens = dollar_tokenize(str, &append, error, env_var);
-			if (!dollar_tokens)
-				break ;
 			*error = handle_dollar(&dollar_tokens, &tokens, &to_join, &append);
 			if (*error != NO_ERROR)
 				break ;
 		}
 		else if (!add_word(str, error, env_var, &to_join))
+		{
+			ft_lstclear(&tokens, ft_safe_free);
 			break ;
+		}
 	}
 	if (to_join)
 		add_joint_tokens(&dollar_tokens, &tokens, &to_join);
