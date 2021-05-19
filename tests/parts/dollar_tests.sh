@@ -29,3 +29,6 @@ echo "$var_unset"
 
 echo $USER$
 echo $
+echo $+
+export hello="   "
+echo $hello j
