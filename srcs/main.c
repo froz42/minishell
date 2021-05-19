@@ -6,13 +6,13 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 14:11:56 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/19 14:22:51 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <termios.h>
-#include <fcntl.h>
+
 /*
 ** Write a beautifull header O_O
 ** TODO: COLOR
@@ -32,61 +32,6 @@ void	mute_unused(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
-}
-
-int	get_open_flags(int type)
-{
-	if (type == 1)
-		return (O_CREAT | O_WRONLY);
-	else if (type == 2)
-		return (O_RDONLY);
-	else
-		return (O_CREAT | O_WRONLY | O_APPEND);
-}
-
-void	file_error(char *file, char *error)
-{
-	ft_putstr_fd("Minishell: ", 2);
-	ft_putstr_fd(file, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(error, 2);
-	ft_putstr_fd("\n", 2);
-}
-
-int	redirect_fd(t_command command, int backup[2]) // need to move and protect
-{
-	t_list	*redir_list;
-	t_redir	redir;
-	int		open_file;
-
-	backup[0] = dup(STDIN_FILENO);
-	backup[1] = dup(STDOUT_FILENO);
-	redir_list = command.redirs;
-	while (redir_list)
-	{
-		redir = *(t_redir *)redir_list->content;
-		if (!redir.file)
-		{
-			ft_putstr_fd("Minishell: ambiguous redirect\n", 2);
-			return (1);
-		}
-		open_file = open(redir.file, get_open_flags(redir.type), 0664);
-		if (open_file < 0)
-		{
-			file_error(redir.file, strerror(errno));
-			return (1);
-		}
-		else
-		{
-			if (redir.type == 1 || redir.type == 4)
-				dup2(open_file, STDOUT_FILENO);
-			else
-				dup2(open_file, STDIN_FILENO);
-			close(open_file);
-		}
-		redir_list = redir_list->next;
-	}
-	return (0);
 }
 
 /*
