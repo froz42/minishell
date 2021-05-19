@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 20:50:11 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/19 11:28:54 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 ** Fais un split et le met dans une liste chainee
 */
 
-char	**force_split(void)
+char	**force_split(char **old_split)
 {
 	char	**split;
 
+	free(old_split);
 	split = ft_split(" ", '\0');
 	if (!split)
 		return (NULL);
@@ -35,7 +36,7 @@ t_bool	split_to_list(char *str, t_list **tokens)
 
 	split = ft_split(str, ' ');
 	if (split && !split[0])
-		split = force_split();
+		split = force_split(split);
 	if (!split)
 		return (false);
 	i = -1;
