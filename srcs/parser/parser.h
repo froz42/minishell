@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 13:20:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/19 13:09:48 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,5 @@ char		*word(char **str);
 t_list		*make_word(char **str, int *error, t_list *env_var);
 void		error_detector(t_list *tokens, int *error);
 void		free_table(char ***table);
+void		set_status_env(t_list **env_var, int status);
 #endif
