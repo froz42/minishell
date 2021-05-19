@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 15:01:30 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/19 17:18:22 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 # define APPEND			4
 # define SEMICOLON		5
 
-# define DB_QUOTE		0
-# define SINGLE_QUOTE	1
+# define DB_QUOTE_ERR	0
+# define SING_QUOTE_ERR	1
+# define EOL_ERR		2
+# define NL_ERR			8
 # define LOG_ERROR		10
 
 # define ESC			'\33'

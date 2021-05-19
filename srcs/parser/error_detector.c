@@ -6,15 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 17:03:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/12 13:00:37 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/19 18:29:14 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int	return_seterror(int no, int *error)
+int	return_seterror(int n, int *error)
 {
-	*error = no;
+	*error = n;
 	return (1);
 }
 
@@ -28,18 +28,18 @@ int	error_unexpected(t_list *tokens, int *error)
 	int		special_id;
 
 	special_id = escape_control(tokens->content);
-	if (special_id == 3 && !tokens->next)
-		return (return_seterror(2, error));
-	if ((special_id == 1 || special_id == 2 || special_id == 4)
+	if (special_id == PIPE && !tokens->next)
+		return (return_seterror(EOL_ERR, error));
+	if ((special_id == REDIR_OUT || special_id == REDIR_IN || special_id == APPEND)
 		&& tokens->next && escape_control(tokens->next->content))
 		return (return_seterror(
 				get_errno(escape_control(tokens->next->content)), error));
-	if ((special_id == 1 || special_id == 2 || special_id == 4)
+	if ((special_id == REDIR_OUT || special_id == REDIR_IN || special_id == APPEND)
 		&& !tokens->next)
-			return (return_seterror(8, error));
-	if ((special_id == 3 || special_id == 5) && tokens->next
-		&& (escape_control(tokens->next->content) == 3
-			|| escape_control(tokens->next->content) == 5))
+			return (return_seterror(NL_ERR, error));
+	if ((special_id == PIPE || special_id == SEMICOLON) && tokens->next
+		&& (escape_control(tokens->next->content) == PIPE
+			|| escape_control(tokens->next->content) == SEMICOLON))
 		return (return_seterror(
 				get_errno(escape_control(tokens->next->content)), error));
 	return (0);
@@ -47,8 +47,13 @@ int	error_unexpected(t_list *tokens, int *error)
 
 void	error_detector(t_list *tokens, int *error)
 {
-	if (tokens && escape_control(tokens->content) == 5)
+	if (tokens && escape_control(tokens->content) == SEMICOLON) // what for ?
+//	{
+//		printf("!\n");
+//		*error = get_errno(SEMICOLON);
+//	}
 		return_seterror(get_errno(escape_control(tokens->content)), error);
+//	return ;
 	while (tokens)
 	{
 		if (error_unexpected(tokens, error))

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 11:28:51 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/19 18:29:04 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ t_list	*tokenize(char **str, int *error, t_list *env_var)
 	return (word_list);
 }
 
-t_list	*tokenize_all(char *str, int *error, t_list *env_var)
+t_list	*tokenize_all(char *str, int *error, t_list *env_var) // remettre just_pipes sur false pr error_detector
 {
 	return (tokenize(&str, error, env_var));
 }

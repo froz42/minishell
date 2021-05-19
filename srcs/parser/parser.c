@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 10:49:10 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/19 18:29:27 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	is_special(char *str)
 
 int	escape_control(char *str)
 {
-	if (*str == '\33')
+//	printf("str = %s\n", str);
+	if (*str == ESC)
 		return (is_special(str + 1));
 	else
 		return (0);
@@ -107,7 +108,6 @@ int	exec_line(char *str, t_list **env_var)
 
 	error = NO_ERROR;
 	word_list = tokenize_all(str, &error, *env_var);
-//	word_list = tokenize(str, &error, *env_var); // passer direct juste le ptr ?
 	if (error != NO_ERROR)
 	{
 		write_error(error);
