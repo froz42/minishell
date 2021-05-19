@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 14:10:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/19 14:11:56 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	file_error(char *file, char *error)
 	ft_putstr_fd("\n", 2);
 }
 
-int	redirect_fd(t_command command, int backup[2])
+int	redirect_fd(t_command command, int backup[2]) // need to move and protect
 {
 	t_list	*redir_list;
 	t_redir	redir;
