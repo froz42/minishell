@@ -6,11 +6,21 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:45:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/08 14:23:52 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/19 14:31:27 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static	void	free_until(char **table, int max)
+{
+	int		i;
+
+	i = 0;
+	while (i < max)
+		ft_safe_free(table[i++]);
+	free(table);
+}
 
 char	**build_env(t_list *env_var)
 {
@@ -32,6 +42,8 @@ char	**build_env(t_list *env_var)
 			continue ;
 		}
 		env_str = ft_calloc(ft_strlen(var.key) + ft_strlen(var.data) + 2, sizeof(char));
+		if (!env_str)
+			free_until(envp, i);
 		ft_strcat(env_str, var.key);
 		ft_strcat(env_str, "=");
 		ft_strcat(env_str, var.data);
@@ -51,10 +63,18 @@ char	**build_argv(char *name, t_list *args)
 		return (NULL);
 	i = 0;
 	if (name)
-		argv[i++] = ft_strdup(name);
+	{
+		argv[i] = ft_strdup(name);
+		if (!argv[i])
+			free_until(argv, i);
+		i++;
+	}
 	while (args)
 	{
-		argv[i++] = ft_strdup(args->content);
+		argv[i] = ft_strdup(args->content);
+		if (!argv[i])
+			free_until(argv, i);
+		i++;
 		args = args->next;
 	}
 	return (argv);
