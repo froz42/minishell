@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 18:56:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 20:55:46 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/19 15:01:09 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,5 @@ t_bool			edit_var(t_list **var_list, char *key, char *value);
 char			**build_env(t_list *env_var);
 char			**build_argv(char *name, t_list *args);
 int				build_argc(char **argv);
-int				redirect_fd(t_command command, int backup[2]);
 
 #endif
