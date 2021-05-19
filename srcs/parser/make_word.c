@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 13:54:15 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/19 15:32:02 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,6 @@ t_list	*dollar_tokenize(char **str, t_append *append,
 	return (tokens);
 }
 
-/*
-** Comportement du dollar savoir si on cat ou pas selon la valeur de concat
-*/
-
 t_bool	append_dollar_token(t_list **dollar_tokens, t_list **tokens,
 								t_list **to_join, int append)
 {
@@ -139,38 +135,26 @@ t_bool	add_joint_tokens(t_list **dollar_tokens, t_list **tokens,
 	return (true);
 }
 
-static int	handle_dollar(t_list *dollar_tokens, t_list **tokens,
+/*
+** Comportement du dollar savoir si on cat ou pas selon la valeur de concat
+*/
+
+static int	handle_dollar(t_list **dollar_tokens, t_list **tokens,
 								t_list **to_join, t_append *append)
 {
-	char	*token_str;
-	t_list	*elem;
-
 	if (append->start)
-		if (!append_dollar_token(&dollar_tokens, tokens, to_join, START))
+		if (!append_dollar_token(dollar_tokens, tokens, to_join, START))
 			return (LOG_ERROR);
-	if (dollar_tokens && *to_join)
-	{
-		token_str = join_list(*to_join);
-		if (token_str)
-			elem = ft_lstnew(token_str);
-		if (!token_str || !elem)
-		{
-			ft_safe_free(token_str);
-			ft_lstclear(to_join, ft_safe_free);
-			ft_lstclear(&dollar_tokens, ft_safe_free);
-			ft_lstclear(tokens, ft_safe_free);
+	if (*dollar_tokens && *to_join)
+		if (!add_joint_tokens(dollar_tokens, tokens, to_join))
 			return (LOG_ERROR);
-		}
-		ft_lstadd_back(tokens, elem);
-		ft_lstclear(to_join, ft_safe_free);
-	}
-	if (append->end && dollar_tokens)
-		if (!append_dollar_token(&dollar_tokens, tokens, to_join, END))
+	if (append->end && *dollar_tokens)
+		if (!append_dollar_token(dollar_tokens, tokens, to_join, END))
 			return (LOG_ERROR);
 	append->start = true;
 	append->end = true;
-	ft_lstcat(tokens, dollar_tokens);
-	ft_lstclear(&dollar_tokens, ft_nofree);
+	ft_lstcat(tokens, *dollar_tokens);
+	ft_lstclear(dollar_tokens, ft_nofree);
 	return (NO_ERROR);
 }
 
@@ -233,7 +217,7 @@ t_list	*make_word(char **str, int *error, t_list *env_var)
 			dollar_tokens = dollar_tokenize(str, &append, error, env_var);
 			if (!dollar_tokens)
 				break ;
-			*error = handle_dollar(dollar_tokens, &tokens, &to_join, &append);
+			*error = handle_dollar(&dollar_tokens, &tokens, &to_join, &append);
 			if (*error != NO_ERROR)
 				break ;
 		}
@@ -241,7 +225,6 @@ t_list	*make_word(char **str, int *error, t_list *env_var)
 			break ;
 	}
 	if (to_join)
-		ft_lstadd_back(&tokens, ft_lstnew(join_list(to_join)));
-	ft_lstclear(&to_join, ft_safe_free);
+		add_joint_tokens(&dollar_tokens, &tokens, &to_join);
 	return (tokens);
 }
