@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:45:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 14:32:45 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/19 14:33:12 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static	void	free_until(char **table, int max)
 
 	i = 0;
 	while (i < max)
-		free(table[i++]);
+		ft_safe_free(table[i++]);
 	free(table);
 }
 
