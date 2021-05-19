@@ -30,4 +30,5 @@ echo "$var_unset"
 echo $USER$
 echo $
 echo $+
-echo $
+export hello="   "
+echo $hello j
