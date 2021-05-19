@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 18:39:06 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/19 12:16:03 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@
 # define SINGLE_QUOTE	1
 # define LOG_ERROR		10
 
-# define ESC		'\33'
+# define ESC			'\33'
+
+# define START			0
+# define END			1
 
 int			is_special(char *str);
 //t_list		*tokenize(char **str, int *error, t_list *env_var,
