@@ -3,23 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnjoin_del_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmazoyer <jmazoyer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 17:05:21 by jmazoyer          #+#    #+#             */
-/*   Updated: 2021/05/17 14:52:16 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/20 22:59:27 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "../libft.h"
-
-static void	delete(char *s1, char *s2, int to_del)
-{
-	if (s1 && (to_del == 1 || to_del == 3))
-		free(s1);
-	if (s2 && (to_del == 2 || to_del == 3))
-		free(s2);
-}
 
 char		*ft_strnjoin_del(char *s1, char *s2, size_t n, int to_del)
 {
@@ -27,25 +19,22 @@ char		*ft_strnjoin_del(char *s1, char *s2, size_t n, int to_del)
 	size_t	size;
 	size_t	i;
 	size_t	j;
+	char	*strs[2];
 
 	size = 0;
 	if (s1)
 		size += ft_strlen(s1);
 	if (s2)
 		size += ft_min_size_t(n, ft_strlen(s2));
-	if ((dst = (char *)malloc((size + 1) * sizeof(char))) == NULL)
-	{
-		delete(s1, s2, to_del);
+	strs[0] = s1;
+	strs[1] = s2;
+	dst = compute_first_part(size, strs, to_del, &i);
+	if (!dst)
 		return (NULL);
-	}
-	i = 0;
-	j = 0;
-	while (s1 && s1[j])
-		dst[i++] = s1[j++];
 	j = 0;
 	while (s2 && s2[j] && n-- > 0)
 		dst[i++] = s2[j++];
 	dst[size] = '\0';
-	delete(s1, s2, to_del);
+	delete_gnl(s1, s2, to_del);
 	return (dst);
 }
