@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 17:50:45 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 14:29:54 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,6 @@ int execution_rules(t_command command, t_list **env_vars)
 		return_value = 1 + 2;
 	if (command.name)
 	{
-		if (!ft_strcmp(command.name, "ls") && isatty(STDOUT_FILENO))
-			ft_lstadd_back(&command.args, ft_lstnew("-G"));
 		argv = build_argv(command.name, command.args);
 		if (!argv)
 		{
