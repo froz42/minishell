@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 15:35:35 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/20 16:38:00 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,47 +109,19 @@ int	exec_line(char *str, t_list **env_var)
 	word_list = tokenize_all(str, &error, *env_var); // == tjrs NULL si erreur ?
 	error_detector(word_list, &error);
 	ft_lstclear(&word_list, free);
-//	if (error != NO_ERROR)
-//	{
-//		write_error(error);
-//		set_status_env(env_var, 2);
-//		return (0);
-//	}
-//	while (*str)
-//	{
-//		pipe_list = get_next_pipes(&str, &error, *env_var);
-//		return_value = exec(pipe_list, env_var);
-//		ft_lstclear(&pipe_list, free_command);
-//		if (return_value)
-//			return (return_value);
-//	}
-
-	if (error != NO_ERROR)
-	{
-		write_error(error);
-		set_status_env(env_var, 2);
-		ft_lstclear(&word_list, free);
-		return (0);
-	}
-	error_detector(word_list, &error);
-	ft_lstclear(&word_list, free);
 	if (error != NO_ERROR)
 	{
 		write_error(error);
 		set_status_env(env_var, 2);
 		return (0);
 	}
-	else
+	while (*str)
 	{
-		while (*str)
-		{
-			ft_lstclear(&word_list, free);
-			pipe_list = get_next_pipes(&str, &error, *env_var);
-			return_value = exec(pipe_list, env_var);
-			ft_lstclear(&pipe_list, free_command);
-			if (return_value)
-				return (return_value);
-		}
+		pipe_list = get_next_pipes(&str, &error, *env_var);
+		return_value = exec(pipe_list, env_var);
+		ft_lstclear(&pipe_list, free_command);
+		if (return_value)
+			return (return_value);
 	}
 	return (0);
 	//	return (0 + (error != NO_ERROR)); // exit si erreur ?
