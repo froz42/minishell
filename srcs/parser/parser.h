@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 18:50:37 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/20 14:20:49 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char		*backslash(char **str);
 char		*double_quote(char **str);
 char		*make_double_quote(char **str, int *error, t_list *env_var);
 char		*word(char **str);
-t_list		*make_word(char **str, int *error, t_list *env_var);
+t_list		*make_word(char **str, int *error, t_list *env_var, t_bool just_pipes);
 void		error_detector(t_list *tokens, int *error);
 void		free_table(char ***table);
 void		set_status_env(t_list **env_var, int status);

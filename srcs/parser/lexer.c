@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 22:05:09 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/20 14:21:13 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ t_list	*tokenize(char **str, int *error, t_list *env_var, t_bool just_pipes)
 			add_special_str(&word_list, str, error);
 		else
 		{
-			word_tokens = make_word(str, error, env_var);
+			word_tokens = make_word(str, error, env_var, just_pipes);
 			ft_lstcat(&word_list, word_tokens);
 			ft_lstclear(&word_tokens, ft_nofree);
 		}
