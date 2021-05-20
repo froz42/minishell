@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 14:16:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 14:24:15 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 22:21:42 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,30 @@ void file_error(char *file, char *error)
 	ft_putstr_fd("\n", 2);
 }
 
+void restore_in_out(int backup[2])
+{
+	if (dup2(backup[0], STDIN_FILENO) < 0)
+		execution_error_write("dup2", "Cannot restore STDIN");
+	if (dup2(backup[1], STDOUT_FILENO) < 0)
+		execution_error_write("dup2", "Cannot restore STDOUT");
+	close(backup[0]);
+	close(backup[1]);
+}
+
+static int redir_dup_fail(char *file, int backup[2], int open_file)
+{
+	file_error(file, "fail to dup2");
+	close(open_file);
+	restore_in_out(backup);
+	return (1);
+}
+
 int redirect_fd(t_command command, int backup[2])
 {
 	t_list *redir_list;
 	t_redir redir;
 	int open_file;
+	int	dup_return;
 
 	backup[0] = dup(STDIN_FILENO);
 	if (backup[0] < 0)
@@ -69,31 +88,11 @@ int redirect_fd(t_command command, int backup[2])
 		else
 		{
 			if (redir.type == 1 || redir.type == 4)
-			{
-				if (dup2(open_file, STDOUT_FILENO) < 0)
-				{
-					file_error(redir.file, "fail to dup2");
-					close(open_file);
-					if (dup2(backup[0], STDIN_FILENO) < 0)
-						execution_error_write("dup2", "Cannot restore STDIN");
-					if (dup2(backup[1], STDOUT_FILENO) < 0)
-						execution_error_write("dup2", "Cannot restore STDOUT");
-					return (1);
-				}
-			}
+				dup_return = dup2(open_file, STDOUT_FILENO);
 			else
-			{
-				if (dup2(open_file, STDIN_FILENO) < 0)
-				{
-					file_error(redir.file, "fail to dup2");
-					close(open_file);
-					if (dup2(backup[0], STDIN_FILENO) < 0)
-						execution_error_write("dup2", "Cannot restore STDIN");
-					if (dup2(backup[1], STDOUT_FILENO) < 0)
-						execution_error_write("dup2", "Cannot restore STDOUT");
-					return (1);
-				}
-			}
+				dup_return = dup2(open_file, STDIN_FILENO);
+			if (dup_return < 0)
+				return (redir_dup_fail(redir.file, backup, open_file));
 			close(open_file);
 		}
 		redir_list = redir_list->next;
