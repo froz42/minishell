@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 17:04:54 by jmazoyer          #+#    #+#             */
-/*   Updated: 2021/05/20 23:01:34 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 23:58:51 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ char	*ft_strjoin_del(char *s1, char *s2, int to_del)
 		size += ft_strlen(s1);
 	if (s2)
 		size += ft_strlen(s2);
-	strs[0] = s1;
-	strs[1] = s2;
+	set_value(s1, s2, strs);
 	dst = compute_first_part(size, strs, to_del, &i);
 	if (!dst)
 		return (NULL);

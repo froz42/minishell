@@ -6,12 +6,18 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 17:05:21 by jmazoyer          #+#    #+#             */
-/*   Updated: 2021/05/20 23:01:45 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/21 00:00:00 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "../libft.h"
+
+void	set_value(char *s1, char *s2, char *strs[2])
+{
+	strs[0] = s1;
+	strs[1] = s2;
+}
 
 char	*ft_strnjoin_del(char *s1, char *s2, size_t n, int to_del)
 {
@@ -26,8 +32,7 @@ char	*ft_strnjoin_del(char *s1, char *s2, size_t n, int to_del)
 		size += ft_strlen(s1);
 	if (s2)
 		size += ft_min_size_t(n, ft_strlen(s2));
-	strs[0] = s1;
-	strs[1] = s2;
+	set_value(s1, s2, strs);
 	dst = compute_first_part(size, strs, to_del, &i);
 	if (!dst)
 		return (NULL);

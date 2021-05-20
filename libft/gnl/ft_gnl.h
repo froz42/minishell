@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:42:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 23:02:11 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 23:58:47 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,5 @@ int				ft_gnl(int fd, char **line);
 void			delete_gnl(char *s1, char *s2, int to_del);
 char			*compute_first_part(size_t size, char *strs[2],
 					int to_del, size_t *i);
-
+void	set_value(char *s1, char *s2, char *strs[2]);
 #endif
