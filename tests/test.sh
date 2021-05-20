@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/15 13:57:53 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/18 16:34:55 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/20 23:46:16 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ do
     mkdir ./sandbox
     bash < parts/$elem > outs/$elem\_bash.out 2> /dev/null
     rm -rf ./sandbox/*
-    valgrind --track-fds=yes --leak-check=full --show-reachable=yes --error-exitcode=1 \
+    valgrind --track-fds=yes --leak-check=full --show-reachable=yes --error-exitcode=1 --track-origins=yes \
     ../minishell < parts/$elem > outs/$elem\_minishell.out 2> ./logs/$elem.log
     error_code=$?
     rm -rf ./sandbox
@@ -86,7 +86,7 @@ if [ $error_code -eq 0 ]
 then
     printf "\033[0;32m[OK]\033[m\n"
 else
-    printf "\033[0;31m[KO]\033[m  (check tests/logs/$elem.log)\n"
+    printf "\033[0;31m[KO]\033[m  (check tests/logs/crash_test.sh.log)\n"
     error=1
 fi
 grep < ./logs/crash_test.sh.log "still reachable" > /dev/null
