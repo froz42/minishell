@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 17:15:16 by jmazoyer          #+#    #+#             */
-/*   Updated: 2021/05/20 23:42:34 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 23:50:34 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	get_next_line(int fd, char **line)
 	if (file.stored == 0 && *line == NULL)
 	{
 		*line = (char *)ft_calloc(1, sizeof(char));
-		if ((line) == NULL)
+		if (*line == NULL)
 			return (-1);
 	}
 	return (file.stored);
