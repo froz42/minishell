@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 22:20:59 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/20 13:53:55 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,6 @@
 ** Fais un split et le met dans une liste chainee
 */
 
-char	**force_split(char **old_split)
-{
-	char	**split;
-
-	free(old_split);
-	split = ft_split(" ", '\0');
-	if (!split)
-		return (NULL);
-	split[0][0] = '\0';
-	return (split);
-}
-
 t_bool	split_to_list(char *str, t_list **tokens)
 {
 	char	**split;
@@ -35,8 +23,6 @@ t_bool	split_to_list(char *str, t_list **tokens)
 	t_list	*elem;
 
 	split = ft_split(str, ' ');
-	if (split && !split[0])
-		split = force_split(split);
 	if (!split)
 		return (false);
 	i = -1;
@@ -143,11 +129,7 @@ static int	handle_dollar(t_list **dollar_tokens, t_list **tokens,
 								t_list **to_join, t_append *append)
 {
 	if (!*dollar_tokens)
-	{
-		ft_lstclear(to_join, ft_safe_free);
-		ft_lstclear(tokens, ft_safe_free);
-		return (LOG_ERROR);
-	}
+		return (NO_ERROR);
 	if (append->start)
 		if (!append_dollar_token(dollar_tokens, tokens, to_join, START))
 			return (LOG_ERROR);
