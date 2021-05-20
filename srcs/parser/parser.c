@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 16:38:00 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/20 16:55:42 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,20 @@ void	set_status_env(t_list **env_var, int status)
 
 t_list	*pipes_commands(t_list *word_list, t_list *env_var)
 {
-	t_list		*pipes_list;
+	t_list		*pipe_list;
 	int			special_id;
 
-	pipes_list = NULL;
+	pipe_list = NULL;
 	while (word_list)
 	{
 		special_id = escape_control(word_list->content);
-		if (special_id == 3)
+		if (special_id == PIPE)
 			word_list = word_list->next;
-		if (special_id == 5 || !word_list)
+		if (special_id == SEMICOLON || !word_list)
 			break ;
-		ft_lstadd_back(&pipes_list, ft_lstnew(get_command(&word_list, env_var)));
+		ft_lstadd_back(&pipe_list, ft_lstnew(get_command(&word_list, env_var)));
 	}
-	return (pipes_list);
+	return (pipe_list);
 }
 
 t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
@@ -88,7 +88,6 @@ t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
 	t_list	*pipes_list;
 
 	token_list = tokenize(str, error, env_var, true);
-//	token_list = tokenize(str, error, env_var);
 	pipes_list = pipes_commands(token_list, env_var);
 	ft_lstclear(&token_list, ft_safe_free);
 	return (pipes_list);
@@ -106,7 +105,7 @@ int	exec_line(char *str, t_list **env_var)
 	int			return_value;
 
 	error = NO_ERROR;
-	word_list = tokenize_all(str, &error, *env_var); // == tjrs NULL si erreur ?
+	word_list = tokenize_all(str, &error, *env_var);
 	error_detector(word_list, &error);
 	ft_lstclear(&word_list, free);
 	if (error != NO_ERROR)
@@ -117,7 +116,7 @@ int	exec_line(char *str, t_list **env_var)
 	}
 	while (*str)
 	{
-		pipe_list = get_next_pipes(&str, &error, *env_var);
+		pipe_list = get_next_pipes(&str, &error, *env_var); // doit etre null si erreur, et avoir affiche message d'erreur ?
 		return_value = exec(pipe_list, env_var);
 		ft_lstclear(&pipe_list, free_command);
 		if (return_value)
