@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 14:20:51 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 15:34:01 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,11 @@ static int	handle_dollar(t_list **dollar_tokens, t_list **tokens,
 								t_list **to_join, t_append *append)
 {
 	if (!*dollar_tokens)
-		return (NO_ERROR);
+	{
+		ft_lstclear(to_join, ft_safe_free);
+		ft_lstclear(tokens, ft_safe_free);
+		return (LOG_ERROR);
+	}
 	if (append->start)
 		if (!append_dollar_token(dollar_tokens, tokens, to_join, START))
 			return (LOG_ERROR);
