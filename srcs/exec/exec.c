@@ -263,7 +263,6 @@ int exec_pipes(t_list *pipes_list, t_list **env_vars)
 			execution_error_write("fork error", strerror(errno));
 			break;
 		}
-		return_value = 0;
 		if (last_pid == 0) // last_pid == 0 si dans child
 		{
 			close_unused_fds(forks_running, (fork_n - 1), tube_list);
