@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/21 00:13:04 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/21 00:18:19 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	handle_ctrl_c(t_buffer *buffer)
 
 	dst = calloc(1, sizeof(char));
 	if (!dst)
-		return eot_error(buffer);
+		return (eot_error(buffer));
 	free(buffer->buff);
 	buffer->buff = dst;
 	buffer->size = 0;
