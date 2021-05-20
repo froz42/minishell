@@ -29,7 +29,7 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] Redirection
  - [x] Verification des path d'exec comme bash
  - [x] Erreur d'execution de commande comme dans bash
- - [ ] check des valeur de retours
+ - [x] check des valeur de retours
  - [x] Mode non TTY
  - [ ] Mise a la norme (16 / 33 fichiers)
 
