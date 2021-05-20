@@ -1,7 +1,7 @@
 # MINISHELL
 [![forthebadge](https://forthebadge.com/images/badges/made-with-c.svg)](https://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
 ## WORKFLOW
-![build workflow](https://github.com/tmatis/minishell/actions/workflows/build.yml/badge.svg) ![check norm workflow](https://github.com/tmatis/minishell/actions/workflows/norm.yml/badge.svg) ![unit test workflow](https://github.com/tmatis/minishell/actions/workflows/unit_test.yml/badge.svg)
+![build workflow](https://github.com/tmatis/minishell/actions/workflows/build.yml/badge.svg) ![check norm workflow](https://github.com/tmatis/minishell/actions/workflows/norm.yml/badge.svg) ![unit test workflow](https://github.com/tmatis/minishell/actions/workflows/unit_test.yml/badge.svg) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7726232104f1492f834018c03cd9512e)](https://www.codacy.com/gh/tmatis/minishell/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=tmatis/minishell&amp;utm_campaign=Badge_Grade)
 ## SUJET
 
 L’objectif de ce projet est de créer un simple shell. Ca sera votre propre petit bash, ou zsh. Vous en apprendrez beaucoup sur les process et les file descriptors
