@@ -6,14 +6,14 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 17:05:21 by jmazoyer          #+#    #+#             */
-/*   Updated: 2021/05/20 22:59:27 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 23:01:45 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "../libft.h"
 
-char		*ft_strnjoin_del(char *s1, char *s2, size_t n, int to_del)
+char	*ft_strnjoin_del(char *s1, char *s2, size_t n, int to_del)
 {
 	char	*dst;
 	size_t	size;

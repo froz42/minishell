@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/15 13:57:53 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/18 16:34:55 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/20 23:31:14 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ do
     mkdir ./sandbox
     bash < parts/$elem > outs/$elem\_bash.out 2> /dev/null
     rm -rf ./sandbox/*
-    valgrind --track-fds=yes --leak-check=full --show-reachable=yes --error-exitcode=1 \
+    valgrind --track-fds=yes --leak-check=full --show-reachable=yes --error-exitcode=1 --track-origins=yes \
     ../minishell < parts/$elem > outs/$elem\_minishell.out 2> ./logs/$elem.log
     error_code=$?
     rm -rf ./sandbox

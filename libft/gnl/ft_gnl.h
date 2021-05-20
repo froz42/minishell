@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:42:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 22:58:12 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 23:02:11 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void			ft_initchunk(t_chunk *chunk);
 int				ft_getendl(t_chunk *chunk);
 int				ft_gnl(int fd, char **line);
 void			delete_gnl(char *s1, char *s2, int to_del);
-char			*compute_first_part(size_t size, char *strs[2], int to_del, size_t *i);
+char			*compute_first_part(size_t size, char *strs[2],
+					int to_del, size_t *i);
 
 #endif

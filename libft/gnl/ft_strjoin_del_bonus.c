@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 17:04:54 by jmazoyer          #+#    #+#             */
-/*   Updated: 2021/05/20 22:57:35 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 23:01:34 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	delete_gnl(char *s1, char *s2, int to_del)
 		free(s2);
 }
 
-char		*compute_first_part(size_t size, char *strs[2], int to_del, size_t *i)
+char	*compute_first_part(size_t size, char *strs[2], int to_del, size_t *i)
 {
 	char	*dst;
 	size_t	j;
@@ -39,7 +39,7 @@ char		*compute_first_part(size_t size, char *strs[2], int to_del, size_t *i)
 	return (dst);
 }
 
-char		*ft_strjoin_del(char *s1, char *s2, int to_del)
+char	*ft_strjoin_del(char *s1, char *s2, int to_del)
 {
 	char	*dst;
 	size_t	size;
