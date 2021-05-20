@@ -6,11 +6,19 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/21 00:18:19 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/21 00:35:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
+
+void	handle_eot_error(t_buffer *buffer)
+{
+	if (!buffer->buff)
+		return (eot_error(buffer));
+	buffer->size = ft_strlen(buffer->buff);
+	ft_putstr(buffer->buff);
+}
 
 void	eot_error(t_buffer *buffer)
 {
