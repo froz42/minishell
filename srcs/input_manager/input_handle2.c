@@ -6,11 +6,18 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 10:20:03 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/21 00:13:04 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
+
+void	eot_error(t_buffer *buffer)
+{
+	ft_log_error(strerror(errno));
+	buffer->escape_id = EOT_ID;
+	buffer->size = 0;
+}
 
 /*
 ** This is called when user type ctrl-c
@@ -22,12 +29,7 @@ void	handle_ctrl_c(t_buffer *buffer)
 
 	dst = calloc(1, sizeof(char));
 	if (!dst)
-	{
-		ft_log_error(strerror(errno));
-		buffer->size = 0;
-		buffer->escape_id = EOT_ID;
-		return ;
-	}
+		return eot_error(buffer);
 	free(buffer->buff);
 	buffer->buff = dst;
 	buffer->size = 0;

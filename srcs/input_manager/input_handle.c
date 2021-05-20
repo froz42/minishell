@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 10:36:35 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/21 00:12:40 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,7 @@ void	handle_up_key(t_buffer *buffer, int *history_lvl,
 		(*history_lvl)++;
 	buffer->buff = ft_strdup(fetch_history(*history_lvl, history));
 	if (!buffer->buff)
-	{
-		ft_log_error(strerror(errno));
-		buffer->escape_id = EOT_ID;
-		buffer->size = 0;
-		return ;
-	}
+		return eot_error(buffer);
 	buffer->size = ft_strlen(buffer->buff);
 	ft_putstr(buffer->buff);
 }
@@ -68,12 +63,7 @@ void	handle_down_key(t_buffer *buffer, int *history_lvl,
 	else if (*history_lvl != -1)
 		buffer->buff = ft_strdup(fetch_history(*history_lvl, history));
 	if (!buffer->buff)
-	{
-		ft_log_error(strerror(errno));
-		buffer->escape_id = EOT_ID;
-		buffer->size = 0;
-		return ;
-	}
+		return eot_error(buffer);
 	buffer->size = ft_strlen(buffer->buff);
 	ft_putstr(buffer->buff);
 }
