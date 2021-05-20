@@ -65,7 +65,7 @@ void	handle_down_key(t_buffer *buffer, int *history_lvl,
 		buffer->buff = *temp;
 		*temp = NULL;
 	}
-	else if (*history_lvl != -1)
+	else
 		buffer->buff = ft_strdup(fetch_history(*history_lvl, history));
 	if (!buffer->buff)
 	{
