@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 13:50:58 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 14:19:11 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_append
 {
 	t_bool start;
 	t_bool end;
+	t_bool just_pipes;
 }				t_append;
 
 #endif

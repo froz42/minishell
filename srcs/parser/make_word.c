@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 13:53:55 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 14:20:51 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,27 @@
 ** Fais un split et le met dans une liste chainee
 */
 
-t_bool	split_to_list(char *str, t_list **tokens)
+char	**force_split(char **old_split)
+{
+	char	**split;
+
+	free(old_split);
+	split = ft_split(" ", '\0');
+	if (!split)
+		return (NULL);
+	split[0][0] = '\0';
+	return (split);
+}
+
+t_bool	split_to_list(char *str, t_list **tokens, t_bool just_pipes)
 {
 	char	**split;
 	int		i;
 	t_list	*elem;
 
 	split = ft_split(str, ' ');
+	if (!just_pipes && split && !split[0])
+		split = force_split(split);
 	if (!split)
 		return (false);
 	i = -1;
@@ -61,7 +75,7 @@ t_list	*dollar_tokenize(char **str, t_append *append,
 	if (*to_tokenize && to_tokenize[ft_strlen(to_tokenize) - 1] == ' ')
 		append->end = false;
 	tokens = NULL;
-	if (!split_to_list(to_tokenize, &tokens))
+	if (!split_to_list(to_tokenize, &tokens, append->just_pipes))
 	{
 		*error = LOG_ERROR;
 		free(to_tokenize);
@@ -190,7 +204,7 @@ t_bool	add_word(char **str, int *error, t_list *env_var, t_list **to_join)
 ** Permet de tokeniser une suite de mot en correspondant a bash
 */
 
-t_list	*make_word(char **str, int *error, t_list *env_var)
+t_list	*make_word(char **str, int *error, t_list *env_var, t_bool just_pipes)
 {
 	t_append append;
 	t_list	*dollar_tokens;
@@ -202,6 +216,7 @@ t_list	*make_word(char **str, int *error, t_list *env_var)
 	{
 		if (**str == '$')
 		{
+			append.just_pipes = just_pipes;
 			dollar_tokens = dollar_tokenize(str, &append, error, env_var);
 			*error = handle_dollar(&dollar_tokens, &tokens, &to_join, &append);
 			if (*error != NO_ERROR)

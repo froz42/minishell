@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 17:03:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 13:59:49 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 14:22:46 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ int	error_unexpected(t_list *tokens, int *error)
 	special_id = escape_control(tokens->content);
 	if (special_id == PIPE && !tokens->next)
 		return (set_error(EOL_ERR, error));
-	//if ((special_id == REDIR_OUT || special_id == REDIR_IN || special_id == APPEND)
-	//	&& !tokens->next)
-	//		return (set_error(NL_ERR, error));
+	if ((special_id == REDIR_OUT || special_id == REDIR_IN || special_id == APPEND)
+		&& !tokens->next)
+			return (set_error(NL_ERR, error));
 	if ((special_id == REDIR_OUT || special_id == REDIR_IN || special_id == APPEND)
 		&& tokens->next && escape_control(tokens->next->content))
 		return (set_error(
