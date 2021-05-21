@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 15:45:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/15 12:18:15 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/21 16:21:54 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_var	*create_var(char *str)
 	int		i;
 	t_var	*var;
 
+	errno = 0;
 	var = ft_calloc(1, sizeof(t_var));
 	if (!var)
 		return (load_var_error(ENV_VAR_ERROR, NULL, NULL));

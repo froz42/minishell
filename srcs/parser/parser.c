@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 16:55:42 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/21 22:32:09 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,12 @@ void	set_status_env(t_list **env_var, int status)
 
 t_list	*pipes_commands(t_list *word_list, t_list *env_var)
 {
-	t_list		*pipe_list;
+	t_list		*pipes_list;
 	int			special_id;
+	t_command	*command;
+	t_list		*elem;
 
-	pipe_list = NULL;
+	pipes_list = NULL;
 	while (word_list)
 	{
 		special_id = escape_control(word_list->content);
@@ -77,9 +79,19 @@ t_list	*pipes_commands(t_list *word_list, t_list *env_var)
 			word_list = word_list->next;
 		if (special_id == SEMICOLON || !word_list)
 			break ;
-		ft_lstadd_back(&pipe_list, ft_lstnew(get_command(&word_list, env_var)));
+		command = get_command(&word_list, env_var);
+		if (command)
+			elem = ft_lstnew(command);
+		if (!command || !elem)
+		{
+//			ft_log_error(strerror(errno)); // avant ou apres
+			ft_lstclear(&pipes_list, ft_safe_free);
+			ft_safe_free(command);
+			return (NULL);
+		}
+		ft_lstadd_back(&pipes_list, elem);
 	}
-	return (pipe_list);
+	return (pipes_list);
 }
 
 t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
@@ -88,8 +100,12 @@ t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
 	t_list	*pipes_list;
 
 	token_list = tokenize(str, error, env_var, true);
+	if (!token_list)
+		return (NULL);
 	pipes_list = pipes_commands(token_list, env_var);
 	ft_lstclear(&token_list, ft_safe_free);
+	if (!pipes_list)
+		return (NULL);
 	return (pipes_list);
 }
 
@@ -116,7 +132,9 @@ int	exec_line(char *str, t_list **env_var)
 	}
 	while (*str)
 	{
-		pipe_list = get_next_pipes(&str, &error, *env_var); // doit etre null si erreur, et avoir affiche message d'erreur ?
+		pipe_list = get_next_pipes(&str, &error, *env_var); // doit etre null si erreur, et avoir affiche message d'erreur
+		if (!pipe_list)
+			return (0);
 		return_value = exec(pipe_list, env_var);
 		ft_lstclear(&pipe_list, free_command);
 		if (return_value)

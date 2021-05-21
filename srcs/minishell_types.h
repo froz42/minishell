@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 16:35:00 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/21 22:09:06 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_command
 {
 	char	*name;
 	char	*cmd;
+	t_bool	is_set;
 	t_list	*args;
 	t_list	*redirs;
 }				t_command;
