@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/21 14:55:38 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/21 20:49:34 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -125,6 +125,9 @@ re:			fclean all
 
 check:		all
 			@cd tests; bash test.sh
+
+check_protect:
+			@cd tests; bash malloc_test.sh
 
 malloc_test:	$(LIBFT) ${OBJS} ${OBJ_MAIN}
 				@$(call run_and_test,$(CC) $(CFLAGS) -fsanitize=undefined -o $@ ${OBJS} ${OBJ_MAIN} -L./libft -lft -L./tests/malloc_fail -lfail)
