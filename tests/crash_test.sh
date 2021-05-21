@@ -10,4 +10,8 @@ echo '
 'hi
 hello '  \'
 simp <> hello
+cd ./sandbox
+mkdir hello
+rm -rf ../hello
+cd ..
 exit 0
