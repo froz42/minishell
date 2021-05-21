@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:17:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/16 17:24:27 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/21 00:32:42 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ void			handle_left_key(t_buffer *buffer);
 void			handle_right_key(t_buffer *buffer);
 void			print_prompt(char *status);
 void			handle_ctrl_l(t_buffer *buffer);
+void			eot_error(t_buffer *buffer);
+void			handle_eot_error(t_buffer *buffer);
 
 #endif

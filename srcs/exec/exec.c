@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 17:50:45 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 22:24:55 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,6 @@ int execution_rules(t_command command, t_list **env_vars)
 		return_value = 1 + 2;
 	if (command.name)
 	{
-		if (!ft_strcmp(command.name, "ls") && isatty(STDOUT_FILENO))
-			ft_lstadd_back(&command.args, ft_lstnew("-G"));
 		argv = build_argv(command.name, command.args);
 		if (!argv)
 		{
@@ -173,12 +171,7 @@ int execution_rules(t_command command, t_list **env_vars)
 		free_table(&argv);
 		free_table(&envp);
 	}
-	if (dup2(backup[0], STDIN_FILENO) < 0)
-		execution_error_write("dup2", "Cannot restore STDIN");
-	if (dup2(backup[1], STDOUT_FILENO) < 0)
-		execution_error_write("dup2", "Cannot restore STDOUT");
-	close(backup[0]);
-	close(backup[1]);
+	restore_in_out(backup);
 	return (return_value);
 }
 
@@ -265,7 +258,6 @@ int exec_pipes(t_list *pipes_list, t_list **env_vars)
 			execution_error_write("fork error", strerror(errno));
 			break;
 		}
-		return_value = 0;
 		if (last_pid == 0) // last_pid == 0 si dans child
 		{
 			close_unused_fds(forks_running, (fork_n - 1), tube_list);

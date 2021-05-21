@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 22:37:57 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 14:09:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 22:22:50 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int handle_buildin(t_list *commands_list, t_list **env_var)
 		argv = build_argv(command.name, command.args);
 		if (!argv)
 		{
-			ft_putstr_fd("Minishell: ALloc failled\n", STDERR_FILENO);
+			ft_putstr_fd("Minishell: alloc failled\n", STDERR_FILENO);
 		}
 		argc = build_argc(argv);
 		if (redirect_fd(command, backup))
@@ -55,12 +55,7 @@ int handle_buildin(t_list *commands_list, t_list **env_var)
 		else if (ft_strcmp(command.name, "exit") == 0)
 			ret = ft_exit(argc, argv, env_var, false);
 		free_table(&argv);
-		if (dup2(backup[0], STDIN_FILENO) < 0)
-			execution_error_write("dup2", "Cannot restore STDIN");
-		if (dup2(backup[1], STDOUT_FILENO) < 0)
-			execution_error_write("dup2", "Cannot restore STDOUT");
-		close(backup[0]);
-		close(backup[1]);
+		restore_in_out(backup);
 	}
 	return (ret);
 }
