@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/21 13:22:03 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/23 00:48:51 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/23 00:56:57 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,10 @@ do
 	make -sC ../ malloc_test &> /dev/null
 	mkdir ./sandbox
 	echo "#### RATIO $fail_number ####" >> ./logs/malloc_fail.log
-	../malloc_test < parts/large_test.sh > /dev/null 2>> ./logs/malloc_fail.log
+	../malloc_test < parts/large_test.sh > /dev/null 2> ./logs/temp.log
 	return_value=$?
+	cat ./logs/temp.log
+	cat ./logs/temp.log >> ./logs/malloc_fail.log
 	echo "return value >>> $return_value" >> ./logs/malloc_fail.log
 	if [ $return_value -eq 1 ]
 	then
