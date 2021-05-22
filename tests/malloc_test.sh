@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/21 13:22:03 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/21 21:12:56 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/23 00:11:01 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ do
 	echo "#### RATIO $fail_number ####" >> ./logs/malloc_fail.log
 	../malloc_test < parts/large_test.sh > /dev/null 2>> ./logs/malloc_fail.log
 	return_value=$?
+	echo "return value >>> $return_value" >> ./logs/malloc_fail.log
 	if [ $return_value -eq 1 ]
 	then
 	    printf "\033[0;31m1/$fail_number\033[m ratio: \033[0;31m[KO]\033[m  (check tests/logs/malloc_fail.log)\n"
