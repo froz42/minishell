@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 23:15:28 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/23 00:01:30 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*join_list(t_list *to_cat)
 		to_malloc += ft_strlen((char *)temp->content);
 		temp = temp->next;
 	}
-	dest = calloc(to_malloc + 1, sizeof(char));
+	dest = ft_calloc(to_malloc + 1, sizeof(char));
 	if (!dest)
 		return (NULL);
 	while (to_cat && to_cat->content)
