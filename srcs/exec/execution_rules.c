@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:24:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 20:32:43 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/22 20:40:01 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ static int	rules(t_command command, char **argv,
 {
 	int	return_value;
 
-	return_value = 0;
-	if (!return_value)
-		return_value = build_in(argv, env_vars);
+	return_value = build_in(argv, env_vars);
 	if (!return_value && !command.cmd)
 	{
 		execution_error_write(command.name, "command not found");
