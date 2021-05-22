@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/21 22:37:17 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/22 21:01:16 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,42 @@ static char	*get_arg(t_list **word_list)
 	return (dst);
 }
 
+t_bool		find_redir(t_list **word_list, int special_id, t_command **command)
+{
+	t_redir		*redir;
+	t_list		*elem;
+
+	redir = get_redir(word_list, special_id);
+	if (redir)
+		elem = ft_lstnew(redir);
+	if (!redir || !elem)
+	{
+		ft_safe_free(redir);
+		free_command(command);
+		return (false);
+	}
+	ft_lstadd_back(&((*command)->redirs), elem);
+	return (true);
+}
+
+t_bool	find_arg(t_list **word_list, t_command **command)
+{
+	char	*arg;
+	t_list	*elem;
+
+	arg = get_arg(word_list);
+	if (arg)
+		elem = ft_lstnew(arg);
+	if (!arg || !elem)
+	{
+		ft_safe_free(arg);
+		free_command(command);
+		return (false);
+	}
+	ft_lstadd_back(&((*command)->args), elem);
+	return (true);
+}
+
 /*
 ** retourne l'objet t_command en utilisant les tokens
 ** jusqu'a rencontrer un token | ou ;
@@ -217,9 +253,9 @@ t_command	*get_command(t_list **word_list, t_list *env_var)
 {
 	t_command	*command;
 	int			special_id;
-	t_redir		*redir;
-	t_list		*elem;
-	char		*arg;
+//	t_redir		*redir;
+//	t_list		*elem;
+//	char		*arg;
 
 	command = init_command();
 	if (!command)
@@ -231,35 +267,38 @@ t_command	*get_command(t_list **word_list, t_list *env_var)
 			break ;
 		if (special_id == REDIR_OUT || special_id == REDIR_IN || special_id == APPEND)
 		{
-			redir = get_redir(word_list, special_id);
-			if (redir)
-				elem = ft_lstnew(redir);
-			if (!redir || !elem)
-			{
-				ft_safe_free(redir);
-				free_command(&command);
+			if (!find_redir(word_list, special_id, &command))
 				return (NULL);
-			}
-			ft_lstadd_back(&command->redirs, elem);
+//			redir = get_redir(word_list, special_id);
+//			if (redir)
+//				elem = ft_lstnew(redir);
+//			if (!redir || !elem)
+//			{
+//				ft_safe_free(redir);
+//				free_command(&command);
+//				return (NULL);
+//			}
+//			ft_lstadd_back(&command->redirs, elem);
 		}
 		else if (!command->is_set)
 		{
 			if (!set_command(word_list, command, env_var))
 				return (NULL);
 		}
-		else
-		{
-			arg = get_arg(word_list);
-			if (arg)
-				elem = ft_lstnew(arg);
-			if (!arg || !elem)
-			{
-				ft_safe_free(arg);
-				free_command(&command);
-				return (NULL);
-			}
-			ft_lstadd_back(&command->args, elem);
-		}
+		else if (!find_arg(word_list, &command))
+			return (NULL);
+//		{
+//			arg = get_arg(word_list);
+//			if (arg)
+//				elem = ft_lstnew(arg);
+//			if (!arg || !elem)
+//			{
+//				ft_safe_free(arg);
+//				free_command(&command);
+//				return (NULL);
+//			}
+//			ft_lstadd_back(&command->args, elem);
+//		}
 	}
 	return (command);
 }

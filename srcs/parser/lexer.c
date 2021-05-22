@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 14:21:13 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/22 19:39:17 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ t_list	*tokenize(char **str, int *error, t_list *env_var, t_bool just_pipes)
 
 t_list	*tokenize_all(char *str, int *error, t_list *env_var) // remettre just_pipes sur false pr error_detector
 {
+	*error = NO_ERROR;
 	return (tokenize(&str, error, env_var, false));
 //	return (tokenize(&str, error, env_var, true));
 //	return (tokenize(&str, error, env_var));
