@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:15:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/06 12:13:36 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/22 22:56:10 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	free_command(void *mem)
 {
 	t_command	*command;
 
+	if (!mem)
+		return ;
 	command = (t_command *)mem;
 	ft_safe_free(command->cmd);
 	ft_safe_free(command->name);

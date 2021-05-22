@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 16:36:47 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/22 23:10:17 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ static int	handle_dollar(t_list **dollar_tokens, t_list **tokens,
 ** Init les value pour gagner quelques ligne \O_O/
 */
 
-static void	init_value(t_append *append, t_list ** dollar_tokens,
+static void	init_value(t_append *append, t_list **dollar_tokens,
 							t_list **tokens, t_list **to_join)
 {
 	append->start = true;
@@ -214,10 +214,10 @@ t_bool	add_word(char **str, int *error, t_list *env_var, t_list **to_join)
 
 t_list	*make_word(char **str, int *error, t_list *env_var, t_bool just_pipes)
 {
-	t_append append;
-	t_list	*dollar_tokens;
-	t_list	*tokens;
-	t_list	*to_join;
+	t_append	append;
+	t_list		*dollar_tokens;
+	t_list		*tokens;
+	t_list		*to_join;
 
 	init_value(&append, &dollar_tokens, &tokens, &to_join);
 	append.just_pipes = just_pipes;

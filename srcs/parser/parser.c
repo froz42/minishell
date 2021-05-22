@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/21 22:32:09 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/22 23:26:10 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	escape_control(char *str)
 
 void	set_status_env(t_list **env_var, int status)
 {
-	char *status_str;
+	char	*status_str;
 
 	status_str = ft_itoa(status);
 	if (!status_str)
@@ -84,9 +84,8 @@ t_list	*pipes_commands(t_list *word_list, t_list *env_var)
 			elem = ft_lstnew(command);
 		if (!command || !elem)
 		{
-//			ft_log_error(strerror(errno)); // avant ou apres
-			ft_lstclear(&pipes_list, ft_safe_free);
 			ft_safe_free(command);
+			ft_lstclear(&pipes_list, free_command_list);
 			return (NULL);
 		}
 		ft_lstadd_back(&pipes_list, elem);
@@ -94,18 +93,26 @@ t_list	*pipes_commands(t_list *word_list, t_list *env_var)
 	return (pipes_list);
 }
 
-t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
+t_list	*get_next_pipes(char **str, int *error, t_list **env_var)
 {
 	t_list	*token_list;
 	t_list	*pipes_list;
 
-	token_list = tokenize(str, error, env_var, true);
+	token_list = tokenize(str, error, *env_var, true);
 	if (!token_list)
+	{
+		ft_log_error(strerror(errno));
+		set_status_env(env_var, 2);
 		return (NULL);
-	pipes_list = pipes_commands(token_list, env_var);
+	}
+	pipes_list = pipes_commands(token_list, *env_var);
 	ft_lstclear(&token_list, ft_safe_free);
 	if (!pipes_list)
+	{
+		ft_log_error(strerror(errno));
+		set_status_env(env_var, 2);
 		return (NULL);
+	}
 	return (pipes_list);
 }
 
@@ -116,11 +123,10 @@ t_list	*get_next_pipes(char **str, int *error, t_list *env_var)
 int	exec_line(char *str, t_list **env_var)
 {
 	t_list		*word_list;
-	t_list		*pipe_list;
+	t_list		*pipes_list;
 	int			error;
 	int			return_value;
 
-	error = NO_ERROR;
 	word_list = tokenize_all(str, &error, *env_var);
 	error_detector(word_list, &error);
 	ft_lstclear(&word_list, free);
@@ -132,14 +138,13 @@ int	exec_line(char *str, t_list **env_var)
 	}
 	while (*str)
 	{
-		pipe_list = get_next_pipes(&str, &error, *env_var); // doit etre null si erreur, et avoir affiche message d'erreur
-		if (!pipe_list)
+		pipes_list = get_next_pipes(&str, &error, env_var);
+		if (!pipes_list)
 			return (0);
-		return_value = exec(pipe_list, env_var);
-		ft_lstclear(&pipe_list, free_command);
+		return_value = exec(pipes_list, env_var);
+		ft_lstclear(&pipes_list, free_command);
 		if (return_value)
 			return (return_value);
 	}
 	return (0);
-	//	return (0 + (error != NO_ERROR)); // exit si erreur ?
 }
