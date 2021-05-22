@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 20:18:32 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 00:00:26 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_tube	*make_tubes(int fork_n, t_list **env_vars)
 	t_tube	*tube_list;
 	int		i;
 
-	tube_list = calloc(fork_n - 1, sizeof(t_tube));
+	tube_list = ft_calloc(fork_n - 1, sizeof(t_tube));
 	if (!tube_list)
 	{
 		set_status_env(env_vars, errno);

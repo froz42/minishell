@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 17:15:21 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/23 00:01:54 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ char	*backslash_double_quote(char **str)
 	(*str) += 1;
 	if (**str == '$' || **str == '\\' || **str == '"')
 	{
-		dest = calloc(2, sizeof(char));
+		dest = ft_calloc(2, sizeof(char));
 		if (!dest)
 			return (NULL);
 		dest[0] = **str;
 	}
 	else
 	{
-		dest = calloc(3, sizeof(char));
+		dest = ft_calloc(3, sizeof(char));
 		if (!dest)
 			return (NULL);
 		dest[0] = '\\';
