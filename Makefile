@@ -1,7 +1,7 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
+#    Makefile                                           :+:      :+:    :+:     #
 #                                                     +:+ +:+         +:+      #
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
@@ -31,7 +31,7 @@ SRCS		= 	input_manager/buffer_manager.c input_manager/history.c \
 				input_manager/input_handle.c input_manager/input_handle2.c \
 				parser/parser.c parser/command.c parser/lexer.c errors.c \
 				var.c parser/destroyer.c parser/lexer_parts.c \
-				parser/dolar.c parser/make_word.c parser/error_detector.c \
+				parser/dollar.c parser/make_word.c parser/error_detector.c \
 				exec/exec.c buildin/cd.c buildin/exit.c build_args.c \
 				buildin/echo.c buildin/env.c buildin/unset.c buildin/pwd.c \
 				buildin/export.c exec/prepare_exec.c exec/redirection.c

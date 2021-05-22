@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 13:09:48 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/20 14:20:49 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,25 @@
 
 # include "../minishell.h"
 
+# define REDIR_OUT		1
+# define REDIR_IN		2
+# define PIPE			3
+# define APPEND			4
+# define SEMICOLON		5
+
+# define DB_QUOTE_ERR	0
+# define SING_QUOTE_ERR	1
+# define EOL_ERR		2
+# define NL_ERR			8
+# define LOG_ERROR		10
+
+# define ESC			'\33'
+
+# define START			0
+# define END			1
+
 int			is_special(char *str);
+//t_list		*tokenize(char **str, int *error, t_list *env_var);
 t_list		*tokenize(char **str, int *error, t_list *env_var,
 				t_bool just_pipes);
 t_list		*tokenize_all(char *str, int *error, t_list *env_var);
@@ -28,9 +46,10 @@ int			escape_control(char *str);
 void		free_command_list(void *mem);
 void		display_commands(t_list *commands_list);
 char		*make_double_quote(char **str, int *error,
-				t_list *env_var);
-char		*dolar(char **str, t_list *env_var);
-t_list		*dolar_tokenize(char **str, t_append *append, t_list *env_var);
+								t_list *env_var);
+char		*dollar(char **str, t_list *env_var);
+t_list		*dollar_tokenize(char **str, t_append *append,
+								int *error, t_list *env_var);
 char		*join_list(t_list *to_cat);
 char		*single_quote(char **str, int *error);
 char		*backslash_double_quote(char **str);
@@ -38,7 +57,7 @@ char		*backslash(char **str);
 char		*double_quote(char **str);
 char		*make_double_quote(char **str, int *error, t_list *env_var);
 char		*word(char **str);
-t_list		*make_word(char **str, int *error, t_list *env_var);
+t_list		*make_word(char **str, int *error, t_list *env_var, t_bool just_pipes);
 void		error_detector(t_list *tokens, int *error);
 void		free_table(char ***table);
 void		set_status_env(t_list **env_var, int status);

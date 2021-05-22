@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 13:50:58 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/21 22:09:06 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_command
 {
 	char	*name;
 	char	*cmd;
+	t_bool	is_set;
 	t_list	*args;
 	t_list	*redirs;
 }				t_command;
@@ -62,6 +63,8 @@ typedef struct s_append
 {
 	t_bool start;
 	t_bool end;
+	t_bool dollar_error;
+	t_bool just_pipes;
 }				t_append;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 13:38:07 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/19 17:15:21 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 
 char	*single_quote(char **str, int *error)
 {
-	int		i;
 	char	*token;
+	int		i;
 
 	(*str)++;
-	i = 0;
 	token = NULL;
+	i = 0;
 	while ((*str)[i] && (*str)[i] != '\'')
 		i++;
 	if ((*str)[i] == '\'')
@@ -32,10 +32,7 @@ char	*single_quote(char **str, int *error)
 		(*str) += i + 1;
 	}
 	else
-	{
-		(*str) += i;
-		*error = 1;
-	}
+		*error = SING_QUOTE_ERR;
 	return (token);
 }
 
@@ -106,13 +103,35 @@ char	*double_quote(char **str)
 	return (token);
 }
 
+t_bool	add_db_quote_word(char **str, t_list *env_var, t_list **to_join)
+{
+	char	*word_str;
+	t_list	*elem;
+
+	if (**str == '$')
+		word_str = dollar(str, env_var);
+	else if (**str == '\\')
+		word_str = backslash_double_quote(str);
+	else
+		word_str = double_quote(str);
+	if (word_str)
+		elem = ft_lstnew(word_str);
+	if (!word_str || !elem)
+	{
+		ft_safe_free(word_str);
+		ft_lstclear(to_join, ft_safe_free);
+		return (false);
+	}
+	ft_lstadd_back(to_join, elem);
+	return (true);
+}
+
 /*
 ** Retourne le str de l'interieur des double quote
 ** EX "Hello $USER you have 10\$" -> "Hello tmatis you have 10$"
 */
 
-char	*make_double_quote(char **str, int *error,
-			t_list *env_var)
+char	*make_double_quote(char **str, int *error, t_list *env_var)
 {
 	t_list	*to_join;
 	char	*dest;
@@ -120,19 +139,18 @@ char	*make_double_quote(char **str, int *error,
 	(*str) += 1;
 	to_join = NULL;
 	while (**str && **str != '"')
-	{
-		if (**str == '$')
-			ft_lstadd_back(&to_join, ft_lstnew(dolar(str, env_var)));
-		else if (**str == '\\')
-			ft_lstadd_back(&to_join, ft_lstnew(backslash_double_quote(str)));
-		else
-			ft_lstadd_back(&to_join, ft_lstnew(double_quote(str)));
-	}
+		if (!add_db_quote_word(str, env_var, &to_join))
+			return (NULL);
 	dest = join_list(to_join);
 	ft_lstclear(&to_join, ft_safe_free);
-	if (**str == '"')
-		(*str) += 1;
-	else
-		*error = 0;
+	if (!dest)
+		return (NULL);
+	if (**str != '"')
+	{
+		free(dest);
+		*error = DB_QUOTE_ERR;
+		return (NULL);
+	}
+	(*str) += 1;
 	return (dest);
 }
