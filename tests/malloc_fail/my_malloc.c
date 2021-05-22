@@ -6,11 +6,12 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 12:24:09 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/21 13:41:45 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 00:45:57 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_malloc.h"
+#include <errno.h>
 
 int	g_malloc_hook_active = 1;
 
@@ -24,6 +25,7 @@ void	*my_malloc_hook(size_t size, void *caller)
 	g_malloc_hook_active = 0;
 	if (++fail_counter == FAIL)
 	{
+		errno = ENOMEM;
 		fail_counter = 0;
 		result = NULL;
 	}
