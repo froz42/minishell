@@ -6,21 +6,22 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 22:37:57 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 12:59:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/22 13:02:49 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static int return_value_buildin(int func_return, t_list **env_var)
+static int	return_value_buildin(int func_return, t_list **env_var)
 {
 	set_status_env(env_var, func_return);
 	return (1);
 }
 
-int exec_buildin(char *command_name, int argc, char **argv, t_list **env_var)
+static int	exec_buildin(char *command_name, int argc, char **argv,
+							t_list **env_var)
 {
-	int ret;
+	int	ret;
 
 	ret = 0;
 	if (ft_strcmp(command_name, "cd") == 0)
@@ -40,20 +41,20 @@ int exec_buildin(char *command_name, int argc, char **argv, t_list **env_var)
 	return (ret);
 }
 
-static	int	alloc_error(t_list **env_var)
+static int	alloc_error(t_list **env_var)
 {
 	ft_putstr_fd("Minishell: alloc failled\n", STDERR_FILENO);
 	set_status_env(env_var, 127);
 	return (1);
 }
 
-int handle_buildin(t_list *commands_list, t_list **env_var)
+int	handle_buildin(t_list *commands_list, t_list **env_var)
 {
-	t_command command;
-	char **argv;
-	int argc;
-	int ret;
-	int backup[2];
+	t_command	command;
+	char		**argv;
+	int			argc;
+	int			ret;
+	int			backup[2];
 
 	ret = 0;
 	if (ft_lstsize(commands_list) == 1)
@@ -75,9 +76,9 @@ int handle_buildin(t_list *commands_list, t_list **env_var)
 	return (ret);
 }
 
-int exec(t_list *pipes_list, t_list **env_var)
+int	exec(t_list *pipes_list, t_list **env_var)
 {
-	int ret;
+	int	ret;
 
 	ret = handle_buildin(pipes_list, env_var);
 	if (ret == 0)
