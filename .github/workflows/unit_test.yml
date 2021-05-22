@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  unit_tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -17,3 +17,11 @@ jobs:
       run: make
     - name: Unit tests
       run: make check
+  malloc_tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: make
+      run: make
+    - name: Unit tests
+      run: make check_protect
