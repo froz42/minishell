@@ -6,25 +6,25 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:24:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 20:29:43 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/22 20:32:43 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include <sys/stat.h>
 
-static t_bool is_directory(const char *path)
+static t_bool	is_directory(const char *path)
 {
-	struct stat statbuf;
+	struct stat	statbuf;
 
 	if (stat(path, &statbuf) != 0)
 		return (true);
 	return (S_ISDIR(statbuf.st_mode));
 }
 
-int build_in(char **argv, t_list **env_var)
+static int	build_in(char **argv, t_list **env_var)
 {
-	int argc;
+	int	argc;
 
 	argc = build_argc(argv);
 	if (ft_strcmp(argv[0], "cd") == 0)
@@ -45,9 +45,10 @@ int build_in(char **argv, t_list **env_var)
 		return (0);
 }
 
-static int rules(t_command command, char **argv, char **envp, t_list **env_vars)
+static int	rules(t_command command, char **argv,
+				char **envp, t_list **env_vars)
 {
-	int return_value;
+	int	return_value;
 
 	return_value = 0;
 	if (!return_value)
@@ -74,11 +75,11 @@ static int rules(t_command command, char **argv, char **envp, t_list **env_vars)
 	return (return_value);
 }
 
-static int build_args_and_exec(t_command command, t_list **env_vars)
+static int	build_args_and_exec(t_command command, t_list **env_vars)
 {
-	char **argv;
-	char **envp;
-	int	 return_value;
+	char	**argv;
+	char	**envp;
+	int		return_value;
 
 	argv = build_argv(command.name, command.args);
 	if (!argv)
@@ -99,10 +100,10 @@ static int build_args_and_exec(t_command command, t_list **env_vars)
 	return (return_value);
 }
 
-int execution_rules(t_command command, t_list **env_vars)
+int	execution_rules(t_command command, t_list **env_vars)
 {
-	int return_value;
-	int backup[2];
+	int	return_value;
+	int	backup[2];
 
 	return_value = 0;
 	if (redirect_fd(command, backup))
