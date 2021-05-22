@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/20 22:24:55 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/22 13:30:58 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,9 @@ void close_unused_fds(int index, int size, t_tube *tube_list)
 		i++;
 	}
 	if (index != 0)
-	{
 		close(tube_list[i++][1]);
-	}
 	if (i < size)
-	{
 		close(tube_list[i++][0]);
-	}
 	while (i < size)
 	{
 		close(tube_list[i][0]);

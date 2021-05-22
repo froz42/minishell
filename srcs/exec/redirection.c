@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 14:16:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 13:25:18 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/22 13:29:13 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	backup_int_out(int backup[2])
 
 int	open_file_redir(t_redir redir)
 {
-	int open_file;
+	int	open_file;
 
 	if (!redir.file)
 	{
@@ -65,11 +65,11 @@ int	dup_in_or_out(t_redir redir)
 	return (dup_return);
 }
 
-int redirect_fd(t_command command, int backup[2])
+int	redirect_fd(t_command command, int backup[2])
 {
-	t_list *redir_list;
-	t_redir redir;
-	int	dup_return;
+	t_list	*redir_list;
+	t_redir	redir;
+	int		dup_return;
 
 	if (backup_int_out(backup))
 		return (1);
