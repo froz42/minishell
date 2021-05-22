@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/19 15:00:23 by jmazoyer         ###   ########.fr        #
+#    Updated: 2021/05/22 12:05:40 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -117,7 +117,7 @@ clean:		header
 			@printf "%-53b%b" "$(COM_COLOR)clean:" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"
 
 fclean:		header clean
-			@rm -rf $(NAME) ./test
+			@rm -rf $(NAME) ./test ./malloc_check
 			@make -sC ./libft fclean
 			@printf "%-53b%b" "$(COM_COLOR)fclean:" "$(OK_COLOR)$(OK_STRING)$(NO_COLOR)\n"
 
@@ -126,4 +126,12 @@ re:			fclean all
 check:		all
 			@cd tests; bash test.sh
 
-.PHONY:		all clean fclean re libft header check
+check_protect:
+			@cd tests; bash malloc_test.sh
+
+malloc_test:	$(LIBFT) ${OBJS} ${OBJ_MAIN}
+				@$(call run_and_test,$(CC) $(CFLAGS) -fsanitize=undefined -o $@ ${OBJS} ${OBJ_MAIN} -L./libft -lft -L./tests/malloc_fail -lfail)
+
+
+
+.PHONY:		all clean fclean re libft header check malloc_check
