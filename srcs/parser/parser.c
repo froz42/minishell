@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 20:54:06 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/22 23:26:10 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	escape_control(char *str)
 
 void	set_status_env(t_list **env_var, int status)
 {
-	char *status_str;
+	char	*status_str;
 
 	status_str = ft_itoa(status);
 	if (!status_str)
@@ -84,8 +84,8 @@ t_list	*pipes_commands(t_list *word_list, t_list *env_var)
 			elem = ft_lstnew(command);
 		if (!command || !elem)
 		{
-			ft_lstclear(&pipes_list, ft_safe_free);
 			ft_safe_free(command);
+			ft_lstclear(&pipes_list, free_command_list);
 			return (NULL);
 		}
 		ft_lstadd_back(&pipes_list, elem);
@@ -138,7 +138,7 @@ int	exec_line(char *str, t_list **env_var)
 	}
 	while (*str)
 	{
-		pipes_list = get_next_pipes(&str, &error, env_var); // doit etre null si erreur, et avoir affiche message d'erreur
+		pipes_list = get_next_pipes(&str, &error, env_var);
 		if (!pipes_list)
 			return (0);
 		return_value = exec(pipes_list, env_var);
@@ -147,5 +147,4 @@ int	exec_line(char *str, t_list **env_var)
 			return (return_value);
 	}
 	return (0);
-	//	return (0 + (error != NO_ERROR)); // exit si erreur ?
 }

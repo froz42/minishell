@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 21:01:16 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/22 23:22:20 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_command	*init_command(void)
 {
 	t_command	*command;
 
-	command = calloc(1, sizeof(t_command));
+	command = ft_calloc(1, sizeof(t_command));
 	if (!command)
 		return (NULL);
 	command->is_set = false;
@@ -66,12 +66,12 @@ static t_redir	*get_redir(t_list **word_list, int special_id)
 t_bool	file_exist(char *path)
 {
 	struct stat	buffer;
-    int			exist;
+	int			exist;
 
 	exist = stat(path, &buffer);
-    if (exist == 0)
+	if (exist == 0)
 		return (true);
-    else
+	else
 		return (false);
 }
 
@@ -90,42 +90,7 @@ void	free_table(char ***table)
 		free((*table)[i++]);
 	free(*table);
 }
-/*
-char	*find_bin(char *bin, t_list *env_var)
-{
-	char	**paths;
-	int		i;
-	char	*to_check;
 
-	if (ft_strchr(bin, '/'))
-		return (ft_strdup(bin));
-	paths = ft_split(search_var(env_var, "PATH"), ':');
-	if (!paths || !*paths)
-	{
-		free_table(&paths);
-		return (ft_strdup(bin)); // plutot NULL ? // Et log_error ?
-	}
-	i = 0;
-	while (paths[i])
-	{
-		to_check = ft_calloc(ft_strlen(paths[i]) + ft_strlen(bin) + 2, sizeof(char));
-		if (!to_check)
-			return (ft_strdup(bin)); // plutot NULL ? // Et log_error ?
-		ft_strcat(to_check, paths[i]);
-		ft_strcat(to_check, "/");
-		ft_strcat(to_check, bin);
-		if (file_exist(to_check))
-		{
-			free_table(&paths);
-			return (to_check);
-		}
-		free(to_check);
-		i++;
-	}
-	free_table(&paths);
-	return(NULL);
-}
-*/
 t_bool	search_path(char **paths, t_command *command)
 {
 	int		i;
@@ -179,12 +144,12 @@ t_bool	find_bin(t_command *command, t_list *env_var)
 	return (true);
 }
 
-static t_bool	set_command(t_list	**word_list, t_command *command, t_list *env_var)
+static t_bool	set_command(t_list	**word_list, t_command *command,
+										t_list *env_var)
 {
 	command->name = ft_strdup((*word_list)->content);
 	if (!command->name || !find_bin(command, env_var))
 	{
-		ft_log_error(strerror(errno));
 		free_command(command);
 		return (false);
 	}
@@ -206,7 +171,7 @@ static char	*get_arg(t_list **word_list)
 	return (dst);
 }
 
-t_bool		find_redir(t_list **word_list, int special_id, t_command **command)
+t_bool	find_redir(t_list **word_list, int special_id, t_command *command)
 {
 	t_redir		*redir;
 	t_list		*elem;
@@ -216,15 +181,15 @@ t_bool		find_redir(t_list **word_list, int special_id, t_command **command)
 		elem = ft_lstnew(redir);
 	if (!redir || !elem)
 	{
-		ft_safe_free(redir);
+		free_redir(redir);
 		free_command(command);
 		return (false);
 	}
-	ft_lstadd_back(&((*command)->redirs), elem);
+	ft_lstadd_back(&command->redirs, elem);
 	return (true);
 }
 
-t_bool	find_arg(t_list **word_list, t_command **command)
+t_bool	find_arg(t_list **word_list, t_command *command)
 {
 	char	*arg;
 	t_list	*elem;
@@ -238,7 +203,7 @@ t_bool	find_arg(t_list **word_list, t_command **command)
 		free_command(command);
 		return (false);
 	}
-	ft_lstadd_back(&((*command)->args), elem);
+	ft_lstadd_back(&command->args, elem);
 	return (true);
 }
 
@@ -252,53 +217,28 @@ t_bool	find_arg(t_list **word_list, t_command **command)
 t_command	*get_command(t_list **word_list, t_list *env_var)
 {
 	t_command	*command;
-	int			special_id;
-//	t_redir		*redir;
-//	t_list		*elem;
-//	char		*arg;
+	int			token_id;
 
 	command = init_command();
 	if (!command)
 		return (NULL);
 	while (*word_list)
 	{
-		special_id = escape_control((*word_list)->content);
-		if (special_id == SEMICOLON || special_id == PIPE)
+		token_id = escape_control((*word_list)->content);
+		if (token_id == SEMICOLON || token_id == PIPE)
 			break ;
-		if (special_id == REDIR_OUT || special_id == REDIR_IN || special_id == APPEND)
+		if (token_id == REDIR_OUT || token_id == REDIR_IN || token_id == APPEND)
 		{
-			if (!find_redir(word_list, special_id, &command))
+			if (!find_redir(word_list, token_id, command))
 				return (NULL);
-//			redir = get_redir(word_list, special_id);
-//			if (redir)
-//				elem = ft_lstnew(redir);
-//			if (!redir || !elem)
-//			{
-//				ft_safe_free(redir);
-//				free_command(&command);
-//				return (NULL);
-//			}
-//			ft_lstadd_back(&command->redirs, elem);
 		}
 		else if (!command->is_set)
 		{
 			if (!set_command(word_list, command, env_var))
 				return (NULL);
 		}
-		else if (!find_arg(word_list, &command))
+		else if (!find_arg(word_list, command))
 			return (NULL);
-//		{
-//			arg = get_arg(word_list);
-//			if (arg)
-//				elem = ft_lstnew(arg);
-//			if (!arg || !elem)
-//			{
-//				ft_safe_free(arg);
-//				free_command(&command);
-//				return (NULL);
-//			}
-//			ft_lstadd_back(&command->args, elem);
-//		}
 	}
 	return (command);
 }

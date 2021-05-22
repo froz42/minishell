@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 19:39:17 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/22 23:15:28 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,14 +112,12 @@ t_bool	add_special_str(t_list **word_list, char **str, int *error)
 */
 
 t_list	*tokenize(char **str, int *error, t_list *env_var, t_bool just_pipes)
-//t_list	*tokenize(char **str, int *error, t_list *env_var)
 {
 	t_list	*word_list;
 	t_list	*word_tokens;
 
 	word_list = NULL;
 	while (**str && (!just_pipes || **str != ';'))
-//	while (**str && **str != ';')
 	{
 		if (is_special(*str))
 			add_special_str(&word_list, str, error);
@@ -142,10 +140,8 @@ t_list	*tokenize(char **str, int *error, t_list *env_var, t_bool just_pipes)
 	return (word_list);
 }
 
-t_list	*tokenize_all(char *str, int *error, t_list *env_var) // remettre just_pipes sur false pr error_detector
+t_list	*tokenize_all(char *str, int *error, t_list *env_var)
 {
 	*error = NO_ERROR;
 	return (tokenize(&str, error, env_var, false));
-//	return (tokenize(&str, error, env_var, true));
-//	return (tokenize(&str, error, env_var));
 }
