@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/21 22:09:06 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/22 18:41:40 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,14 @@ typedef struct s_append
 	t_bool dollar_error;
 	t_bool just_pipes;
 }				t_append;
+
+typedef struct s_child_data
+{
+	t_command 	command;
+	t_tube		*tube_list;
+	int 		fork_n;
+	int 		forks_running;
+	t_list		**env_var;
+}				t_child_data;
 
 #endif
