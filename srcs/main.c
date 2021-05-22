@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 15:00:52 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/23 00:41:06 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ int	minishell(t_list **env_var, t_list *history)
 		if (!left_to_read)
 		{
 			ret = ft_exit(1, NULL, env_var, false);
+			break ;
+		}
+		if (!line)
+		{
+			file_error("Alloc error", strerror(errno));
 			break ;
 		}
 		ret = exec_line(line, env_var);
