@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 19:36:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/22 20:18:32 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-void handle_status(int status, t_list **env_var)
+void	handle_status(int status, t_list **env_var)
 {
-	int return_value;
+	int	return_value;
 
 	return_value = 0;
 	if (WIFEXITED(status))
@@ -36,8 +36,8 @@ void handle_status(int status, t_list **env_var)
 
 void	harvest_child(int forks_running, pid_t last_pid, t_list **env_var)
 {
-	int status;
-	pid_t pid;
+	int		status;
+	pid_t	pid;
 
 	while (forks_running)
 	{
@@ -48,16 +48,17 @@ void	harvest_child(int forks_running, pid_t last_pid, t_list **env_var)
 	}
 }
 
-t_tube *make_tubes(int fork_n, t_list **env_vars)
+t_tube	*make_tubes(int fork_n, t_list **env_vars)
 {
-	t_tube *tube_list;
-	int i;
+	t_tube	*tube_list;
+	int		i;
 
 	tube_list = calloc(fork_n - 1, sizeof(t_tube));
 	if (!tube_list)
 	{
 		set_status_env(env_vars, errno);
-		execution_error_status("pipes alloc fail", strerror(errno), 127, env_vars);
+		execution_error_status("pipes alloc fail",
+			strerror(errno), 127, env_vars);
 		return (NULL);
 	}
 	i = 0;
@@ -65,7 +66,8 @@ t_tube *make_tubes(int fork_n, t_list **env_vars)
 	{
 		if (pipe(tube_list[i++]) < 0)
 		{
-			execution_error_status("pipe creation fail", strerror(errno), 127, env_vars);
+			execution_error_status("pipe creation fail",
+				strerror(errno), 127, env_vars);
 			close_all_pipes(tube_list, i - 1);
 			return (NULL);
 		}
@@ -73,12 +75,14 @@ t_tube *make_tubes(int fork_n, t_list **env_vars)
 	return (tube_list);
 }
 
-int	prepare_data(t_child_data *child_data, t_list *pipes_list, t_list **env_vars)
+int	prepare_data(t_child_data *child_data, t_list *pipes_list,
+		t_list **env_vars)
 {
 	child_data->fork_n = ft_lstsize(pipes_list);
 	if (child_data->fork_n <= 0)
 	{
-		execution_error_status("prepare_data", "not enought pipes", 127, env_vars);
+		execution_error_status("prepare_data", "not enought pipes",
+			127, env_vars);
 		return (1);
 	}
 	child_data->env_var = env_vars;
@@ -89,9 +93,9 @@ int	prepare_data(t_child_data *child_data, t_list *pipes_list, t_list **env_vars
 	return (0);
 }
 
-int exec_pipes(t_list *pipes_list, t_list **env_vars)
+int	exec_pipes(t_list *pipes_list, t_list **env_vars)
 {
-	pid_t 			last_pid;
+	pid_t			last_pid;
 	t_child_data	child_data;
 
 	if (prepare_data(&child_data, pipes_list, env_vars))
@@ -103,7 +107,7 @@ int exec_pipes(t_list *pipes_list, t_list **env_vars)
 		if (last_pid < 0)
 		{
 			execution_error_status("fork", strerror(errno), 127, env_vars);
-			break;
+			break ;
 		}
 		if (last_pid == 0)
 			return (child_process(child_data));

@@ -6,15 +6,15 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:28:54 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 19:36:19 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/22 20:16:32 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void close_unused_fds(int index, int size, t_tube *tube_list)
+void	close_unused_fds(int index, int size, t_tube *tube_list)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < (index - 1))
@@ -55,9 +55,12 @@ int	child_process(t_child_data child_data)
 {
 	int	return_value;
 
-	if (close_open_fd_child(child_data.tube_list, child_data.forks_running, child_data.fork_n) < 0)
-		return (handle_dup2_error(child_data.tube_list, child_data.forks_running, child_data.fork_n) + 2);
+	if (close_open_fd_child(child_data.tube_list, child_data.forks_running,
+			child_data.fork_n) < 0)
+		return (handle_dup2_error(child_data.tube_list,
+				child_data.forks_running, child_data.fork_n) + 2);
 	return_value = execution_rules(child_data.command, child_data.env_var);
-	close_finish_tube(child_data.tube_list, child_data.forks_running, child_data.fork_n);
+	close_finish_tube(child_data.tube_list,
+		child_data.forks_running, child_data.fork_n);
 	return (return_value);
 }

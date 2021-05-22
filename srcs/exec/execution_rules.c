@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:24:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 19:30:44 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/22 20:29:43 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,56 +45,70 @@ int build_in(char **argv, t_list **env_var)
 		return (0);
 }
 
-int execution_rules(t_command command, t_list **env_vars)
+static int rules(t_command command, char **argv, char **envp, t_list **env_vars)
+{
+	int return_value;
+
+	return_value = 0;
+	if (!return_value)
+		return_value = build_in(argv, env_vars);
+	if (!return_value && !command.cmd)
+	{
+		execution_error_write(command.name, "command not found");
+		return_value = 127 + 2;
+	}
+	if (!return_value)
+	{
+		if (is_directory(command.cmd))
+		{
+			execution_error_write(command.name, "Is a directory");
+			return_value = 126 + 2;
+		}
+	}
+	if (!return_value)
+	{
+		execve(command.cmd, argv, envp);
+		execution_error_write(argv[0], strerror(errno));
+		return_value = 127 + 2;
+	}
+	return (return_value);
+}
+
+static int build_args_and_exec(t_command command, t_list **env_vars)
 {
 	char **argv;
 	char **envp;
+	int	 return_value;
+
+	argv = build_argv(command.name, command.args);
+	if (!argv)
+	{
+		execution_error_write("argv: ", strerror(errno));
+		return (errno + 2);
+	}
+	envp = build_env(*env_vars);
+	if (!envp)
+	{
+		execution_error_write("envp: ", strerror(errno));
+		free_table(&argv);
+		return (errno + 2);
+	}
+	return_value = rules(command, argv, envp, env_vars);
+	free_table(&argv);
+	free_table(&envp);
+	return (return_value);
+}
+
+int execution_rules(t_command command, t_list **env_vars)
+{
 	int return_value;
 	int backup[2];
 
 	return_value = 0;
 	if (redirect_fd(command, backup))
 		return_value = 1 + 2;
-	if (command.name)
-	{
-		argv = build_argv(command.name, command.args);
-		if (!argv)
-		{
-			execution_error_write("Alloc error", strerror(errno));
-			return (errno + 2);
-		}
-		envp = build_env(*env_vars);
-		if (!envp)
-		{
-			execution_error_write("Alloc error", strerror(errno));
-			free_table(&argv);
-			return (errno + 2);
-		}
-		if (!return_value)
-			return_value = build_in(argv, env_vars);
-		if (!return_value && !command.cmd)
-		{
-			execution_error_write(command.name, "command not found");
-			return_value = 127 + 2;
-		}
-		if (!return_value)
-		{
-			if (is_directory(command.cmd))
-			{
-				execution_error_write(command.name, "Is a directory");
-				return_value = 126 + 2;
-			}
-		}
-		if (!return_value)
-		{
-
-			execve(command.cmd, argv, envp);
-			execution_error_write(argv[0], strerror(errno));
-			return_value = 127 + 2;
-		}
-		free_table(&argv);
-		free_table(&envp);
-	}
+	if (command.name && !return_value)
+		return_value = build_args_and_exec(command, env_vars);
 	restore_in_out(backup);
 	return (return_value);
 }
