@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/15 13:57:53 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/22 12:12:09 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/22 12:56:21 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,8 +69,8 @@ do
     then
         printf "\033[0;32m[OK]\033[m\n"
     else
-		cat ./diffs/$elem.diff
         printf "\033[0;31m[KO]\033[m  (check tests/parts/$elem)\n"
+		cat ./diffs/$elem.diff
         error=1
     fi
     printf "\n"
