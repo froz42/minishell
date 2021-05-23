@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 23:03:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 23:26:10 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/23 10:35:40 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_list	*pipes_commands(t_list *word_list, t_list *env_var)
 		if (!command || !elem)
 		{
 			ft_safe_free(command);
-			ft_lstclear(&pipes_list, free_command_list);
+			ft_lstclear(&pipes_list, free_command);
 			return (NULL);
 		}
 		ft_lstadd_back(&pipes_list, elem);
