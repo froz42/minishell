@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/21 13:22:03 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/23 01:10:02 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/23 12:27:51 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,12 +36,14 @@ do
 	if [ $return_value -eq 1 ]
 	then
 	    printf "\033[0;31m1/$fail_number\033[m ratio: \033[0;31m[KO]\033[m  (check tests/logs/malloc_fail.log)\n"
+		cat ./logs/temp.log
 		error=1
-		rm -rf ./sandbox
-		rm -rf ../malloc_test
 	else
 		((total_ok = total_ok + 1))
 	fi
+	rm ./logs/temp.log
+	rm -rf ./sandbox
+	rm -rf ../malloc_test
 	((total_test = total_test + 1))
 	rm -rf ./sandbox
 	rm -rf ../malloc_test
