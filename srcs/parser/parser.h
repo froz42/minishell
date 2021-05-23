@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 14:08:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 14:34:05 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,13 @@ void		error_detector(t_list *tokens, int *error);
 void		free_table(char ***table);
 void		set_status_env(t_list **env_var, int status);
 t_bool		add_joint_tokens(t_list **dollar_tokens, t_list **tokens,
-									t_list **to_join);
-t_bool	append_dollar_token(t_list **dollar_tokens, t_list **tokens,
-								t_list **to_join, int append);
+				t_list **to_join);
+t_bool		append_dollar_token(t_list **dollar_tokens, t_list **tokens,
+				t_list **to_join, int append);
+t_bool		find_bin(t_command *command, t_list *env_var);
+t_bool		set_command(t_list	**word_list, t_command *command,
+				t_list *env_var);
+t_redir		*get_redir(t_list **word_list, int special_id);
+char		*get_arg(t_list **word_list);
+
 #endif
