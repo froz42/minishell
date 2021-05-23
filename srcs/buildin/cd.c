@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 21:07:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/16 11:46:11 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 12:39:58 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		cd_oldpwd(t_list **env_var)
 {
 	char	*old_pwd;
 	int		ret;
-	char	actual_dir[BUFFER_SIZE];
+	char	actual_dir[4098];
 
 	old_pwd = search_var(*env_var, "OLDPWD");
 	if (!old_pwd)

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 10:23:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 12:40:14 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static char	*get_last_dir(void)
 {
-	char	actual_dir[BUFFER_SIZE];
+	char	actual_dir[4098];
 	char	**split;
 	int		i;
 	char	*last_dir;
