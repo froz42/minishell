@@ -6,20 +6,24 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:45:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 00:36:34 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 15:14:32 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
-static	void	free_until(char **table, int max)
+char	*build_env_str(t_var var)
 {
-	int		i;
+	char	*env_str;
 
-	i = 0;
-	while (i < max)
-		ft_safe_free(table[i++]);
-	free(table);
+	env_str = ft_calloc(ft_strlen(var.key) + ft_strlen(var.data) + 2,
+			sizeof(char));
+	if (!env_str)
+		return (NULL);
+	ft_strcat(env_str, var.key);
+	ft_strcat(env_str, "=");
+	ft_strcat(env_str, var.data);
+	return (env_str);
 }
 
 char	**build_env(t_list *env_var)
@@ -41,15 +45,9 @@ char	**build_env(t_list *env_var)
 			env_var = env_var->next;
 			continue ;
 		}
-		env_str = ft_calloc(ft_strlen(var.key) + ft_strlen(var.data) + 2, sizeof(char));
+		env_str = build_env_str(var);
 		if (!env_str)
-		{
-			free_until(envp, i);
-			return (NULL);
-		}
-		ft_strcat(env_str, var.key);
-		ft_strcat(env_str, "=");
-		ft_strcat(env_str, var.data);
+			return (return_and_free(envp, i));
 		envp[i++] = env_str;
 		env_var = env_var->next;
 	}
@@ -69,20 +67,14 @@ char	**build_argv(char *name, t_list *args)
 	{
 		argv[i] = ft_strdup(name);
 		if (!argv[i])
-		{
-			free_until(argv, i);
-			return (NULL);
-		}
+			return (return_and_free(argv, i));
 		i++;
 	}
 	while (args)
 	{
 		argv[i] = ft_strdup(args->content);
 		if (!argv[i])
-		{
-			free_until(argv, i);
-			return (NULL);
-		}
+			return (return_and_free(argv, i));
 		i++;
 		args = args->next;
 	}

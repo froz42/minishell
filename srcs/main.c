@@ -6,12 +6,17 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 00:41:06 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 15:21:56 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <termios.h>
+
+void	mute_unused(int argc, char **argv)
+{
+	(void)argc;
+	(void)argv;
+}
 
 /*
 ** Write a beautifull header O_O
@@ -28,63 +33,29 @@ static void	write_header(void)
 	ft_putnl("");
 }
 
-void	mute_unused(int argc, char **argv)
-{
-	(void)argc;
-	(void)argv;
-}
-
 /*
-** Cette fonction va decider a l'aide de istty si on utilse gnl ou get_input
+** envp -> list de var
 */
 
-int	read_next_line(char **line, t_list **history, char *status)
+t_list	*build_var(char **envp)
 {
-	int		left_to_read;
+	t_list	*var_list;
+	t_var	*var;
+	t_list	*elem;
 
-	if (isatty(STDIN_FILENO))
-		return (get_input_line(line, true, history, status));
-	left_to_read = get_next_line(STDIN_FILENO, line);
-	if (left_to_read < 0)
-		file_error("STDIN_FILENO", strerror(errno));
-	else if (left_to_read == 0 && (*line)[0] != '\0')
-		left_to_read = 1;
-	return (left_to_read);
-}
-
-int	minishell(t_list **env_var, t_list *history)
-{
-	char	*line;
-	int		ret;
-	int		left_to_read;
-
-	if (edit_var(env_var, "?", "0") == false)
-		return (127);
-	ret = 0;
-	while (1)
+	var_list = NULL;
+	while (*envp)
 	{
-		left_to_read = read_next_line(&line, &history, search_var(*env_var, "?"));
-		if (left_to_read < 0)
-			break ;
-		if (!left_to_read)
-		{
-			ret = ft_exit(1, NULL, env_var, false);
-			break ;
-		}
-		if (!line)
-		{
-			file_error("Alloc error", strerror(errno));
-			break ;
-		}
-		ret = exec_line(line, env_var);
-		if (ret)
-			break ;
-		free(line);
+		var = create_var(*envp);
+		if (!var)
+			return (NULL);
+		elem = ft_lstnew(var);
+		if (!elem)
+			return (load_var_error(ENV_VAR_ERROR, NULL, NULL));
+		ft_lstadd_back(&var_list, elem);
+		envp++;
 	}
-	ft_lstclear(&history, free);
-	if (left_to_read >= 0)
-		ft_safe_free(line);
-	return (ret - 2);
+	return (var_list);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -96,6 +67,8 @@ int	main(int argc, char **argv, char **envp)
 	env_var = build_var(envp);
 	if (env_var)
 	{
+		if (edit_var(&env_var, "?", "0") == false)
+			return (127);
 		if (isatty(STDIN_FILENO))
 			write_header();
 		ret = minishell(&env_var, NULL);

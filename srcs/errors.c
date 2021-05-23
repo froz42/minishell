@@ -6,11 +6,26 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 16:33:02 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 21:40:21 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/23 15:20:24 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	*load_var_error(char *message, t_var *var_to_free, void *ret)
+{
+	if (var_to_free)
+		free_var(var_to_free);
+	ft_putstr_fd("Minishell: ", STDERR_FILENO);
+	ft_putstr_fd(message, STDERR_FILENO);
+	if (errno != 0)
+	{
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+	}
+	ft_putstr_fd("\n", STDERR_FILENO);
+	return (ret);
+}
 
 void	write_error(int error_number)
 {
