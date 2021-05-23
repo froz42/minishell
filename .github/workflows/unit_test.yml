@@ -21,8 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: install valgrind
-      run: sudo apt install -y valgrind
     - name: make
       run: make
     - name: malloc_test
