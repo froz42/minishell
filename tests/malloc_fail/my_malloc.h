@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 12:25:11 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/21 14:42:45 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 14:04:26 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <execinfo.h>
 # ifndef FAIL
 #  define FAIL 1
-#endif
+# endif
 
-extern void *__libc_malloc(size_t size);
+extern void	*__libc_malloc(size_t size);
 
 #endif
