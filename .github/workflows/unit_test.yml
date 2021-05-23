@@ -26,4 +26,4 @@ jobs:
     - name: make
       run: make
     - name: malloc_test
-      run: make check_protection
+      run: make check_protect
