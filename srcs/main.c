@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 15:21:56 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 19:44:03 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	write_header(void)
 ** envp -> list de var
 */
 
-t_list	*build_var(char **envp)
+t_list	*build_var(char **envp, int *error)
 {
 	t_list	*var_list;
 	t_var	*var;
@@ -48,13 +48,20 @@ t_list	*build_var(char **envp)
 	{
 		var = create_var(*envp);
 		if (!var)
+		{
+			*error = 1;
 			return (NULL);
+		}
 		elem = ft_lstnew(var);
 		if (!elem)
+		{
+			*error = 1;
 			return (load_var_error(ENV_VAR_ERROR, NULL, NULL));
+		}
 		ft_lstadd_back(&var_list, elem);
 		envp++;
 	}
+	*error = 0;
 	return (var_list);
 }
 
@@ -62,10 +69,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_list	*env_var;
 	int		ret;
+	int		error;
 
 	mute_unused(argc, argv);
-	env_var = build_var(envp);
-	if (env_var)
+	env_var = build_var(envp, &error);
+	if (!error)
 	{
 		if (edit_var(&env_var, "?", "0") == false)
 			return (127);
