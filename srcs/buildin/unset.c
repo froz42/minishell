@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 13:43:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/07 14:10:10 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 13:52:24 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ t_bool	is_inside_args(int argc, char **argv, char *key)
 	return (false);
 }
 
-int		ft_unset(int argc, char **argv, t_list **env_var)
+int	ft_unset(int argc, char **argv, t_list **env_var)
 {
-	t_list *new_list;
-	t_list *list;
+	t_list	*new_list;
+	t_list	*list;
 	t_var	var;
 
 	list = *env_var;

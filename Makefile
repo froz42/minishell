@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/22 19:16:51 by jmazoyer         ###   ########.fr        #
+#    Updated: 2021/05/23 13:27:48 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,8 @@ SRCS		= 	input_manager/buffer_manager.c input_manager/history.c \
 				buildin/export.c \
 				exec/prepare_exec.c exec/redirection.c \
 				exec/redirection_utils.c exec/exec_utils.c exec/exec_utils2.c \
-				exec/execution_rules.c exec/exec.c exec/child.c
+				exec/execution_rules.c exec/exec.c exec/child.c \
+				buildin/export2.c
 
 MAIN		= main.c
 

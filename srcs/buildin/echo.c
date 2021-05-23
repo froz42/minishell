@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 22:29:02 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/13 17:25:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 13:07:35 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	number_of_options(int argc, char **argv)
 	return (i);
 }
 
-int		ft_echo(int argc, char **argv)
+int	ft_echo(int argc, char **argv)
 {
 	int		i;
 	t_bool	n_option;
@@ -56,6 +56,6 @@ int		ft_echo(int argc, char **argv)
 		i++;
 	}
 	if (!n_option)
-			ft_putstr("\n");
+		ft_putstr("\n");
 	return (0);
 }
