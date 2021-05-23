@@ -1,4 +1,8 @@
 cd ./sandbox
+export hello=yo hella=ya
+env | grep hello
+export | grep hello
+unset hello hella
 echo hello    world
 echo "hello   world"
 echo ce test vas marcher

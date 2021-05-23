@@ -6,16 +6,16 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 12:42:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/15 17:31:18 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 13:08:00 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
 
-int		ft_env(t_list *env_var)
+int	ft_env(t_list *env_var)
 {
 	int		i;
-	char **envp;
+	char	**envp;
 
 	envp = build_env(env_var);
 	if (!envp)

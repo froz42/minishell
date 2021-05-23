@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 16:43:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/17 14:56:46 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/23 13:57:01 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include "log/log.h"
 # include "maths/maths.h"
 
-typedef struct	s_file_buff
+typedef struct s_file_buff
 {
 	char				buffer[BUFFER_SIZE + 1];
 	size_t				i;
