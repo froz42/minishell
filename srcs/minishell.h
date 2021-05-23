@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 18:56:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/19 15:01:09 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/23 15:21:26 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@
 # define NO_ERROR		-1
 # define ENV_VAR_ERROR	"Error while creating an environment variable"
 
+int				minishell(t_list **env_var, t_list *history);
 void			write_error(int error_number);
 t_list			*build_var(char **envp);
 char			*search_var(t_list *var_list, char *key);
 void			free_var(void *mem);
 t_bool			edit_var(t_list **var_list, char *key, char *value);
-char			**build_env(t_list *env_var);
-char			**build_argv(char *name, t_list *args);
-int				build_argc(char **argv);
+void			*load_var_error(char *message, t_var *var_to_free, void *ret);
+t_var			*create_var(char *str);
 
 #endif

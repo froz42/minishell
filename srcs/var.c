@@ -6,26 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 15:45:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/21 16:21:54 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/23 15:21:43 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	*load_var_error(char *message, t_var *var_to_free, void *ret)
-{
-	if (var_to_free)
-		free_var(var_to_free);
-	ft_putstr_fd("Minishell: ", STDERR_FILENO);
-	ft_putstr_fd(message, STDERR_FILENO);
-	if (errno != 0)
-	{
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-	}
-	ft_putstr_fd("\n", STDERR_FILENO);
-	return (ret);
-}
 
 /*
 ** Parse key=value
@@ -114,7 +99,7 @@ static t_bool	add_var(t_list **var_list, char *key, char *value)
 	return (true);
 }
 
-t_bool	edit_var(t_list **var_list, char *key, char *value)		// protect everywhere to avoid segfault!
+t_bool	edit_var(t_list **var_list, char *key, char *value)
 {
 	t_var	*var;
 	t_list	*current;
@@ -129,7 +114,6 @@ t_bool	edit_var(t_list **var_list, char *key, char *value)		// protect everywher
 			{
 				ft_safe_free(var->data);
 				var->data = ft_strdup(value);
-//				var->data = NULL;
 				if (!var->data)
 				{
 					load_var_error(ENV_VAR_ERROR, NULL, NULL);
@@ -141,29 +125,4 @@ t_bool	edit_var(t_list **var_list, char *key, char *value)		// protect everywher
 		current = current->next;
 	}
 	return (add_var(var_list, key, value));
-}
-
-/*
-** envp -> list de var
-*/
-
-t_list	*build_var(char **envp)
-{
-	t_list	*var_list;
-	t_var	*var;
-	t_list	*elem;
-
-	var_list = NULL;
-	while (*envp)
-	{
-		var = create_var(*envp);
-		if (!var)
-			return (NULL);
-		elem = ft_lstnew(var);
-		if (!elem)
-			return (load_var_error(ENV_VAR_ERROR, NULL, NULL));
-		ft_lstadd_back(&var_list, elem);
-		envp++;
-	}
-	return (var_list);
 }

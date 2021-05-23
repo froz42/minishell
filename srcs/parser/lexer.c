@@ -6,37 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 00:01:30 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/23 14:14:42 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-/*
-** Geres les char "; | >> > <" : met un \33 (escape) devant
-** pour les differencier de l'user input
-*/
-
-char	*special(char **str)
-{
-	char	*token;
-
-	token = ft_calloc(4, sizeof (char));
-	if (!token)
-		return (NULL);
-	token[0] = ESC;
-	if (is_special(*str) == APPEND)
-	{
-		ft_memcpy(token + 1, *str, 2);
-		(*str) += 2;
-	}
-	else
-	{
-		ft_memcpy(token + 1, *str, 1);
-		(*str) += 1;
-	}
-	return (token);
-}
 
 /*
 ** Delimite un simple mot jusqu'a un char special

@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/23 13:27:48 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/23 15:16:38 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,16 +29,18 @@ DATE	= 25/03/2021
 SRCS		= 	input_manager/buffer_manager.c input_manager/history.c \
 				input_manager/input_manager.c input_manager/input_utils.c \
 				input_manager/input_handle.c input_manager/input_handle2.c \
-				parser/parser.c parser/command.c parser/lexer.c errors.c \
-				var.c parser/destroyer.c parser/lexer_parts.c \
-				parser/dollar.c parser/make_word.c parser/error_detector.c \
-				buildin/cd.c buildin/exit.c build_args.c \
+				parser/dollar.c parser/lexer_parts.c parser/double_quote.c \
+				parser/error_detector.c parser/find_bin.c parser/dyn_parsing.c \
+				parser/lexer_utils.c parser/make_word.c parser/command.c \
+				parser/parser.c parser/destroyer.c parser/lexer.c \
+				parser/command_parts.c \
+				errors.c var.c buildin/cd.c buildin/exit.c \
 				buildin/echo.c buildin/env.c buildin/unset.c buildin/pwd.c \
 				buildin/export.c \
-				exec/prepare_exec.c exec/redirection.c \
+				exec/prepare_exec.c exec/redirection.c exec/build_args.c\
 				exec/redirection_utils.c exec/exec_utils.c exec/exec_utils2.c \
 				exec/execution_rules.c exec/exec.c exec/child.c \
-				buildin/export2.c
+				exec/build_args_util.c buildin/export2.c minishell.c
 
 MAIN		= main.c
 

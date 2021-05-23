@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:15:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 22:56:10 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/23 14:34:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,16 @@ void	free_command_list(void *mem)
 
 	list = (t_list *)mem;
 	ft_lstclear(&list, free_command);
+}
+
+void	free_table(char ***table)
+{
+	int		i;
+
+	i = 0;
+	if (!*table)
+		return ;
+	while ((*table)[i])
+		free((*table)[i++]);
+	free(*table);
 }

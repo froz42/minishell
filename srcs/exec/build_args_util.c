@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   my_malloc.h                                        :+:      :+:    :+:   */
+/*   build_args_util.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/21 12:25:11 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 14:04:26 by tmatis           ###   ########.fr       */
+/*   Created: 2021/05/23 15:13:23 by tmatis            #+#    #+#             */
+/*   Updated: 2021/05/23 15:15:14 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MY_MALLOC_H
+#include "exec.h"
 
-# define MY_MALLOC_H
+void	free_until(char **table, int max)
+{
+	int		i;
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <execinfo.h>
-# ifndef FAIL
-#  define FAIL 1
-# endif
+	i = 0;
+	while (i < max)
+		ft_safe_free(table[i++]);
+	free(table);
+}
 
-extern void	*__libc_malloc(size_t size);
-
-#endif
+void	*return_and_free(char **envp, int i)
+{
+	free_until(envp, i);
+	return (NULL);
+}

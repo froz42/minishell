@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 18:41:40 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 15:18:57 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,18 @@ typedef int	t_tube[2];
 
 typedef struct s_append
 {
-	t_bool start;
-	t_bool end;
-	t_bool dollar_error;
-	t_bool just_pipes;
+	t_bool	start;
+	t_bool	end;
+	t_bool	dollar_error;
+	t_bool	just_pipes;
 }				t_append;
 
 typedef struct s_child_data
 {
-	t_command 	command;
+	t_command	command;
 	t_tube		*tube_list;
-	int 		fork_n;
-	int 		forks_running;
+	int			fork_n;
+	int			forks_running;
 	t_list		**env_var;
 }				t_child_data;
 

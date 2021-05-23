@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 12:24:09 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 00:45:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/23 14:03:53 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	*my_malloc_hook(size_t size, void *caller)
 {
 	void		*result;
 	static int	fail_counter = 0;
-
 
 	(void)caller;
 	g_malloc_hook_active = 0;
