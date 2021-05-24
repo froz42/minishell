@@ -6,17 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 10:44:38 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 19:44:03 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/24 13:47:00 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	mute_unused(int argc, char **argv)
-{
-	(void)argc;
-	(void)argv;
-}
 
 /*
 ** Write a beautifull header O_O
@@ -37,58 +31,98 @@ static void	write_header(void)
 ** envp -> list de var
 */
 
-t_list	*build_var(char **envp, int *error)
+static t_bool	build_var(char **envp, t_list **var_list)
 {
-	t_list	*var_list;
 	t_var	*var;
 	t_list	*elem;
 
-	var_list = NULL;
+	*var_list = NULL;
 	while (*envp)
 	{
 		var = create_var(*envp);
-		if (!var)
+		if (var)
+			elem = ft_lstnew(var);
+		if (!var || !elem)
 		{
-			*error = 1;
-			return (NULL);
+			ft_lstclear(var_list, free_var);
+			if (var)
+				load_var_error(ENV_VAR_ERROR, var, NULL);
+			return (false);
 		}
-		elem = ft_lstnew(var);
-		if (!elem)
-		{
-			*error = 1;
-			return (load_var_error(ENV_VAR_ERROR, NULL, NULL));
-		}
-		ft_lstadd_back(&var_list, elem);
+		ft_lstadd_back(var_list, elem);
 		envp++;
 	}
-	*error = 0;
-	return (var_list);
+	if (!edit_var(var_list, "?", "0"))
+	{
+		ft_lstclear(var_list, free_var);
+		return (false);
+	}
+	return (true);
+}
+
+static t_bool	close_std_fd(void)
+{
+	if (close(STDIN_FILENO) == -1)
+	{
+		ft_log_error(strerror(errno));
+		return (false);
+	}
+	if (close(STDOUT_FILENO) == -1)
+	{
+		ft_log_error(strerror(errno));
+		return (false);
+	}
+	if (close(STDERR_FILENO) == -1)
+	{
+		ft_log_error(strerror(errno));
+		return (false);
+	}
+	return (true);
+}
+
+static t_bool	edit_shlvl_var(t_list **var_list)
+{
+	char	*shlvl;
+
+	shlvl = search_var(*var_list, "SHLVL");
+	if (shlvl)
+	{
+		shlvl = ft_itoa(ft_atoi(shlvl) + 1);
+		if (!shlvl || !edit_var(var_list, "SHLVL", shlvl))
+		{
+			if (!shlvl)
+				load_var_error(ENV_VAR_ERROR, NULL, NULL);
+			ft_safe_free(shlvl);
+			ft_lstclear(var_list, free_var);
+			return (false);
+		}
+		free(shlvl);
+	}
+	else if (!edit_var(var_list, "SHLVL", "1"))
+	{
+		ft_lstclear(var_list, free_var);
+		return (false);
+	}
+	return (true);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_list	*env_var;
 	int		ret;
-	int		error;
 
-	mute_unused(argc, argv);
-	env_var = build_var(envp, &error);
-	if (!error)
+	(void)argc;
+	(void)argv;
+	if (!build_var(envp, &env_var) || !edit_shlvl_var(&env_var))
 	{
-		if (edit_var(&env_var, "?", "0") == false)
-			return (127);
-		if (isatty(STDIN_FILENO))
-			write_header();
-		ret = minishell(&env_var, NULL);
-		ft_lstclear(&env_var, free_var);
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
-		close(STDERR_FILENO);
-		return (ret);
+		close_std_fd();
+		return (127);
 	}
+	if (isatty(STDIN_FILENO))
+		write_header();
+	ret = minishell(&env_var, NULL);
 	ft_lstclear(&env_var, free_var);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
-	return (127);
+	if (!close_std_fd())
+		return (127);
+	return (ret);
 }
