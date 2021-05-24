@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/05 21:19:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 10:26:48 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/24 17:49:42 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,27 @@ void	erase_x_chars(int x)
 ** RIGHT_KEY ("\33\133\103") -> RIGHT_KEY_ID -> 3
 ** LEFT_KEY ("\33\133\104") -> LEFT_KEY_ID -> 4
 ** RETURN (LF = ASCII 10) -> LF_ID -> 5
-** CTRL-C (ETX = ASCII 3) -> ETF_ID -> 6
+** CTRL-C (ETX = ASCII 3) -> ETX_ID -> 6
 ** CTRL-D (EOT = ASCII 4) -> EOT_ID -> 7
 ** CTRL-L (FF = ASCII 12) -> CLR_SCREEN_ID -> 8
+** CTRL-RIGHT (WORD_RIGHT = "\33\133\61\73\65\103" -> WORD_RIGHT_ID -> 9
+** CTRL-LEFT (WORD_LEFT = "\33\133\61\73\65\104" -> WORD_LEFT_ID -> 10
+** CTRL-A (LINE_START = SOH = ASCII 1) -> LINE_START_ID -> 11
+** HOME_KEY ("\33\133\110") -> LINE_START_ID -> 11
+** CTRL-E (LINE_END = ENQ = ASCII 5) -> LINE_END_ID -> 12
+** END_KEY ("\33\133\106") -> LINE_END_ID -> 12
+** ALT-D (CUT_WORD_RIGHT = "\33\144") -> CUT_WORD_RIGHT_ID -> 13
+** CTRL-W (CUT_WORD_LEFT = ETB = ASCII 23) -> CUT_WORD_LEFT_ID -> 14
+** CTRL-U (CUT_LINE_START = NAK = ASCII 21) -> CUT_LINE_START_ID -> 15
+** CTRL-E (CUT_LINE_END = VT = ASCII 11) -> CUT_LINE_END_ID -> 16
 */
 
-int	get_escape_id(char *buff, int size)
+int	get_escape_id_part2(char *buff, int size)
 {
-	if (buff[0] == DEL || buff[0] == BS)
-		return (DEL_ID);
+	if (buff[0] == CUT_WORD_LEFT)
+		return (CUT_WORD_LEFT_ID);
+	if (size == 2 && !ft_memcmp(buff, CUT_WORD_RIGHT, 2))
+		return (CUT_WORD_RIGHT_ID);
 	if (size == 3 && !ft_memcmp(buff, UP_KEY, 3))
 		return (UP_KEY_ID);
 	if (size == 3 && !ft_memcmp(buff, DOWN_KEY, 3))
@@ -74,15 +86,34 @@ int	get_escape_id(char *buff, int size)
 		return (RIGHT_KEY_ID);
 	if (size == 3 && !ft_memcmp(buff, LEFT_KEY, 3))
 		return (LEFT_KEY_ID);
+	if (size == 6 && !ft_memcmp(buff, WORD_RIGHT, 3))
+		return (WORD_RIGHT_ID);
+	if (size == 6 && !ft_memcmp(buff, WORD_LEFT, 3))
+		return (WORD_LEFT_ID);
+	return (-1);
+}
+
+int	get_escape_id(char *buff, int size)
+{
 	if (buff[0] == LF)
 		return (LF_ID);
-	if (size == 1 && buff[0] == ETX)
+	if (buff[0] == DEL || buff[0] == BS)
+		return (DEL_ID);
+	if (buff[0] == ETX)
 		return (ETX_ID);
-	if (size == 1 && buff[0] == EOT)
+	if (buff[0] == EOT)
 		return (EOT_ID);
-	if (size == 1 && buff[0] == FF)
+	if (buff[0] == FF)
 		return (CLR_SCREEN_ID);
-	return (-1);
+	if (buff[0] == LINE_START || (size == 3 && !ft_memcmp(buff, HOME_KEY, 3)))
+		return (LINE_START_ID);
+	if (buff[0] == LINE_END || (size == 3 && !ft_memcmp(buff, END_KEY, 3)))
+		return (LINE_END_ID);
+	if (buff[0] == CUT_LINE_START)
+		return (CUT_LINE_START_ID);
+	if (buff[0] == CUT_LINE_END)
+		return (CUT_LINE_END_ID);
+	return (get_escape_id_part2(buff, size));
 }
 
 /*
