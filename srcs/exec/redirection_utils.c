@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 13:22:34 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 13:29:17 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/24 13:39:04 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	get_open_flags(int type)
 {
 	if (type == 1)
-		return (O_CREAT | O_WRONLY);
+		return (O_CREAT | O_WRONLY | O_TRUNC);
 	else if (type == 2)
 		return (O_RDONLY);
 	else
