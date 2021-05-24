@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:24:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 20:40:01 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/24 14:33:23 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,10 @@ int	execution_rules(t_command command, t_list **env_vars)
 	int	return_value;
 	int	backup[2];
 
-	return_value = 0;
+	return_value = 2;
 	if (redirect_fd(command, backup))
 		return_value = 1 + 2;
-	if (command.name && !return_value)
+	if (command.name && return_value == 2)
 		return_value = build_args_and_exec(command, env_vars);
 	restore_in_out(backup);
 	return (return_value);
