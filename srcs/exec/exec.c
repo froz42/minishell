@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 00:00:26 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/24 14:34:15 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	harvest_child(int forks_running, pid_t last_pid, t_list **env_var)
 	int		status;
 	pid_t	pid;
 
+	set_status_env(env_var, 0);
 	while (forks_running)
 	{
 		pid = wait(&status);
