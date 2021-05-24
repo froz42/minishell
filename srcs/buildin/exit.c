@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:39:53 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 13:13:04 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/24 12:20:56 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 static t_bool	is_str_numeric(char *str)
 {
+	if (*str == '+' || *str == '-')
+		if (!*++str)
+			return (false);
 	while (*str)
 	{
 		if (!ft_isnum(*str))
@@ -39,10 +42,11 @@ static int	exit_value(int argc, char **argv, t_list **env_var, int offset)
 		ret = ft_atoi(argv[1]);
 	else
 		ret = ft_atoi(search_var(*env_var, "?"));
-	if (ret >= 0 && ret <= 255)
-		return (ret + offset);
-	else
-		return (255 + offset);
+//	if (ret >= 0 && ret <= 255)
+//		return (unsigned char)(ret + offset);
+//	else
+//		return ((unsigned char)ret + offset);
+	return (unsigned char)(ret + offset);
 }
 
 int	ft_exit(int argc, char **argv, t_list **env_var, t_bool in_pipes)
