@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 18:34:44 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/25 19:43:44 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void	handle_cut_line_start(t_buffer *buffer)
 	buffer->clipboard = ft_substr(buffer->buff, 0, i);
 	if (!buffer->clipboard)
 		return (eot_error(buffer));
+
 	dst = ft_substr(buffer->buff, i, buffer->pos_before_endl);
 	if (!dst)
 		return (eot_error(buffer));
@@ -155,6 +156,23 @@ void	handle_cut_line_start(t_buffer *buffer)
 		ft_putstr(CURSOR_LEFT);
 }
 
+void	handle_cut_line_end(t_buffer *buffer)
+{
+	int		i;
+
+	i = buffer->size - buffer->pos_before_endl;
+	ft_safe_free(buffer->clipboard);
+	buffer->clipboard = ft_substr(buffer->buff, i, buffer->pos_before_endl);
+	if (!buffer->clipboard)
+		return (eot_error(buffer));
+	while (buffer->pos_before_endl)
+	{
+		ft_putstr(CURSOR_RIGHT);
+		buffer->pos_before_endl--;
+		erase_char(buffer);
+	}
+}
+
 static int	handle_ctrl_part2(t_buffer *buffer)
 {
 	if ((buffer->escape_id == LINE_START_ID && buffer->size)
@@ -166,6 +184,8 @@ static int	handle_ctrl_part2(t_buffer *buffer)
 		handle_move_word_right(buffer);
 	else if (buffer->escape_id == CUT_LINE_START_ID && buffer->size)
 		handle_cut_line_start(buffer);
+	else if (buffer->escape_id == CUT_LINE_END_ID && buffer->pos_before_endl)
+		handle_cut_line_end(buffer);
 	if (buffer->escape_id == EOT_ID && !buffer->size)
 		return (handle_ctrl_d(buffer));
 	return (0);
