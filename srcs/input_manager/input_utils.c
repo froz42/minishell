@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/05 21:19:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 14:51:24 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/25 15:01:42 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	erase_x_chars(int x)
 ** CTRL-W (CUT_WORD_LEFT = ETB = ASCII 23) -> CUT_WORD_LEFT_ID -> 14
 ** CTRL-U (CUT_LINE_START = NAK = ASCII 21) -> CUT_LINE_START_ID -> 15
 ** CTRL-E (CUT_LINE_END = VT = ASCII 11) -> CUT_LINE_END_ID -> 16
+** CTRL-Y (PASTE = EM = ASCII 25) -> PASTE_ID -> 17
 */
 
 int	get_escape_id_part2(char *buff, int size)
@@ -109,6 +110,8 @@ int	get_escape_id(char *buff, int size)
 		return (LINE_START_ID);
 	if (buff[0] == LINE_END || (size == 3 && !ft_memcmp(buff, END_KEY, 3)))
 		return (LINE_END_ID);
+	if (buff[0] == PASTE)
+		return (PASTE_ID);
 	if (buff[0] == CUT_LINE_START)
 		return (CUT_LINE_START_ID);
 	if (buff[0] == CUT_LINE_END)

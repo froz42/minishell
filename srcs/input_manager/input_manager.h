@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:17:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/24 17:49:13 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/25 18:19:36 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@
 # define CUT_LINE_START_ID	15
 # define CUT_LINE_END		11
 # define CUT_LINE_END_ID	16
+# define PASTE				25
+# define PASTE_ID			17
 
 # define CURSOR_RIGHT		"\033[1C"
 # define CURSOR_LEFT		"\033[1D"
@@ -62,7 +64,7 @@
 void			buffer_add(char c, t_buffer *buffer);
 void			buffer_add_chain(char *src, int size, t_buffer *buffer);
 void			buffer_delete(int pos, t_buffer *buffer);
-t_buffer		init_buffer(t_bool manage_history, char *status);
+t_buffer		init_buffer(char *clipboard, char *status);
 void			push_history(char *command, t_list **history);
 char			*fetch_history(int i, t_list *history);
 struct termios	raw_mode(void);
@@ -70,7 +72,7 @@ void			buff_mode(struct termios old);
 void			erase_x_chars(int x);
 int				get_escape_id(char *buff, int size);
 void			display_escape_code(char *buff, int size);
-int				get_input_line(char **line, t_bool manage_history,
+int				get_input_line(char **line, char **clipboard,
 					t_list **history, char *status);
 void			erase_char(t_buffer *buffer);
 void			handle_down_key(t_buffer *buffer, int *history_fetch,

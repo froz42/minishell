@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 14:51:45 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/25 18:34:44 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,17 +130,44 @@ void	handle_move_word_right(t_buffer *buffer)
 	}
 }
 
+void	handle_cut_line_start(t_buffer *buffer)
+{
+	int		i;
+	char	*dst;
+
+	i = buffer->size - buffer->pos_before_endl;
+	ft_safe_free(buffer->clipboard);
+	buffer->clipboard = ft_substr(buffer->buff, 0, i);
+	if (!buffer->clipboard)
+		return (eot_error(buffer));
+	dst = ft_substr(buffer->buff, i, buffer->pos_before_endl);
+	if (!dst)
+		return (eot_error(buffer));
+	free(buffer->buff);
+	buffer->buff = dst;
+	while (i++ < buffer->size)
+		ft_putstr(CURSOR_RIGHT);
+	erase_x_chars(buffer->size);
+	buffer->size = ft_strlen(buffer->buff);
+	ft_putstr(buffer->buff);
+	i = buffer->pos_before_endl;
+	while (i--)
+		ft_putstr(CURSOR_LEFT);
+}
+
 static int	handle_ctrl_part2(t_buffer *buffer)
 {
-	if (buffer->escape_id == EOT_ID && !buffer->size)
-		return (handle_ctrl_d(buffer));
-	else if ((buffer->escape_id == LINE_START_ID && buffer->size)
+	if ((buffer->escape_id == LINE_START_ID && buffer->size)
 			|| (buffer->escape_id == LINE_END_ID && buffer->pos_before_endl))
 		handle_move_on_line(buffer);
 	else if (buffer->escape_id == WORD_LEFT_ID && buffer->size)
 		handle_move_word_left(buffer);
 	else if (buffer->escape_id == WORD_RIGHT_ID && buffer->pos_before_endl)
 		handle_move_word_right(buffer);
+	else if (buffer->escape_id == CUT_LINE_START_ID && buffer->size)
+		handle_cut_line_start(buffer);
+	if (buffer->escape_id == EOT_ID && !buffer->size)
+		return (handle_ctrl_d(buffer));
 	return (0);
 }
 
@@ -149,11 +176,9 @@ static int	handle_ctrl(t_buffer *buffer, char **save_curr_line,
 {
 	if (buffer->escape_id == DEL_ID && buffer->size)
 		erase_char(buffer);
-	else if (buffer->escape_id == UP_KEY_ID && buffer->manage_history
-		&& *history)
+	else if (buffer->escape_id == UP_KEY_ID && *history)
 		handle_up_key(buffer, &buffer->history_lvl, save_curr_line, *history);
-	else if (buffer->escape_id == DOWN_KEY_ID && buffer->manage_history
-		&& *history && *save_curr_line)
+	else if (buffer->escape_id == DOWN_KEY_ID && *history && *save_curr_line)
 		handle_down_key(buffer, &buffer->history_lvl, save_curr_line, *history);
 	else if (buffer->escape_id == RIGHT_KEY_ID)
 		handle_right_key(buffer);
@@ -203,7 +228,7 @@ static int	wait_line(char buff[10], t_buffer *buffer,
 ** similar working as get_next_line, read from STDIN_FILENO, handle ctrl-char
 */
 
-int	get_input_line(char **line, t_bool manage_history,
+int	get_input_line(char **line, char **clipboard,
 							t_list **history, char *status)
 {
 	char			buff[10];
@@ -213,7 +238,7 @@ int	get_input_line(char **line, t_bool manage_history,
 	int				ret;
 
 	ft_bzero(buff, 10);
-	buffer = init_buffer(manage_history, status);
+	buffer = init_buffer(*clipboard, status);
 	save_curr_line = NULL;
 	old_termios = raw_mode();
 	print_prompt(status);
@@ -224,5 +249,6 @@ int	get_input_line(char **line, t_bool manage_history,
 	if (buffer.size > 0 && buffer.buff)
 		push_history(ft_strdup(buffer.buff), history);
 	*line = buffer.buff;
+	*clipboard = buffer.clipboard;
 	return (ret);
 }

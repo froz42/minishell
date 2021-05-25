@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 14:59:37 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 15:02:35 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/25 18:22:06 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 ** Cette fonction va decider a l'aide de istty si on utilse gnl ou get_input
 */
 
-static int	read_next_line(char **line, t_list **history, char *status)
+static int	read_next_line(char **line, char **clipboard, t_list **history, char *status)
 {
 	int		left_to_read;
 
 	if (isatty(STDIN_FILENO))
-		return (get_input_line(line, true, history, status));
+		return (get_input_line(line, clipboard, history, status));
 	left_to_read = get_next_line(STDIN_FILENO, line);
 	if (left_to_read < 0)
 		file_error("STDIN_FILENO", strerror(errno));
@@ -53,13 +53,15 @@ static int	left_to_read_check(int left_to_read,
 int	minishell(t_list **env_var, t_list *history)
 {
 	char	*line;
+	char	*clipboard;
 	int		ret;
 	int		left_to_read;
 
+	clipboard = NULL;
 	ret = 0;
 	while (1)
 	{
-		left_to_read = read_next_line(&line,
+		left_to_read = read_next_line(&line, &clipboard,
 				&history, search_var(*env_var, "?"));
 		if (left_to_read_check(left_to_read, &ret, line, env_var))
 			break ;
@@ -69,7 +71,7 @@ int	minishell(t_list **env_var, t_list *history)
 		free(line);
 	}
 	ft_lstclear(&history, free);
-	if (left_to_read >= 0)
-		ft_safe_free(line);
+	ft_safe_free(clipboard);
+	ft_safe_free(line);
 	return (ret - 2);
 }
