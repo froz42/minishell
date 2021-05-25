@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 10:26:15 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/25 14:22:49 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_buffer	init_buffer(t_bool manage_history, char *status)
 	t_buffer	buffer;
 
 	buffer.size = 0;
-	buffer.pos_before_cursor = 0;
+	buffer.pos_before_endl = 0;
 	buffer.buff = malloc(sizeof(char));
 	buffer.buff[0] = '\0';
 	buffer.escape_id = -1;
@@ -101,17 +101,17 @@ void	buffer_add_chain(char *src, int size, t_buffer *buffer)
 	int	i;
 
 	write(STDOUT_FILENO, src, size);
-	if (src[0] != LF && buffer->pos_before_cursor)
+	if (src[0] != LF && buffer->pos_before_endl)
 	{
 		buffer_add(LF, buffer);
-		ft_putstr(buffer->buff + (buffer->size - buffer->pos_before_cursor));
+		ft_putstr(buffer->buff + (buffer->size - buffer->pos_before_endl));
 		i = 0;
-		while (i++ < buffer->pos_before_cursor)
+		while (i++ < buffer->pos_before_endl)
 			ft_putstr(CURSOR_LEFT);
 		i = 0;
 		while (i < size)
 			buffer_add_pos(src[i++],
-				buffer->size - buffer->pos_before_cursor, buffer);
+				buffer->size - buffer->pos_before_endl, buffer);
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/05 21:19:47 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/24 17:49:42 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/25 14:51:24 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ int	get_escape_id_part2(char *buff, int size)
 		return (RIGHT_KEY_ID);
 	if (size == 3 && !ft_memcmp(buff, LEFT_KEY, 3))
 		return (LEFT_KEY_ID);
-	if (size == 6 && !ft_memcmp(buff, WORD_RIGHT, 3))
+	if (size == 6 && !ft_memcmp(buff, WORD_RIGHT, 6))
 		return (WORD_RIGHT_ID);
-	if (size == 6 && !ft_memcmp(buff, WORD_LEFT, 3))
+	if (size == 6 && !ft_memcmp(buff, WORD_LEFT, 6))
 		return (WORD_LEFT_ID);
 	return (-1);
 }

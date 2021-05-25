@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 00:01:00 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/25 14:23:07 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	handle_ctrl_c(t_buffer *buffer)
 	free(buffer->buff);
 	buffer->buff = dst;
 	buffer->size = 0;
-	buffer->pos_before_cursor = 0;
+	buffer->pos_before_endl = 0;
 	ft_putstr("^C\n");
 	print_prompt(buffer->status);
 }
@@ -55,7 +55,7 @@ int	handle_ctrl_d(t_buffer *buffer)
 	free(buffer->buff);
 	buffer->buff = NULL;
 	buffer->size = 0;
-	buffer->pos_before_cursor = 0;
+	buffer->pos_before_endl = 0;
 	buffer->error = true;
 	return (EOT);
 }
@@ -68,15 +68,15 @@ void	erase_char(t_buffer *buffer)
 {
 	int		i;
 
-	if (buffer->size <= buffer->pos_before_cursor)
+	if (buffer->size <= buffer->pos_before_endl)
 		return ;
 	i = 0;
-	while (i++ < buffer->pos_before_cursor)
+	while (i++ < buffer->pos_before_endl)
 		ft_putstr(CURSOR_RIGHT);
-	erase_x_chars(buffer->pos_before_cursor + 1);
-	ft_putstr(buffer->buff + (buffer->size - buffer->pos_before_cursor));
+	erase_x_chars(buffer->pos_before_endl + 1);
+	ft_putstr(buffer->buff + (buffer->size - buffer->pos_before_endl));
 	i = 0;
-	while (i++ < buffer->pos_before_cursor)
+	while (i++ < buffer->pos_before_endl)
 		ft_putstr(CURSOR_LEFT);
-	buffer_delete(buffer->size - buffer->pos_before_cursor, buffer);
+	buffer_delete(buffer->size - buffer->pos_before_endl, buffer);
 }
