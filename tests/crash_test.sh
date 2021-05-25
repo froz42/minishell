@@ -6,6 +6,7 @@ heloo > |
 hello < |
 hello > | ;
 hi >> >> <
+file <
 echo '
 'hi
 hello '  \'
