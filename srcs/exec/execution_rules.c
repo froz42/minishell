@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:24:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 12:10:46 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/25 12:44:00 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static int	rules(t_command command, char **argv,
 	{
 		if (is_directory(command.cmd))
 		{
-			printf("cmd is: %s\n", command.cmd);
 			execution_error_write(command.name, "Is a directory");
 			return_value = 126 + 2;
 		}
