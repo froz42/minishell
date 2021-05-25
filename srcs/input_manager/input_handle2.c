@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 00:01:00 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/25 15:40:00 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	handle_ctrl_c(t_buffer *buffer)
 int	handle_ctrl_d(t_buffer *buffer)
 {
 	free(buffer->buff);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 	buffer->buff = NULL;
 	buffer->size = 0;
 	buffer->pos_before_cursor = 0;
