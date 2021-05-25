@@ -31,7 +31,7 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] Erreur d'execution de commande comme dans bash
  - [x] check des valeur de retours
  - [x] Mode non TTY
- - [ ] Mise a la norme (16 / 33 fichiers)
+ - [x] Mise a la norme
 
 
 ## Démarrage
