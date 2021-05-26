@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 14:12:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 14:14:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/26 17:42:45 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ t_list	*get_next_pipes(char **str, int *error, t_list **env_var)
 	t_list	*pipes_list;
 
 	token_list = tokenize(str, error, *env_var, true);
-	if (!token_list)
+	if (!token_list && *error != NO_ERROR)
 	{
-		ft_log_error(strerror(errno));
+		write_error(*error);
 		set_status_env(env_var, 2);
 		return (NULL);
 	}
 	pipes_list = pipes_commands(token_list, *env_var);
 	ft_lstclear(&token_list, ft_safe_free);
-	if (!pipes_list)
+	if (!pipes_list && token_list)
 	{
 		ft_log_error(strerror(errno));
 		set_status_env(env_var, 2);
