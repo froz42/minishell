@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 14:23:15 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/26 17:43:43 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,37 @@ void	handle_down_key(t_buffer *buffer, int *history_lvl,
 ** This is called when user type left key
 */
 
+#include <sys/ioctl.h> // mettre ailleurs
+
+typedef struct	s_screen_coord
+{
+	int		line;
+	int		col;
+}				t_screen_coord;
+
+void	get_coord(t_screen_coord *screen, t_screen_coord *cursor)
+{
+	struct winsize	win_size;
+	char			buffer[64];
+
+	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &win_size))
+		ft_log_error(strerror(errno));
+	screen->line = win_size.ws_row;
+	screen->col = win_size.ws_col;
+	ft_putstr("\033[6n");
+	if (read(STDIN_FILENO, buffer, sizeof(buffer)) == -1)
+		ft_log_error("Problem while reading cursor coordinates from stdin");
+	cursor->line = ft_atoi(&buffer[2]);
+	cursor->col = ft_atoi(&buffer[5]);
+}
+
 void	handle_left_key(t_buffer *buffer)
 {
+	t_screen_coord	screen;
+	t_screen_coord	cursor;
+
+	get_coord(&screen, &cursor);
+	printf("screen line = %d, screen_col = %d\ncursor_line = %d, cursor_col = %d\n", screen.line, screen.col, cursor.line, cursor.col);
 	if (buffer->pos_before_endl < buffer->size)
 	{
 		ft_putstr(CURSOR_LEFT);
@@ -81,6 +110,12 @@ void	handle_left_key(t_buffer *buffer)
 
 void	handle_right_key(t_buffer *buffer)
 {
+	struct winsize	ws;
+
+	ioctl(STDIN_FILENO, TIOCGWINSZ, &ws);
+	printf ("lines %d\n", ws.ws_row);
+	printf ("columns %d\n", ws.ws_col);
+
 	if (buffer->pos_before_endl)
 	{
 		ft_putstr(CURSOR_RIGHT);
