@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:24:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/24 14:33:23 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/25 12:44:00 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static t_bool	is_directory(const char *path)
 	struct stat	statbuf;
 
 	if (stat(path, &statbuf) != 0)
-		return (true);
+		return (false);
 	return (S_ISDIR(statbuf.st_mode));
 }
 

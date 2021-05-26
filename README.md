@@ -1,5 +1,7 @@
 # MINISHELL
-[![forthebadge](https://forthebadge.com/images/badges/made-with-c.svg)](https://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
+
+![image](https://user-images.githubusercontent.com/54767855/119504960-c38f5400-bd6c-11eb-8348-c4ea2b0a4779.png)
+
 ## WORKFLOW
 ![check norm workflow](https://github.com/tmatis/minishell/actions/workflows/norm.yml/badge.svg) ![unit test workflow](https://github.com/tmatis/minishell/actions/workflows/unit_test.yml/badge.svg) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/7726232104f1492f834018c03cd9512e)](https://www.codacy.com/gh/tmatis/minishell/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=tmatis/minishell&amp;utm_campaign=Badge_Grade)
 ## SUJET
@@ -31,8 +33,7 @@ L’objectif de ce projet est de créer un simple shell. Ca sera votre propre pe
  - [x] Erreur d'execution de commande comme dans bash
  - [x] check des valeur de retours
  - [x] Mode non TTY
- - [ ] Mise a la norme (16 / 33 fichiers)
-
+ - [x] Mise a la norme
 
 ## Démarrage
 Pour compiler le projet:

@@ -53,6 +53,7 @@ void	handle_ctrl_c(t_buffer *buffer)
 int	handle_ctrl_d(t_buffer *buffer)
 {
 	ft_safe_free(buffer->buff);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 	buffer->buff = NULL;
 	buffer->size = 0;
 	buffer->pos_before_endl = 0;
