@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 14:59:37 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 18:22:06 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/26 12:44:32 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 ** Cette fonction va decider a l'aide de istty si on utilse gnl ou get_input
 */
 
-static int	read_next_line(char **line, char **clipboard, t_list **history, char *status)
+static int	read_next_line(char **line, char **clipboard,
+												t_list **history, char *status)
 {
 	int		left_to_read;
 
@@ -33,7 +34,7 @@ static int	read_next_line(char **line, char **clipboard, t_list **history, char 
 }
 
 static int	left_to_read_check(int left_to_read,
-				int *ret, char *line, t_list **env_var)
+										int *ret, char *line, t_list **env_var)
 {
 	if (left_to_read < 0)
 		return (1);
