@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 22:30:04 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/26 12:01:30 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,57 +77,11 @@ void	handle_move_on_line(t_buffer *buffer)
 	if (buffer->escape_id == LINE_START_ID)
 	{
 		while (buffer->pos_before_endl < buffer->size)
-		{
-			ft_putstr(CURSOR_LEFT);
-			buffer->pos_before_endl++;
-		}
+			handle_left_key(buffer);
 		return ;
 	}
 	while (buffer->pos_before_endl > 0)
-	{
-		ft_putstr(CURSOR_RIGHT);
-		buffer->pos_before_endl--;
-	}
-}
-
-void	handle_move_word_left(t_buffer *buffer)
-{
-	int		i;
-
-	i = buffer->size - buffer->pos_before_endl;
-	while (buffer->pos_before_endl < buffer->size
-			&& !ft_isalnum(buffer->buff[i - 1]))
-	{
-		ft_putstr(CURSOR_LEFT);
-		buffer->pos_before_endl++;
-		i--;
-	}
-	while (buffer->pos_before_endl < buffer->size
-			&& ft_isalnum(buffer->buff[i - 1]))
-	{
-		ft_putstr(CURSOR_LEFT);
-		buffer->pos_before_endl++;
-		i--;
-	}
-}
-
-void	handle_move_word_right(t_buffer *buffer)
-{
-	int		i;
-
-	i = buffer->size - buffer->pos_before_endl;
-	while (buffer->pos_before_endl > 0 && !ft_isalnum(buffer->buff[i]))
-	{
-		ft_putstr(CURSOR_RIGHT);
-		buffer->pos_before_endl--;
-		i++;
-	}
-	while (buffer->pos_before_endl > 0 && ft_isalnum(buffer->buff[i]))
-	{
-		ft_putstr(CURSOR_RIGHT);
-		buffer->pos_before_endl--;
-		i++;
-	}
+		handle_right_key(buffer);
 }
 
 void	handle_cut_line(t_buffer *buffer)
@@ -135,6 +89,8 @@ void	handle_cut_line(t_buffer *buffer)
 	int		i;
 
 	i = buffer->size - buffer->pos_before_endl;
+	if (buffer->escape_id == CUT_LINE_START_ID && i == 0)
+		return ;
 	ft_safe_free(buffer->clipboard);
 	if (buffer->escape_id == CUT_LINE_START_ID)
 		buffer->clipboard = ft_substr(buffer->buff, 0, i);
@@ -148,10 +104,86 @@ void	handle_cut_line(t_buffer *buffer)
 	else
 		while (buffer->pos_before_endl)
 		{
-			ft_putstr(CURSOR_RIGHT);
-			buffer->pos_before_endl--;
+			handle_right_key(buffer);
 			erase_char(buffer);
 		}
+}
+
+void	handle_move_word_left(t_buffer *buffer)
+{
+	int		i;
+
+	i = buffer->size - buffer->pos_before_endl;
+	while (buffer->pos_before_endl < buffer->size
+			&& !ft_isalnum(buffer->buff[i - 1]))
+	{
+		handle_left_key(buffer);
+		i--;
+	}
+	while (buffer->pos_before_endl < buffer->size
+			&& ft_isalnum(buffer->buff[i - 1]))
+	{
+		handle_left_key(buffer);
+		i--;
+	}
+}
+
+void	handle_move_word_right(t_buffer *buffer)
+{
+	int		i;
+
+	i = buffer->size - buffer->pos_before_endl;
+	while (buffer->pos_before_endl > 0 && !ft_isalnum(buffer->buff[i]))
+	{
+		handle_right_key(buffer);
+		i++;
+	}
+	while (buffer->pos_before_endl > 0 && ft_isalnum(buffer->buff[i]))
+	{
+		handle_right_key(buffer);
+		i++;
+	}
+}
+
+void	handle_cut_word_left(t_buffer *buffer)
+{
+	int		i;
+	int		old_pos_before_endl;
+
+	i = buffer->size - buffer->pos_before_endl;
+	if (i == 0)
+		return ;
+	old_pos_before_endl = buffer->pos_before_endl;
+	handle_move_word_left(buffer);
+	ft_safe_free(buffer->clipboard);
+	i = buffer->pos_before_endl - old_pos_before_endl;
+	buffer->clipboard = ft_substr(buffer->buff,
+			buffer->size - buffer->pos_before_endl, i);
+	if (!buffer->clipboard)
+		return (eot_error(buffer));
+	while (i--)
+	{
+		handle_right_key(buffer);
+		erase_char(buffer);
+	}
+}
+
+void	handle_cut_word_right(t_buffer *buffer)
+{
+	int		i;
+	int		old_pos_before_endl;
+
+	i = buffer->size - buffer->pos_before_endl;
+	old_pos_before_endl = buffer->pos_before_endl;
+	handle_move_word_right(buffer);
+	ft_safe_free(buffer->clipboard);
+	buffer->clipboard = ft_substr(buffer->buff, i,
+			old_pos_before_endl - buffer->pos_before_endl);
+	if (!buffer->clipboard)
+		return (eot_error(buffer));
+	i = old_pos_before_endl - buffer->pos_before_endl;
+	while (i--)
+		erase_char(buffer);
 }
 
 static int	handle_ctrl_part2(t_buffer *buffer)
@@ -159,13 +191,17 @@ static int	handle_ctrl_part2(t_buffer *buffer)
 	if ((buffer->escape_id == LINE_START_ID && buffer->size)
 			|| (buffer->escape_id == LINE_END_ID && buffer->pos_before_endl))
 		handle_move_on_line(buffer);
+	else if ((buffer->escape_id == CUT_LINE_END_ID && buffer->pos_before_endl)
+			|| (buffer->escape_id == CUT_LINE_START_ID && buffer->size))
+		handle_cut_line(buffer);
 	else if (buffer->escape_id == WORD_LEFT_ID && buffer->size)
 		handle_move_word_left(buffer);
 	else if (buffer->escape_id == WORD_RIGHT_ID && buffer->pos_before_endl)
 		handle_move_word_right(buffer);
-	else if ((buffer->escape_id == CUT_LINE_END_ID && buffer->pos_before_endl)
-			|| (buffer->escape_id == CUT_LINE_START_ID && buffer->size))
-		handle_cut_line(buffer);
+	else if (buffer->escape_id == CUT_WORD_LEFT_ID && buffer->size)
+		handle_cut_word_left(buffer);
+	else if (buffer->escape_id == CUT_WORD_RIGHT_ID && buffer->pos_before_endl)
+		handle_cut_word_right(buffer);
 	if (buffer->escape_id == EOT_ID && !buffer->size)
 		return (handle_ctrl_d(buffer));
 	return (0);
