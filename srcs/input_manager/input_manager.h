@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:17:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 18:19:36 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/27 18:47:52 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@
 # define CUT_LINE_END_ID	16
 # define PASTE				25
 # define PASTE_ID			17
+# define SUPPR_KEY			"\33\133\63\176"
+# define SUPPR_ID			18
 
 # define CURSOR_RIGHT		"\033[1C"
 # define CURSOR_LEFT		"\033[1D"
