@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:17:36 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/27 18:47:52 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/28 13:23:06 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,11 @@ void			print_prompt(char *status);
 void			handle_ctrl_l(t_buffer *buffer);
 void			eot_error(t_buffer *buffer);
 void			handle_eot_error(t_buffer *buffer);
+void			handle_cut_word_right(t_buffer *buffer);
+void			handle_cut_word_left(t_buffer *buffer);
+void			handle_move_word_right(t_buffer *buffer);
+void			handle_move_word_left(t_buffer *buffer);
+void			handle_cut_line(t_buffer *buffer);
+void			handle_move_on_line(t_buffer *buffer);
 
 #endif
