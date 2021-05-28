@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/17 14:53:39 by jmazoyer         ###   ########.fr        #
+#    Updated: 2021/05/28 16:21:04 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,11 +62,11 @@ OBJS_MATHS	 	= $(addprefix maths/, ${SRCS_MATHS:.c=.o})
 NAME			= libft.a
 
 .c.o:
-			@clang -Wall -Wextra -Werror -g -c $< -o ${<:.c=.o}
+			@clang -Wall -Wextra -Werror -c $< -o ${<:.c=.o}
 
 $(NAME):	${OBJS_ASSERT} ${OBJS_CHAR} ${OBJS_LST} ${OBJS_MEMORY} \
 			${OBJS_MISC} ${OBJS_PUT} ${OBJS_STRING} ${OBJS_WSTRING} \
-			${OBJS_GNL} ${OBJS_PRINTF} ${OBJS_LOG} ${OBJS_MATHS} 
+			${OBJS_GNL} ${OBJS_PRINTF} ${OBJS_LOG} ${OBJS_MATHS}
 			@ar -rcs  $@ $^
 
 all:		${NAME}
@@ -74,8 +74,8 @@ all:		${NAME}
 clean:
 			@rm -f ${OBJS_ASSERT} ${OBJS_CHAR} ${OBJS_LST} ${OBJS_MEMORY} \
 			${OBJS_MISC} ${OBJS_PUT} ${OBJS_STRING} ${OBJS_WSTRING} \
-			${OBJS_GNL} ${OBJS_PRINTF} ${OBJS_LOG} ${OBJS_MATHS} 
- 
+			${OBJS_GNL} ${OBJS_PRINTF} ${OBJS_LOG} ${OBJS_MATHS}
+
 fclean:		clean
 			@rm -f ${NAME}
 
