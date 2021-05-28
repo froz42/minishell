@@ -6,25 +6,22 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:13:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 17:53:44 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/28 13:28:07 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
 
-void	handle_eot_error(t_buffer *buffer)
+void	handle_move_on_line(t_buffer *buffer)
 {
-	if (!buffer->buff)
-		return (eot_error(buffer));
-	buffer->size = ft_strlen(buffer->buff);
-	ft_putstr(buffer->buff);
-}
-
-void	eot_error(t_buffer *buffer)
-{
-	ft_log_error(strerror(errno));
-	buffer->escape_id = EOT_ID;
-	buffer->size = 0;
+	if (buffer->escape_id == LINE_START_ID)
+	{
+		while (buffer->pos_before_endl < buffer->size)
+			handle_left_key(buffer);
+		return ;
+	}
+	while (buffer->pos_before_endl > 0)
+		handle_right_key(buffer);
 }
 
 /*
