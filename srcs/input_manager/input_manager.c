@@ -6,82 +6,54 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/03 13:22:45 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 12:40:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/28 13:24:42 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input_manager.h"
 #include <termios.h>
 
-static char	*get_last_dir(void)
-{
-	char	actual_dir[4098];
-	char	**split;
-	int		i;
-	char	*last_dir;
-
-	getcwd(actual_dir, sizeof(actual_dir));
-	split = ft_split(actual_dir, '/');
-	if (!split)
-		return (NULL);
-	i = 0;
-	while (split[i])
-		i++;
-	if (i > 0)
-		last_dir = ft_strdup(split[i - 1]);
-	else
-		return (ft_strdup("/"));
-	free_table(&split);
-	return (last_dir);
-}
-
-/*
-** Print the prompt
-*/
-
-void	print_prompt(char *status)
-{
-	char	*user;
-	char	*last_dir;
-
-	user = getenv("USER");
-	ft_putstr("\x1B[32m");
-	if (user)
-		ft_putstr(user);
-	ft_putstr("\x1B[37m@");
-	ft_putstr("\x1B[34mminishell");
-	last_dir = get_last_dir();
-	if (last_dir)
-	{
-		ft_putstr("\x1B[37m (\x1B[33m");
-		ft_putstr(last_dir);
-		free(last_dir);
-		ft_putstr("\x1B[37m)");
-	}
-	ft_putstr(" (");
-	if (ft_atoi(status) > 0)
-		ft_putstr("\x1B[31m");
-	else
-		ft_putstr("\x1B[32m");
-	ft_putstr(status);
-	ft_putstr("\x1B[0m)");
-	ft_putstr("$ ");
-}
-
 /*
 ** Handle ctrl-chars and call the corresponding function
 */
+
+static int	handle_ctrl_part2(t_buffer *buffer)
+{
+	if ((buffer->escape_id == LINE_START_ID && buffer->size)
+		|| (buffer->escape_id == LINE_END_ID && buffer->pos_before_endl))
+		handle_move_on_line(buffer);
+	else if ((buffer->escape_id == CUT_LINE_END_ID && buffer->pos_before_endl)
+		|| (buffer->escape_id == CUT_LINE_START_ID && buffer->size))
+		handle_cut_line(buffer);
+	else if (buffer->escape_id == WORD_LEFT_ID && buffer->size)
+		handle_move_word_left(buffer);
+	else if (buffer->escape_id == WORD_RIGHT_ID && buffer->pos_before_endl)
+		handle_move_word_right(buffer);
+	else if (buffer->escape_id == CUT_WORD_LEFT_ID && buffer->size)
+		handle_cut_word_left(buffer);
+	else if (buffer->escape_id == CUT_WORD_RIGHT_ID && buffer->pos_before_endl)
+		handle_cut_word_right(buffer);
+	else if (buffer->escape_id == PASTE_ID && buffer->clipboard)
+		buffer_add_chain(buffer->clipboard,
+			ft_strlen(buffer->clipboard), buffer);
+	if (buffer->escape_id == EOT_ID && !buffer->size)
+		return (handle_ctrl_d(buffer));
+	return (0);
+}
 
 static int	handle_ctrl(t_buffer *buffer, char **save_curr_line,
 									t_list **history)
 {
 	if (buffer->escape_id == DEL_ID && buffer->size)
 		erase_char(buffer);
-	else if (buffer->escape_id == UP_KEY_ID && buffer->manage_history
-		&& *history)
+	else if (buffer->escape_id == SUPPR_ID && buffer->pos_before_endl)
+	{
+		handle_right_key(buffer);
+		erase_char(buffer);
+	}
+	else if (buffer->escape_id == UP_KEY_ID && *history)
 		handle_up_key(buffer, &buffer->history_lvl, save_curr_line, *history);
-	else if (buffer->escape_id == DOWN_KEY_ID && buffer->manage_history
-		&& *history && *save_curr_line)
+	else if (buffer->escape_id == DOWN_KEY_ID && *history && *save_curr_line)
 		handle_down_key(buffer, &buffer->history_lvl, save_curr_line, *history);
 	else if (buffer->escape_id == RIGHT_KEY_ID)
 		handle_right_key(buffer);
@@ -89,11 +61,9 @@ static int	handle_ctrl(t_buffer *buffer, char **save_curr_line,
 		handle_left_key(buffer);
 	else if (buffer->escape_id == ETX_ID)
 		handle_ctrl_c(buffer);
-	if (buffer->escape_id == EOT_ID && !buffer->size)
-		return (handle_ctrl_d(buffer));
 	else if (buffer->escape_id == CLR_SCREEN_ID)
 		handle_ctrl_l(buffer);
-	return (0);
+	return (handle_ctrl_part2(buffer));
 }
 
 /*
@@ -133,7 +103,7 @@ static int	wait_line(char buff[10], t_buffer *buffer,
 ** similar working as get_next_line, read from STDIN_FILENO, handle ctrl-char
 */
 
-int	get_input_line(char **line, t_bool manage_history,
+int	get_input_line(char **line, char **clipboard,
 							t_list **history, char *status)
 {
 	char			buff[10];
@@ -143,7 +113,7 @@ int	get_input_line(char **line, t_bool manage_history,
 	int				ret;
 
 	ft_bzero(buff, 10);
-	buffer = init_buffer(manage_history, status);
+	buffer = init_buffer(*clipboard, status);
 	save_curr_line = NULL;
 	old_termios = raw_mode();
 	print_prompt(status);
@@ -154,5 +124,6 @@ int	get_input_line(char **line, t_bool manage_history,
 	if (buffer.size > 0 && buffer.buff)
 		push_history(ft_strdup(buffer.buff), history);
 	*line = buffer.buff;
+	*clipboard = buffer.clipboard;
 	return (ret);
 }

@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/23 15:16:38 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/28 13:31:46 by tmatis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,11 @@ DATE	= 25/03/2021
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
 
-SRCS		= 	input_manager/buffer_manager.c input_manager/history.c \
+SRCS		= 	input_manager/buffer_manager.c input_manager/escape_code.c \
+				input_manager/history.c input_manager/input_handle2.c \
+				input_manager/input_handle3.c input_manager/input_handle.c \
 				input_manager/input_manager.c input_manager/input_utils.c \
-				input_manager/input_handle.c input_manager/input_handle2.c \
+				input_manager/prompt.c \
 				parser/dollar.c parser/lexer_parts.c parser/double_quote.c \
 				parser/error_detector.c parser/find_bin.c parser/dyn_parsing.c \
 				parser/lexer_utils.c parser/make_word.c parser/command.c \

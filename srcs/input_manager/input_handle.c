@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 12:42:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/21 00:33:51 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/27 18:37:06 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 void	handle_up_key(t_buffer *buffer, int *history_lvl,
 									char **temp, t_list *history)
 {
-	while (buffer->pos_before_cursor)
+	while (buffer->pos_before_endl)
 	{
 		ft_putstr(CURSOR_RIGHT);
-		buffer->pos_before_cursor--;
+		buffer->pos_before_endl--;
 	}
 	erase_x_chars(buffer->size);
 	if (*history_lvl == -1)
@@ -43,10 +43,10 @@ void	handle_up_key(t_buffer *buffer, int *history_lvl,
 void	handle_down_key(t_buffer *buffer, int *history_lvl,
 									char **temp, t_list *history)
 {
-	while (buffer->pos_before_cursor)
+	while (buffer->pos_before_endl)
 	{
 		ft_putstr(CURSOR_RIGHT);
-		buffer->pos_before_cursor--;
+		buffer->pos_before_endl--;
 	}
 	if (*history_lvl > -1)
 		(*history_lvl)--;
@@ -68,10 +68,10 @@ void	handle_down_key(t_buffer *buffer, int *history_lvl,
 
 void	handle_left_key(t_buffer *buffer)
 {
-	if (buffer->pos_before_cursor < buffer->size)
+	if (buffer->pos_before_endl < buffer->size)
 	{
 		ft_putstr(CURSOR_LEFT);
-		buffer->pos_before_cursor++;
+		buffer->pos_before_endl++;
 	}
 }
 
@@ -81,10 +81,10 @@ void	handle_left_key(t_buffer *buffer)
 
 void	handle_right_key(t_buffer *buffer)
 {
-	if (buffer->pos_before_cursor)
+	if (buffer->pos_before_endl)
 	{
 		ft_putstr(CURSOR_RIGHT);
-		buffer->pos_before_cursor--;
+		buffer->pos_before_endl--;
 	}
 }
 
@@ -96,7 +96,7 @@ void	handle_ctrl_l(t_buffer *buffer)
 	print_prompt(buffer->status);
 	ft_putstr(buffer->buff);
 	i = 0;
-	while (i < buffer->pos_before_cursor)
+	while (i < buffer->pos_before_endl)
 	{
 		ft_putstr(CURSOR_LEFT);
 		i++;
