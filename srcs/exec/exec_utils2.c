@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:31:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/28 16:13:57 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/28 16:23:00 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	add_ls_color(t_command *command)
 	char	*arg_string;
 	t_list	*new;
 
-	arg_string = ft_strdup("--color");
+	arg_string = ft_strdup(LS_COLOR);
 	if (!arg_string)
 		return ;
 	new = ft_lstnew(arg_string);
