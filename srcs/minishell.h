@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 18:56:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 19:42:50 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/28 16:22:27 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@
 
 # define NO_ERROR		-1
 # define ENV_VAR_ERROR	"Error while creating an environment variable"
+# ifdef __APPLE__
+#  define LS_COLOR "-G"
+# else
+#  define LS_COLOR "--color"
+# endif
 
 int				minishell(t_list **env_var, t_list *history);
 void			write_error(int error_number);

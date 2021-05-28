@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 13:10:26 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/28 16:07:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	restore_in_out(int backup[2]);
 int		redir_dup_fail(int backup[2]);
 void	restore_in_out(int backup[2]);
 int		get_open_flags(int type);
-int		execution_rules(t_command command, t_list **env_vars);
+int		execution_rules(t_command *command, t_list **env_vars);
 void	close_all_pipes(t_tube *tube_list, int size);
 void	close_finish_tube(t_tube *tube_list, int forks_running, int fork_n);
 void	execution_error_status(char *cmd, char *error, int status,
@@ -38,5 +38,6 @@ void	free_until(char **table, int max);
 char	**build_env(t_list *env_var);
 char	**build_argv(char *name, t_list *args);
 int		build_argc(char **argv);
+void	add_ls_color(t_command *command);
 
 #endif
