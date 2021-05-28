@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 15:24:54 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/28 16:07:53 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_append
 
 typedef struct s_child_data
 {
-	t_command	command;
+	t_command	*command;
 	t_tube		*tube_list;
 	int			fork_n;
 	int			forks_running;

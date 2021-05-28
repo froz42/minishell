@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/24 14:34:15 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/28 16:08:22 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	exec_pipes(t_list *pipes_list, t_list **env_vars)
 		return (0);
 	while (pipes_list)
 	{
-		child_data.command = *(t_command *)pipes_list->content;
+		child_data.command = (t_command *)pipes_list->content;
 		last_pid = fork();
 		if (last_pid < 0)
 		{

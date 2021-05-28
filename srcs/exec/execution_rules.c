@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:24:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 12:44:00 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/28 16:08:25 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,15 @@ static int	rules(t_command command, char **argv,
 	return (return_value);
 }
 
-static int	build_args_and_exec(t_command command, t_list **env_vars)
+static int	build_args_and_exec(t_command *command, t_list **env_vars)
 {
 	char	**argv;
 	char	**envp;
 	int		return_value;
 
-	argv = build_argv(command.name, command.args);
+	if (isatty(STDOUT_FILENO) && !ft_strcmp(command->name, "ls"))
+		add_ls_color(command);
+	argv = build_argv(command->name, command->args);
 	if (!argv)
 	{
 		execution_error_write("argv: ", strerror(errno));
@@ -92,21 +94,21 @@ static int	build_args_and_exec(t_command command, t_list **env_vars)
 		free_table(&argv);
 		return (errno + 2);
 	}
-	return_value = rules(command, argv, envp, env_vars);
+	return_value = rules(*command, argv, envp, env_vars);
 	free_table(&argv);
 	free_table(&envp);
 	return (return_value);
 }
 
-int	execution_rules(t_command command, t_list **env_vars)
+int	execution_rules(t_command *command, t_list **env_vars)
 {
 	int	return_value;
 	int	backup[2];
 
 	return_value = 2;
-	if (redirect_fd(command, backup))
+	if (redirect_fd(*command, backup))
 		return_value = 1 + 2;
-	if (command.name && return_value == 2)
+	if (command->name && return_value == 2)
 		return_value = build_args_and_exec(command, env_vars);
 	restore_in_out(backup);
 	return (return_value);
