@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 21:07:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/29 20:37:02 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/29 20:48:52 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ static int	cd_home(t_list **env_var)
 		ft_putstr_fd("Minishell: cd: HOME not set\n", 2);
 		return (1);
 	}
-	else
-		chdir(home);
+	else if (chdir(home) == -1)
+		return (generic_error(strerror(errno), "HOME"));
 	return (0);
 }
 
-t_bool	get_directories(char **old_pwd, char *actual_dir,
-									t_list **env_var, char *var_to_edit)
+static t_bool	get_directories(char **old_pwd, char *actual_dir,
+										t_list **env_var, char *var_to_edit)
 {
 	if (old_pwd)
 	{
@@ -65,10 +65,9 @@ t_bool	get_directories(char **old_pwd, char *actual_dir,
 	return (true);
 }
 
-int	cd_oldpwd(t_list **env_var)
+static int	cd_oldpwd(t_list **env_var)
 {
 	char	*old_pwd;
-	int		ret;
 	char	actual_dir[BUFFER_SIZE];
 
 	old_pwd = search_var(*env_var, "OLDPWD");
@@ -79,8 +78,7 @@ int	cd_oldpwd(t_list **env_var)
 	}
 	if (!get_directories(&old_pwd, actual_dir, env_var, "OLDPWD"))
 		return (1);
-	ret = chdir(old_pwd);
-	if (ret == -1)
+	if (chdir(old_pwd) == -1)
 	{
 		generic_error(strerror(errno), old_pwd);
 		free(old_pwd);
@@ -96,19 +94,17 @@ int	cd_oldpwd(t_list **env_var)
 int	ft_cd(int argc, char **argv, t_list **env_var)
 {
 	char	actual_dir[BUFFER_SIZE];
-	int		ret;
 
 	if (argc == 2)
 	{
 		if (!ft_strcmp(argv[1], "-"))
 			return (cd_oldpwd(env_var));
-		getcwd(actual_dir, sizeof(actual_dir));
-		edit_var(env_var, "OLDPWD", actual_dir);
-		ret = chdir(argv[1]);
-		if (ret == -1)
+		if (!get_directories(NULL, actual_dir, env_var, "OLDPWD"))
+			return (1);
+		if (chdir(argv[1]) == -1)
 			return (generic_error(strerror(errno), argv[1]));
-		getcwd(actual_dir, sizeof(actual_dir));
-		edit_var(env_var, "PWD", actual_dir);
+		if (!get_directories(NULL, actual_dir, env_var, "PWD"))
+			return (1);
 	}
 	else if (argc > 2)
 	{
