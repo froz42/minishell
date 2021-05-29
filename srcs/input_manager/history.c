@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:02:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/16 21:49:01 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/28 22:17:39 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	push_history(char *command, t_list **history)
 	elem = ft_lstnew((void *)command);
 	if (!elem)
 	{
+		free(command);
 		ft_log_error(strerror(errno));
 		return ;
 	}

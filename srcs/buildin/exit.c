@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:39:53 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/24 12:28:58 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/28 22:40:58 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int	ft_exit(int argc, char **argv, t_list **env_var, t_bool in_pipes)
 	int		offset;
 
 	if (in_pipes)
-		offset = 0;
+		offset = IN_PIPES;
 	else
-		offset = 2;
+		offset = NOT_IN_PIPES;
 	if (isatty(STDIN_FILENO))
 		ft_putstr("exit\n");
 	if (argc >= 2 && !is_str_numeric(argv[1]))
