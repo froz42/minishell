@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/29 18:31:58 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/29 19:32:44 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execution_error_write(char *cmd, char *error);
 t_bool	redirect_fd(t_command command, int backup[2]);
 void	file_error(char *file, char *error);
 void	restore_in_out(int backup[2]);
-int		redir_dup_fail(int backup[2]);
+t_bool	redir_dup_fail(int backup[2]);
 void	restore_in_out(int backup[2]);
 int		get_open_flags(int type);
 int		execution_rules(t_command *command, t_list **env_vars);
