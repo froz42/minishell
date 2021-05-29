@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 22:37:57 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/29 19:38:08 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/29 20:52:02 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	return_value_buildin(int func_return, t_list **env_var)
 }
 
 static int	exec_buildin(char *command_name, int argc, char **argv,
-							t_list **env_var)
+															t_list **env_var)
 {
 	int	ret;
 

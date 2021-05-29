@@ -6,44 +6,27 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 13:43:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 13:52:24 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/29 22:14:04 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildin.h"
 
-t_bool	is_inside_args(int argc, char **argv, char *key)
+static int	varcmp(t_var *var, t_var *ref)
 {
-	int	i;
-
-	i = 1;
-	while (i < argc)
-	{
-		if (!ft_strcmp(argv[i], key))
-			return (true);
-		i++;
-	}
-	return (false);
+	return (ft_strcmp(var->key, ref->key));
 }
 
 int	ft_unset(int argc, char **argv, t_list **env_var)
 {
-	t_list	*new_list;
-	t_list	*list;
+	int		i;
 	t_var	var;
 
-	list = *env_var;
-	new_list = NULL;
-	while (list)
+	i = 0;
+	while (i < argc)
 	{
-		var = *(t_var *)list->content;
-		if (!is_inside_args(argc, argv, var.key))
-			ft_lstadd_back(&new_list, ft_lstnew(list->content));
-		else
-			free_var(list->content);
-		list = list->next;
+		var.key = argv[i++];
+		ft_lstremove_one_if(env_var, &var, varcmp, free_var);
 	}
-	ft_lstclear(env_var, ft_nofree);
-	*env_var = new_list;
 	return (0);
 }
