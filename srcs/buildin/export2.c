@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 13:13:37 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/30 13:55:43 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/30 14:17:23 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ static int	key_len(char *str, int *error)
 	i = 0;
 	while (str[i] && (str[i] == '_' || ft_isalnum(str[i])))
 		i++;
-	if (!i || (str[i] != '='
-			&& ft_memcmp(str + i, "+=", 2) && str[i] != 0))
+	if (!i || (str[i] != '=' && ft_memcmp(str + i, "+=", 2)))
 	{
 		*error = 1;
 		return (-1);
