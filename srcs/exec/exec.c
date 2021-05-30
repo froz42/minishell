@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/28 16:08:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/30 21:11:39 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ t_tube	*make_tubes(int fork_n, t_list **env_vars)
 	tube_list = ft_calloc(fork_n - 1, sizeof(t_tube));
 	if (!tube_list)
 	{
-		set_status_env(env_vars, errno);
 		execution_error_status("pipes alloc fail",
 			strerror(errno), 127, env_vars);
 		return (NULL);
@@ -76,7 +75,7 @@ t_tube	*make_tubes(int fork_n, t_list **env_vars)
 	return (tube_list);
 }
 
-int	prepare_data(t_child_data *child_data, t_list *pipes_list,
+static int	prepare_data(t_child_data *child_data, t_list *pipes_list,
 		t_list **env_vars)
 {
 	child_data->fork_n = ft_lstsize(pipes_list);

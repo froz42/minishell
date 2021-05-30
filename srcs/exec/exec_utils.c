@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:26:59 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 20:19:11 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/30 17:23:57 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	close_all_pipes(t_tube *tube_list, int size)
 	i = 0;
 	while (i < size)
 	{
-		close(tube_list[i][0]);
-		close(tube_list[i][1]);
+		close(tube_list[i][0]); // proteger
+		close(tube_list[i][1]); // proteger
 		i++;
 	}
 }
