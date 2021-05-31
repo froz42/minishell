@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:24:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/31 19:45:21 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 20:36:36 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,13 @@ static int	build_args_and_exec(t_command *command, t_list **env_vars)
 	argv = build_argv(command->name, command->args);
 	if (!argv)
 	{
-		execution_error_write("argv: ", strerror(errno));
+		execution_error_write("argv alloc failed", strerror(errno));
 		return (errno + IS_CHILD);
 	}
 	envp = build_env(*env_vars);
 	if (!envp)
 	{
-		execution_error_write("envp: ", strerror(errno));
+		execution_error_write("envp alloc failed", strerror(errno));
 		free_table(&argv);
 		return (errno + IS_CHILD);
 	}

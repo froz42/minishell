@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 22:37:57 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/29 20:52:02 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:29:00 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,10 @@ int	exec(t_list *pipes_list, t_list **env_var)
 {
 	int	ret;
 
-//	errno = 0;
 	ret = handle_buildin(pipes_list, env_var);
 	if (ret == 0)
 		ret = exec_pipes(pipes_list, env_var);
-	if (ret > 1)// || errno != 0)
+	if (ret > 1)
 		return (ret);
 	return (0);
 }

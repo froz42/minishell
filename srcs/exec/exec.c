@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/31 16:16:05 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:18:44 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-void	handle_status(int status, t_list **env_var)
+static void	handle_status(int status, t_list **env_var)
 {
 	int	return_value;
 
@@ -34,7 +34,7 @@ void	handle_status(int status, t_list **env_var)
 	set_status_env(env_var, return_value);
 }
 
-void	harvest_child(int forks_running, pid_t last_pid, t_list **env_var)
+static void	harvest_child(int forks_running, pid_t last_pid, t_list **env_var)
 {
 	int		status;
 	pid_t	pid;
@@ -49,7 +49,7 @@ void	harvest_child(int forks_running, pid_t last_pid, t_list **env_var)
 	}
 }
 
-t_tube	*make_tubes(int fork_n, t_list **env_vars)
+static t_tube	*make_tubes(int fork_n, t_list **env_vars)
 {
 	t_tube	*tube_list;
 	int		i;
