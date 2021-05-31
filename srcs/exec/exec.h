@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/31 18:42:53 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:58:42 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,10 @@ void	close_all_pipes(t_tube *tube_list, int size);
 void	close_finish_tube(t_tube *tube_list, int forks_running, int fork_n);
 void	execution_error_status(char *cmd, char *error, int status,
 			t_list **env_vars);
-int		handle_dup2_error(t_tube *tube_list, int forks_running, int fork_n);
+int		handle_dup2_error(t_tube *tube_list);
 void	sig_handler(int signal_no);
 int		child_process(t_child_data child_data);
 void	*return_and_free(char **envp, int i);
-void	free_until(char **table, int max);
 char	**build_env(t_list *env_var);
 char	**build_argv(char *name, t_list *args);
 int		build_argc(char **argv);

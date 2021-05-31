@@ -6,14 +6,14 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 14:16:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/31 20:13:57 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:54:12 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include <fcntl.h>
 
-t_bool	backup_in_out(int backup[2])
+static t_bool	backup_in_out(int backup[2])
 {
 	backup[0] = -1;
 	backup[1] = -1;
@@ -33,7 +33,7 @@ t_bool	backup_in_out(int backup[2])
 	return (true);
 }
 
-int	open_file_redir(t_redir redir)
+static int	open_file_redir(t_redir redir)
 {
 	int	open_file;
 
@@ -46,7 +46,7 @@ int	open_file_redir(t_redir redir)
 	return (open_file);
 }
 
-int	dup_in_or_out(t_redir redir)
+static int	dup_in_or_out(t_redir redir)
 {
 	int	dup_return;
 	int	open_file;
@@ -85,7 +85,6 @@ t_bool	redirect_fd(t_command command, int backup[2])
 		{
 			file_error(redir.file, strerror(errno));
 			return (false);
-//			return (redir_dup_fail(backup));
 		}
 		redir_list = redir_list->next;
 	}

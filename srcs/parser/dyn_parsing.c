@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 14:12:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/28 22:58:15 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:41:00 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Cree une liste de commande execute simultanement relier par des pipes
 */
 
-t_list	*pipes_commands(t_list *word_list, t_list *env_var)
+static t_list	*pipes_commands(t_list *word_list, t_list *env_var)
 {
 	t_list		*pipes_list;
 	int			special_id;
@@ -45,7 +45,7 @@ t_list	*pipes_commands(t_list *word_list, t_list *env_var)
 	return (pipes_list);
 }
 
-t_list	*get_next_pipes(char **str, int *error, t_list **env_var)
+static t_list	*get_next_pipes(char **str, int *error, t_list **env_var)
 {
 	t_list	*token_list;
 	t_list	*pipes_list;

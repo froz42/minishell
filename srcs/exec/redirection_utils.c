@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 13:22:34 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/31 18:48:29 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:52:41 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 int	get_open_flags(int type)
 {
-	if (type == 1)
+	if (type == REDIR_OUT)
 		return (O_CREAT | O_WRONLY | O_TRUNC);
-	else if (type == 2)
+	else if (type == REDIR_IN)
 		return (O_RDONLY);
 	else
 		return (O_CREAT | O_WRONLY | O_APPEND);

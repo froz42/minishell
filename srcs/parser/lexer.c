@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 12:21:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 14:14:42 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 23:39:47 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*join_list(t_list *to_cat)
 	return (dest);
 }
 
-t_bool	add_special_str(t_list **word_list, char **str, int *error)
+static t_bool	add_special_str(t_list **word_list, char **str, int *error)
 {
 	char	*special_str;
 	t_list	*elem;

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:24:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/18 16:32:01 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:46:09 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Cherche la var dans l'env puis dans les locals
 */
 
-char	*get_var(char *key, t_list *env_var)
+static char	*get_var(char *key, t_list *env_var)
 {
 	char	*search;
 
@@ -30,7 +30,7 @@ char	*get_var(char *key, t_list *env_var)
 ** Retourne la cle selon les char et itere sur **str
 */
 
-char	*get_key(char **str, int *i)
+static char	*get_key(char **str, int *i)
 {
 	char	*key;
 

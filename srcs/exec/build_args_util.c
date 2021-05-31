@@ -6,13 +6,13 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 15:13:23 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 15:15:14 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 23:58:49 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	free_until(char **table, int max)
+static void	free_until(char **table, int max)
 {
 	int		i;
 
