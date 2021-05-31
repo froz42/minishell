@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 14:16:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/31 18:47:10 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 20:13:57 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,11 @@ t_bool	redirect_fd(t_command command, int backup[2])
 		}
 		dup_return = dup_in_or_out(redir);
 		if (dup_return < 0)
+		{
+			file_error(redir.file, strerror(errno));
 			return (false);
 //			return (redir_dup_fail(backup));
+		}
 		redir_list = redir_list->next;
 	}
 	return (true);
