@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 13:22:34 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/29 19:34:37 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 18:48:29 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,12 @@ void	restore_in_out(int backup[2])
 	if (backup[0] >= 0)
 	{
 		dup2(backup[0], STDIN_FILENO);
-		if (close(backup[0]) < 0)
-//			;
-			file_error("Backup STDIN", strerror(errno));
+		close(backup[0]);
 	}
 	if (backup[1] >= 0)
 	{
 		dup2(backup[1], STDOUT_FILENO);
-		if (close(backup[1]) < 0)
-//			;
-			file_error("Backup STDOUT", strerror(errno));
+		close(backup[1]);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/30 21:11:39 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 16:16:05 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ t_tube	*make_tubes(int fork_n, t_list **env_vars)
 			execution_error_status("pipe creation fail",
 				strerror(errno), 127, env_vars);
 			close_all_pipes(tube_list, i - 1);
+			free(tube_list);
 			return (NULL);
 		}
 	}

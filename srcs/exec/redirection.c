@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 14:16:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/29 19:37:51 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 18:47:10 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ t_bool	backup_in_out(int backup[2])
 	if (backup[1] < 0)
 	{
 		ft_putstr_fd("Minishell: STDOUT save fail\n", 2);
-		if (close(backup[0]) < 0)
-			file_error("Backup STDIN", strerror(errno));
+		close(backup[0]);
 		return (false);
 	}
 	return (true);
