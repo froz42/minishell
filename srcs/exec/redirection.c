@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 14:16:18 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/31 23:54:12 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/06/01 12:36:50 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static int	dup_in_or_out(t_redir redir)
 		dup_return = dup2(open_file, STDOUT_FILENO);
 	else
 		dup_return = dup2(open_file, STDIN_FILENO);
+	if (dup_return < 0)
+		file_error(redir.file, strerror(errno));
 	if (close(open_file) < 0)
 		file_error(redir.file, strerror(errno));
 	return (dup_return);
@@ -82,10 +84,7 @@ t_bool	redirect_fd(t_command command, int backup[2])
 		}
 		dup_return = dup_in_or_out(redir);
 		if (dup_return < 0)
-		{
-			file_error(redir.file, strerror(errno));
 			return (false);
-		}
 		redir_list = redir_list->next;
 	}
 	return (true);
