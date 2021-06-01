@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:26:42 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 14:11:23 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/06/01 12:05:01 by tmatis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,10 @@ char	*single_quote(char **str, int *error)
 	while ((*str)[i] && (*str)[i] != '\'')
 		i++;
 	if ((*str)[i] == '\'')
-	{
 		token = ft_substr(*str, 0, i);
-		(*str) += i + 1;
-	}
 	else
 		*error = SING_QUOTE_ERR;
+	(*str) += i + 1;
 	return (token);
 }
 
