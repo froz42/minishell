@@ -6,11 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 13:43:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/29 22:14:04 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/06/01 11:03:18 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "buildin.h"
+#include "builtin.h"
 
 static int	varcmp(t_var *var, t_var *ref)
 {

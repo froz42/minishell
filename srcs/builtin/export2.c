@@ -6,11 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 13:13:37 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/30 20:43:13 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/06/01 11:04:13 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "buildin.h"
+#include "builtin.h"
 
 static int	key_len(char *str, int *error)
 {

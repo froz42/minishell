@@ -6,11 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 15:40:14 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/30 14:27:04 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/06/01 11:03:05 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "buildin.h"
+#include "builtin.h"
 
 static void	append_var(t_list **env_var, char *work_str, char *key)
 {
