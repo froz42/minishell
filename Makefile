@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/28 16:21:25 by tmatis           ###   ########.fr        #
+#    Updated: 2021/06/01 11:04:29 by jmazoyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,13 +36,13 @@ SRCS		= 	input_manager/buffer_manager.c input_manager/escape_code.c \
 				parser/lexer_utils.c parser/make_word.c parser/command.c \
 				parser/parser.c parser/destroyer.c parser/lexer.c \
 				parser/command_parts.c \
-				errors.c var.c buildin/cd.c buildin/exit.c \
-				buildin/echo.c buildin/env.c buildin/unset.c buildin/pwd.c \
-				buildin/export.c \
+				errors.c var.c builtin/cd.c builtin/exit.c \
+				builtin/echo.c builtin/env.c builtin/unset.c builtin/pwd.c \
+				builtin/export.c \
 				exec/prepare_exec.c exec/redirection.c exec/build_args.c\
 				exec/redirection_utils.c exec/exec_utils.c exec/exec_utils2.c \
 				exec/execution_rules.c exec/exec.c exec/child.c \
-				exec/build_args_util.c buildin/export2.c minishell.c
+				exec/build_args_util.c builtin/export2.c minishell.c
 
 MAIN		= main.c
 

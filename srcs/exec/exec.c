@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 14:12:05 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/28 16:08:22 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 23:18:44 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-void	handle_status(int status, t_list **env_var)
+static void	handle_status(int status, t_list **env_var)
 {
 	int	return_value;
 
@@ -34,7 +34,7 @@ void	handle_status(int status, t_list **env_var)
 	set_status_env(env_var, return_value);
 }
 
-void	harvest_child(int forks_running, pid_t last_pid, t_list **env_var)
+static void	harvest_child(int forks_running, pid_t last_pid, t_list **env_var)
 {
 	int		status;
 	pid_t	pid;
@@ -49,7 +49,7 @@ void	harvest_child(int forks_running, pid_t last_pid, t_list **env_var)
 	}
 }
 
-t_tube	*make_tubes(int fork_n, t_list **env_vars)
+static t_tube	*make_tubes(int fork_n, t_list **env_vars)
 {
 	t_tube	*tube_list;
 	int		i;
@@ -57,7 +57,6 @@ t_tube	*make_tubes(int fork_n, t_list **env_vars)
 	tube_list = ft_calloc(fork_n - 1, sizeof(t_tube));
 	if (!tube_list)
 	{
-		set_status_env(env_vars, errno);
 		execution_error_status("pipes alloc fail",
 			strerror(errno), 127, env_vars);
 		return (NULL);
@@ -70,13 +69,14 @@ t_tube	*make_tubes(int fork_n, t_list **env_vars)
 			execution_error_status("pipe creation fail",
 				strerror(errno), 127, env_vars);
 			close_all_pipes(tube_list, i - 1);
+			free(tube_list);
 			return (NULL);
 		}
 	}
 	return (tube_list);
 }
 
-int	prepare_data(t_child_data *child_data, t_list *pipes_list,
+static int	prepare_data(t_child_data *child_data, t_list *pipes_list,
 		t_list **env_vars)
 {
 	child_data->fork_n = ft_lstsize(pipes_list);

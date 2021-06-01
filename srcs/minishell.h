@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 18:56:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/28 16:22:27 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/06/01 11:04:04 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <errno.h>
 # include "../libft/libft.h"
 # include "minishell_types.h"
-# include "buildin/buildin.h"
+# include "builtin/builtin.h"
 # include "parser/parser.h"
 # include "input_manager/input_manager.h"
 # include "exec/exec.h"

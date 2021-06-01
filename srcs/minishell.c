@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 14:59:37 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/26 12:44:32 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:19:52 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,5 @@ int	minishell(t_list **env_var, t_list *history)
 	ft_lstclear(&history, free);
 	ft_safe_free(clipboard);
 	ft_safe_free(line);
-	return (ret - 2);
+	return (ret - IS_CHILD);
 }

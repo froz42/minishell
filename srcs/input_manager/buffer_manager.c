@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 12:53:58 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 18:18:16 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:50:48 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	buffer_add(char c, t_buffer *buffer)
 ** Add a char at a specific position
 */
 
-void	buffer_add_pos(char c, int pos, t_buffer *buffer)
+static void	buffer_add_pos(char c, int pos, t_buffer *buffer)
 {
 	char	*dst;
 

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:28:20 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/28 16:22:32 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 19:43:47 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_command
 	t_bool	is_set;
 	t_list	*args;
 	t_list	*redirs;
+	int		backup[2];
 }				t_command;
 
 typedef struct s_var

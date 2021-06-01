@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:24:22 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/28 16:08:25 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 20:36:36 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ static int	build_in(char **argv, t_list **env_var)
 
 	argc = build_argc(argv);
 	if (ft_strcmp(argv[0], "cd") == 0)
-		return (ft_cd(argc, argv, env_var) + 2);
+		return (ft_cd(argc, argv, env_var) + IS_CHILD);
 	else if (ft_strcmp(argv[0], "exit") == 0)
-		return (ft_exit(argc, argv, env_var, true) + 2);
+		return (ft_exit(argc, argv, env_var, true) + IS_CHILD);
 	else if (ft_strcmp(argv[0], "echo") == 0)
-		return (ft_echo(argc, argv) + 2);
+		return (ft_echo(argc, argv) + IS_CHILD);
 	else if (ft_strcmp(argv[0], "env") == 0)
-		return (ft_env(*env_var) + 2);
+		return (ft_env(*env_var) + IS_CHILD);
 	else if (ft_strcmp(argv[0], "unset") == 0)
-		return (ft_unset(argc, argv, env_var) + 2);
+		return (ft_unset(argc, argv, env_var) + IS_CHILD);
 	else if (ft_strcmp(argv[0], "export") == 0)
-		return (ft_export(argc, argv, env_var) + 2);
+		return (ft_export(argc, argv, env_var) + IS_CHILD);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
-		return (ft_pwd() + 2);
+		return (ft_pwd() + IS_CHILD);
 	else
 		return (0);
 }
@@ -54,21 +54,23 @@ static int	rules(t_command command, char **argv,
 	if (!return_value && !command.cmd)
 	{
 		execution_error_write(command.name, "command not found");
-		return_value = 127 + 2;
+		return_value = 127 + IS_CHILD;
 	}
 	if (!return_value)
 	{
 		if (is_directory(command.cmd))
 		{
 			execution_error_write(command.name, "Is a directory");
-			return_value = 126 + 2;
+			return_value = 126 + IS_CHILD;
 		}
 	}
 	if (!return_value)
 	{
+		close(command.backup[0]);
+		close(command.backup[1]);
 		execve(command.cmd, argv, envp);
 		execution_error_write(argv[0], strerror(errno));
-		return_value = 127 + 2;
+		return_value = 127 + IS_CHILD;
 	}
 	return (return_value);
 }
@@ -84,15 +86,15 @@ static int	build_args_and_exec(t_command *command, t_list **env_vars)
 	argv = build_argv(command->name, command->args);
 	if (!argv)
 	{
-		execution_error_write("argv: ", strerror(errno));
-		return (errno + 2);
+		execution_error_write("argv alloc failed", strerror(errno));
+		return (errno + IS_CHILD);
 	}
 	envp = build_env(*env_vars);
 	if (!envp)
 	{
-		execution_error_write("envp: ", strerror(errno));
+		execution_error_write("envp alloc failed", strerror(errno));
 		free_table(&argv);
-		return (errno + 2);
+		return (errno + IS_CHILD);
 	}
 	return_value = rules(*command, argv, envp, env_vars);
 	free_table(&argv);
@@ -103,13 +105,12 @@ static int	build_args_and_exec(t_command *command, t_list **env_vars)
 int	execution_rules(t_command *command, t_list **env_vars)
 {
 	int	return_value;
-	int	backup[2];
 
-	return_value = 2;
-	if (redirect_fd(*command, backup))
-		return_value = 1 + 2;
-	if (command->name && return_value == 2)
+	return_value = IS_CHILD;
+	if (!redirect_fd(*command, command->backup))
+		return_value += 1;
+	if (command->name && return_value == IS_CHILD)
 		return_value = build_args_and_exec(command, env_vars);
-	restore_in_out(backup);
+	restore_in_out(command->backup);
 	return (return_value);
 }

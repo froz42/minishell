@@ -6,11 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 22:29:02 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 13:07:35 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/06/01 11:02:51 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "buildin.h"
+#include "builtin.h"
 
 static t_bool	is_valid_option(char *str)
 {

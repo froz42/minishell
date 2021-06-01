@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 14:06:15 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 14:11:38 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 23:35:21 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	**force_split(char **old_split)
 	return (split);
 }
 
-t_bool	split_to_list(char *str, t_list **tokens, t_bool just_pipes)
+static t_bool	split_to_list(char *str, t_list **tokens, t_bool just_pipes)
 {
 	char	**split;
 	int		i;

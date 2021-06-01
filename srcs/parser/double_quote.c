@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 14:10:06 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 14:11:08 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 23:45:30 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*double_quote(char **str)
 	return (token);
 }
 
-t_bool	add_db_quote_word(char **str, t_list *env_var, t_list **to_join)
+static t_bool	add_db_quote_word(char **str, t_list *env_var, t_list **to_join)
 {
 	char	*word_str;
 	t_list	*elem;

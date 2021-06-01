@@ -6,13 +6,13 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 15:40:14 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 13:49:33 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/06/01 11:03:05 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "buildin.h"
+#include "builtin.h"
 
-void	append_var(t_list **env_var, char *work_str, char *key)
+static void	append_var(t_list **env_var, char *work_str, char *key)
 {
 	char	*dest;
 	char	*var;
@@ -35,7 +35,7 @@ void	append_var(t_list **env_var, char *work_str, char *key)
 	free(dest);
 }
 
-void	add_var(char *key, char *work_str, t_list **env_var, int append)
+static void	add_var(char *key, char *work_str, t_list **env_var, int append)
 {
 	if (!*work_str && *(work_str - 1) != '=')
 		edit_var(env_var, key, NULL);

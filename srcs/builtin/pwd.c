@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 12:42:16 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 13:08:00 by tmatis           ###   ########.fr       */
+/*   Created: 2021/05/07 14:25:27 by tmatis            #+#    #+#             */
+/*   Updated: 2021/06/01 11:04:17 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "buildin.h"
+#include "builtin.h"
 
-int	ft_env(t_list *env_var)
+int	ft_pwd(void)
 {
-	int		i;
-	char	**envp;
+	char	actual_dir[BUFFER_SIZE];
 
-	envp = build_env(env_var);
-	if (!envp)
+	if (!getcwd(actual_dir, sizeof(actual_dir)))
 	{
-		ft_putstr_fd("Minishell: env: ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd("\n", 2);
-		return (errno);
+		file_error("cannot get PWD", strerror(errno));
+		return (1);
 	}
-	i = 0;
-	while (envp[i])
-	{
-		ft_putstr_fd(envp[i], STDOUT_FILENO);
-		ft_putstr_fd("\n", STDOUT_FILENO);
-		i++;
-	}
-	free_table(&envp);
+	ft_putstr_fd(actual_dir, STDOUT_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 11:45:21 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/28 15:54:39 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 23:59:58 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-char	*build_env_str(t_var var)
+static char	*build_env_str(t_var var)
 {
 	char	*env_str;
 

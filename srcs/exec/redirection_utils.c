@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 13:22:34 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/25 13:10:31 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 23:52:41 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 int	get_open_flags(int type)
 {
-	if (type == 1)
+	if (type == REDIR_OUT)
 		return (O_CREAT | O_WRONLY | O_TRUNC);
-	else if (type == 2)
+	else if (type == REDIR_IN)
 		return (O_RDONLY);
 	else
 		return (O_CREAT | O_WRONLY | O_APPEND);
@@ -34,14 +34,20 @@ void	file_error(char *file, char *error)
 
 void	restore_in_out(int backup[2])
 {
-	dup2(backup[0], STDIN_FILENO);
-	dup2(backup[1], STDOUT_FILENO);
-	close(backup[0]);
-	close(backup[1]);
+	if (backup[0] >= 0)
+	{
+		dup2(backup[0], STDIN_FILENO);
+		close(backup[0]);
+	}
+	if (backup[1] >= 0)
+	{
+		dup2(backup[1], STDOUT_FILENO);
+		close(backup[1]);
+	}
 }
 
-int	redir_dup_fail(int backup[2])
+t_bool	redir_dup_fail(int backup[2])
 {
 	restore_in_out(backup);
-	return (1);
+	return (false);
 }

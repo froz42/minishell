@@ -6,7 +6,7 @@
 #    By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/08 16:38:19 by tmatis            #+#    #+#              #
-#    Updated: 2021/05/28 16:21:04 by tmatis           ###   ########.fr        #
+#    Updated: 2021/05/29 22:04:34 by jmazoyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRCS_CHAR		= ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c \
 
 SRCS_LST		= ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c \
 				  ft_lstdelone.c ft_lstiter.c ft_lstmap.c ft_lstnew.c \
-				  ft_lstsize.c ft_lstlast.c
+				  ft_lstsize.c ft_lstlast.c ft_lstremove_one_if_bonus.c
 
 SRCS_MEMORY		= ft_bzero.c ft_memccpy.c ft_memcmp.c ft_memmove.c \
 				  ft_realloc.c ft_calloc.c ft_memchr.c ft_memcpy.c ft_memset.c

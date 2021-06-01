@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:28:01 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 14:34:08 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/06/01 00:02:47 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static t_command	*init_command(void)
 	return (command);
 }
 
-t_bool	find_redir(t_list **word_list, int special_id, t_command *command)
+static t_bool	find_redir(t_list **word_list, int special_id,
+														t_command *command)
 {
 	t_redir		*redir;
 	t_list		*elem;
@@ -45,7 +46,7 @@ t_bool	find_redir(t_list **word_list, int special_id, t_command *command)
 	return (true);
 }
 
-t_bool	find_arg(t_list **word_list, t_command *command)
+static t_bool	find_arg(t_list **word_list, t_command *command)
 {
 	char	*arg;
 	t_list	*elem;

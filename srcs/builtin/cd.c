@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 21:07:44 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 13:06:47 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/29 20:48:52 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,43 @@ static int	cd_home(t_list **env_var)
 		ft_putstr_fd("Minishell: cd: HOME not set\n", 2);
 		return (1);
 	}
-	else
-		chdir(home);
+	else if (chdir(home) == -1)
+		return (generic_error(strerror(errno), "HOME"));
 	return (0);
 }
 
-int	cd_oldpwd(t_list **env_var)
+static t_bool	get_directories(char **old_pwd, char *actual_dir,
+										t_list **env_var, char *var_to_edit)
+{
+	if (old_pwd)
+	{
+		*old_pwd = ft_strdup(*old_pwd);
+		if (!*old_pwd)
+		{
+			file_error("cannot load OLDPWD", strerror(errno));
+			return (false);
+		}
+	}
+	if (!getcwd(actual_dir, BUFFER_SIZE))
+	{
+		file_error("cannot get PWD", strerror(errno));
+		if (old_pwd)
+			free(*old_pwd);
+		return (false);
+	}
+	if (!edit_var(env_var, var_to_edit, actual_dir))
+	{
+		if (old_pwd)
+			free(*old_pwd);
+		return (false);
+	}
+	return (true);
+}
+
+static int	cd_oldpwd(t_list **env_var)
 {
 	char	*old_pwd;
-	int		ret;
-	char	actual_dir[4098];
+	char	actual_dir[BUFFER_SIZE];
 
 	old_pwd = search_var(*env_var, "OLDPWD");
 	if (!old_pwd)
@@ -49,39 +76,35 @@ int	cd_oldpwd(t_list **env_var)
 		ft_putstr_fd("Minishell: cd: OLDPWD not set\n", 2);
 		return (1);
 	}
-	old_pwd = ft_strdup(old_pwd);
-	getcwd(actual_dir, sizeof(actual_dir));
-	edit_var(env_var, "OLDPWD", actual_dir);
-	ret = chdir(old_pwd);
-	ft_putnl(old_pwd);
-	if (ret == -1)
+	if (!get_directories(&old_pwd, actual_dir, env_var, "OLDPWD"))
+		return (1);
+	if (chdir(old_pwd) == -1)
 	{
 		generic_error(strerror(errno), old_pwd);
 		free(old_pwd);
 		return (1);
 	}
-	getcwd(actual_dir, sizeof(actual_dir));
-	edit_var(env_var, "PWD", actual_dir);
+	ft_putnl(old_pwd);
 	free(old_pwd);
+	if (!get_directories(NULL, actual_dir, env_var, "PWD"))
+		return (1);
 	return (0);
 }
 
 int	ft_cd(int argc, char **argv, t_list **env_var)
 {
 	char	actual_dir[BUFFER_SIZE];
-	int		ret;
 
 	if (argc == 2)
 	{
 		if (!ft_strcmp(argv[1], "-"))
 			return (cd_oldpwd(env_var));
-		getcwd(actual_dir, sizeof(actual_dir));
-		edit_var(env_var, "OLDPWD", actual_dir);
-		ret = chdir(argv[1]);
-		if (ret == -1)
+		if (!get_directories(NULL, actual_dir, env_var, "OLDPWD"))
+			return (1);
+		if (chdir(argv[1]) == -1)
 			return (generic_error(strerror(errno), argv[1]));
-		getcwd(actual_dir, sizeof(actual_dir));
-		edit_var(env_var, "PWD", actual_dir);
+		if (!get_directories(NULL, actual_dir, env_var, "PWD"))
+			return (1);
 	}
 	else if (argc > 2)
 	{

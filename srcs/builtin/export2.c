@@ -6,11 +6,11 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 13:13:37 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 15:51:23 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/06/01 11:04:13 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "buildin.h"
+#include "builtin.h"
 
 static int	key_len(char *str, int *error)
 {
@@ -93,6 +93,7 @@ static void	print_sorted(t_var	**var_table)
 		ft_putstr("\n");
 		var_table++;
 	}
+	ft_putstr("\033[0m");
 }
 
 int	print_export(t_list *env_var)
@@ -103,18 +104,18 @@ int	print_export(t_list *env_var)
 
 	var_table = ft_calloc(ft_lstsize(env_var), sizeof(t_var *));
 	if (!var_table)
+	{
+		ft_log_error(strerror(errno));
 		return (127);
+	}
 	i = 0;
 	while (env_var)
 	{
 		var = (t_var *)env_var->content;
-		if (!ft_strcmp(var->key, "?"))
-		{
-			env_var = env_var->next;
-			continue ;
-		}
-		var_table[i++] = var;
 		env_var = env_var->next;
+		if (!ft_strcmp(var->key, "?") || !ft_strcmp(var->key, "_"))
+			continue ;
+		var_table[i++] = var;
 	}
 	sort_vars(var_table);
 	print_sorted(var_table);

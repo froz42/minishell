@@ -6,24 +6,24 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 17:03:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/22 23:28:32 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:39:33 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int	set_error(int n, int *error)
+static int	set_error(int n, int *error)
 {
 	*error = n;
 	return (1);
 }
 
-int	get_errno(int special_id)
+static int	get_errno(int special_id)
 {
 	return (special_id + 2);
 }
 
-int	error_unexpected(t_list *tokens, int *error)
+static int	error_unexpected(t_list *tokens, int *error)
 {
 	int		special_id;
 	int		special_id_next;

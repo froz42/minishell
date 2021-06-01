@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 16:49:46 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/24 11:48:54 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/05/31 23:34:05 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ static void	init_value(t_append *append, t_list **dollar_tokens,
 	*to_join = NULL;
 }
 
-t_bool	add_word(char **str, int *error, t_list *env_var, t_list **to_join)
+static t_bool	add_word(char **str, int *error,
+							t_list *env_var, t_list **to_join)
 {
 	char	*word_str;
 	t_list	*elem;

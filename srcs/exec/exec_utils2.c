@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 19:31:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/28 16:23:00 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 23:57:16 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	sig_handler(int signal_no)
 	(void)signal_no;
 }
 
-int	handle_dup2_error(t_tube *tube_list, int forks_running, int fork_n)
+int	handle_dup2_error(t_tube *tube_list)
 {
 	execution_error_write("dup2 fail", strerror(errno));
-	close_finish_tube(tube_list, forks_running, fork_n);
+	free(tube_list);
 	return (errno + 2);
 }
 

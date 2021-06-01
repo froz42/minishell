@@ -1,23 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 14:25:27 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 13:51:56 by tmatis           ###   ########.fr       */
+/*   Created: 2021/05/07 13:43:28 by tmatis            #+#    #+#             */
+/*   Updated: 2021/06/01 11:03:18 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "buildin.h"
+#include "builtin.h"
 
-int	ft_pwd(void)
+static int	varcmp(t_var *var, t_var *ref)
 {
-	char	actual_dir[4098];
+	return (ft_strcmp(var->key, ref->key));
+}
 
-	getcwd(actual_dir, sizeof(actual_dir));
-	ft_putstr_fd(actual_dir, STDOUT_FILENO);
-	ft_putstr_fd("\n", STDOUT_FILENO);
+int	ft_unset(int argc, char **argv, t_list **env_var)
+{
+	int		i;
+	t_var	var;
+
+	i = 0;
+	while (i < argc)
+	{
+		var.key = argv[i++];
+		ft_lstremove_one_if(env_var, &var, varcmp, free_var);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 13:26:03 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/28 13:26:16 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/05/31 23:49:23 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 ** SUPPR_KEY ("\33\133\63\176") -> SUPPR_ID -> 18
 */
 
-int	get_escape_id_part2(char *buff, int size)
+static int	get_escape_id_part2(char *buff, int size)
 {
 	if (buff[0] == CUT_WORD_LEFT)
 		return (CUT_WORD_LEFT_ID);
