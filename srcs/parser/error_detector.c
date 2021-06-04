@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 17:03:04 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/31 23:39:33 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/06/04 13:26:16 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,29 @@ static int	error_unexpected(t_list *tokens, int *error)
 	return (0);
 }
 
-void	error_detector(t_list *tokens, int *error)
+void	error_detector(t_list *tokens, int *error, t_list **env_var)
 {
 	if (*error != NO_ERROR)
+	{
+		write_error(*error);
+		set_status_env(env_var, 2);
 		return ;
+	}
 	if (tokens && escape_control(tokens->content) == SEMICOLON)
 	{
 		*error = get_errno(SEMICOLON);
+		write_error(*error);
+		set_status_env(env_var, 2);
 		return ;
 	}
 	while (tokens)
 	{
 		if (error_unexpected(tokens, error))
+		{
+			write_error(*error);
+			set_status_env(env_var, 2);
 			return ;
+		}
 		tokens = tokens->next;
 	}
 }
