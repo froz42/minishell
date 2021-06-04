@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:08 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/23 14:34:05 by tmatis           ###   ########.fr       */
+/*   Updated: 2021/06/04 13:28:38 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
 # define END			1
 
 int			is_special(char *str);
-//t_list		*tokenize(char **str, int *error, t_list *env_var);
 t_list		*tokenize(char **str, int *error, t_list *env_var,
 				t_bool just_pipes);
 t_list		*tokenize_all(char *str, int *error, t_list *env_var);
@@ -60,7 +59,7 @@ char		*make_double_quote(char **str, int *error, t_list *env_var);
 char		*word(char **str);
 t_list		*make_word(char **str, int *error, t_list *env_var,
 				t_bool just_pipes);
-void		error_detector(t_list *tokens, int *error);
+void		error_detector(t_list *tokens, int *error, t_list **env_var);
 void		free_table(char ***table);
 void		set_status_env(t_list **env_var, int status);
 t_bool		add_joint_tokens(t_list **dollar_tokens, t_list **tokens,

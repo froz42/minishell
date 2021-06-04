@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 14:12:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/05/31 23:41:00 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/06/04 14:23:12 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,20 +80,18 @@ int	exec_line(char *str, t_list **env_var)
 	int			return_value;
 
 	word_list = tokenize_all(str, &error, *env_var);
-	error_detector(word_list, &error);
+	error_detector(word_list, &error, env_var);
 	ft_lstclear(&word_list, free);
 	if (error != NO_ERROR)
-	{
-		write_error(error);
-		set_status_env(env_var, 2);
 		return (0);
-	}
 	while (*str)
 	{
+		return_value = 0;
 		pipes_list = get_next_pipes(&str, &error, env_var);
-		if (!pipes_list)
+		if (!pipes_list && (!*str || error != NO_ERROR))
 			return (0);
-		return_value = exec(pipes_list, env_var);
+		if (pipes_list)
+			return_value = exec(pipes_list, env_var);
 		ft_lstclear(&pipes_list, free_command);
 		if (return_value)
 			return (return_value);
