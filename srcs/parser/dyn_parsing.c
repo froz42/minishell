@@ -6,7 +6,7 @@
 /*   By: tmatis <tmatis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 14:12:28 by tmatis            #+#    #+#             */
-/*   Updated: 2021/06/04 13:28:18 by jmazoyer         ###   ########.fr       */
+/*   Updated: 2021/06/04 14:23:12 by jmazoyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	exec_line(char *str, t_list **env_var)
 	{
 		return_value = 0;
 		pipes_list = get_next_pipes(&str, &error, env_var);
-		if (!pipes_list && !*str)
+		if (!pipes_list && (!*str || error != NO_ERROR))
 			return (0);
 		if (pipes_list)
 			return_value = exec(pipes_list, env_var);
