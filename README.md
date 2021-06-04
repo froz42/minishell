@@ -1,4 +1,4 @@
-# MINISHELL
+# MINISHELL (FINI)
 
 ![image](https://user-images.githubusercontent.com/54767855/119504960-c38f5400-bd6c-11eb-8348-c4ea2b0a4779.png)
 
