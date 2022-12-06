@@ -23,5 +23,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: make
       run: make
-    - name: malloc_test
+    - name: mallocs test
       run: make check_protect
